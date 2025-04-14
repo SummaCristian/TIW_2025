@@ -12,6 +12,7 @@ public class TestServlet extends HttpServlet {
 		response.setContentType("text/plain");
 		PrintWriter out = response.getWriter();
 		out.println("Hello this is a test");
+		out.println("Hello this is");
 		out.close();
 	}
 }
