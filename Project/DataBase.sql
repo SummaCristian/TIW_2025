@@ -1,54 +1,126 @@
-create database if not exists Progetto_Tiw;
-use Progetto_Tiw;
+CREATE DATABASE IF NOT EXISTS Progetto_Tiw;
+USE Progetto_Tiw;
 
-create table Utente(
-		IdUtente int  not null auto_increment primary key,
-        Username varchar(255) not null unique,
-        Psw varchar(255) not null,
-        Nome varchar(255) not null,
-        Cognome varchar(255) not null,
-        Indirizzo varchar(255) not null
+-- Stores User's informations and login credentials
+CREATE TABLE Users (
+		Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        -- Login Username
+        Username VARCHAR(255) NOT NULL UNIQUE,
+        -- Password
+        Psw VARCHAR(255) NOT NULL,
+        -- Anagraphics
+        FirstName VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(FirstName)) > 0),
+        Surname VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(Surname)) > 0),
+        -- User Address, used for shipping of Auctioned Items
+        Address VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(Address)) > 0)
 );
 
-create table Immagine(
-	Id int not null auto_increment primary key,
-    NomeFile varchar(255) not null,
-    Percorso varchar(255) not null unique
+-- Stores the File names and paths for Image resources of Items
+CREATE TABLE Images (
+	Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    -- Name of the image file
+    FileName VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(FileName)) > 0),
+    -- Path inside the FileSystem to locate the file
+    FilePath VARCHAR(255) NOT NULL UNIQUE CHECK (LENGTH(TRIM(FilePath)) > 0)
 );
 
-create table Asta(
-	IdAsta int not null auto_increment primary key,
-    BaseDAsta int not null,
-    RialzoMinimo int not null,
-    OffertaMax int not null,
-    DataChiusura date not null,
-    Venduto Boolean default false,
-    IdUtenteCompratore int,
-    IdUtenteVenditore int not null,
-    PrezzoVendita int,
-    foreign key(IdUtenteCompratore) references Utente(IdUtente),
-	foreign key(IdUtenteVenditore) references Utente(IdUtente)
+-- Stores all the Auctions created by Users, with all related data
+CREATE TABLE Auctions (
+	Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    -- Starting Price for the Auction, calculated as the Sum of all the Item's Prices
+    BasePrice INT NOT NULL CHECK (BasePrice > 0),
+    -- Minimum Allowed Increment for Offers
+    MinIncrement INT NOT NULL CHECK (MinIncrement > 0),
+    -- Current Highest Offer
+    -- NULL if no Offers have been made yet
+    HighestBid INT CHECK (HighestBid IS NULL OR HighestBid >= 0),
+    -- Ending Date for the Auction
+    ClosingDate DATE NOT NULL,
+    -- The ID of the User who created the Auction
+    SellerId INT NOT NULL,
+    -- A Boolean value to determine whether the Auction has been closed or not
+    IsSold BOOLEAN DEFAULT FALSE NOT NULL,
+    -- The ID of the User who won the Auction
+    BuyerId INT,
+    -- The Price of the winning Offer
+    FinalPrice INT CHECK (FinalPrice IS NULL OR FinalPrice >= 0),
+    -- Foreign Keys
+    FOREIGN KEY (BuyerId) REFERENCES Users(Id)
+		-- If the buyer User is deleted, the Auction is not deleted
+        ON DELETE SET NULL
+        ON UPDATE CASCADE,
+	FOREIGN KEY (SellerId) REFERENCES Users(Id)
+		-- Users with Auctions can't delete their profile
+		ON DELETE RESTRICT
+        ON UPDATE CASCADE
 );
 
-create table Articolo(
-	Codice int not null auto_increment primary key,
-    Nome varchar(255) not null,
-    Descrizione varchar(1023) not null,
-    Prezzo int not null,
-    IdImmagine int not null,
-    IdUtenteCreante int not null,
-    idAsta int not null,
-    foreign key(IdImmagine) references Immagine(Id),
-    foreign key(IdUtenteCreante) references Utente(IdUtente),
-    foreign key(IdAsta) references Asta(IdAsta)
+/*
+	Stores the Items created by the Users
+	Items can be part of an Auction or not 
+*/
+CREATE TABLE Items (
+	Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    -- The Name of the Item
+    ItemName VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(ItemName)) > 0),
+    -- The Description of the Item
+    ItemDescription VARCHAR(1023) NOT NULL CHECK (LENGTH(TRIM(ItemDescription)) > 0),
+    -- The Price of the Item
+    Price INT NOT NULL CHECK (Price > 0),
+    -- The ID of the Image of the Item, used to retrieve the image FilePath
+    ImageId INT NOT NULL,
+    -- The ID of the User who created the Item
+    CreatorId INT NOT NULL,
+    /*
+		The ID of the Auction in which the Item is being sold.
+		An Item can only reference 1 Auction, so no duplicates allowed.
+		It can also be NULL, meaning the Item does not belong to any Auction yet.
+	*/
+    AuctionId INT,
+    -- Foreign Keys
+    FOREIGN KEY (ImageId) REFERENCES Images(Id)
+		-- Images can't be deleted if they belong to an Item
+		ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+    FOREIGN KEY (CreatorId) REFERENCES Users(Id)
+		ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (AuctionId) REFERENCES Auctions(Id)
+		/*
+			If an Auction is Deleted, the Items are not deleted,
+			but marked as not in an Auction
+		*/
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
 );
 
-create table Offerta(
-	IdOfferta int not null auto_increment primary key,
-    IdUtente int not null,
-    PrezzoOfferta int not null,
-    DataOfferta date not null,
-    OraOfferta time not null,
-    foreign key(IdOfferta) references Utente(IdUtente)
-)
+-- Stores the Offers made by the Users inside Auctions
+CREATE TABLE Offers (
+    Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    -- The ID of the User who made the Offer
+    UserId INT NOT NULL,
+    -- The ID of the Auction where the Offered has been made
+    AuctionId INT NOT NULL,
+    -- The Price offered by the User
+    OfferedPrice INT NOT NULL CHECK (OfferedPrice > 0),
+    -- The Date and Time the Offer has been made
+    OfferDate DATETIME NOT NULL,
+    -- Foreign Keys
+    FOREIGN KEY (UserId) REFERENCES Users(Id)
+		ON DELETE CASCADE
+        ON UPDATE CASCADE,
+	FOREIGN KEY (AuctionId) REFERENCES Auctions(Id)
+		ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+-- Indexes for performance
+CREATE INDEX idx_offers_auction ON Offers(AuctionId);
+CREATE INDEX idx_offers_user ON Offers(UserId);
+CREATE INDEX idx_items_auction ON Items(AuctionId);
+CREATE INDEX idx_items_creator ON Items(CreatorId);
+CREATE INDEX idx_items_image ON Items(ImageId);
+CREATE INDEX idx_auctions_seller ON Auctions(SellerId);
+CREATE INDEX idx_auctions_buyer ON Auctions(BuyerId);
+
 
