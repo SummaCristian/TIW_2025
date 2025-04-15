@@ -5,9 +5,9 @@ USE Progetto_Tiw;
 CREATE TABLE Users (
 		Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
         -- Login Username
-        Username VARCHAR(255) NOT NULL UNIQUE,
+        Username VARCHAR(255) NOT NULL UNIQUE CHECK (LENGTH(TRIM(Username)) > 0),
         -- Password
-        Psw VARCHAR(255) NOT NULL,
+        Psw VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(Psw)) > 0),
         -- Anagraphics
         FirstName VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(FirstName)) > 0),
         Surname VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(Surname)) > 0),
@@ -35,7 +35,7 @@ CREATE TABLE Auctions (
     -- NULL if no Offers have been made yet
     HighestBid INT CHECK (HighestBid IS NULL OR HighestBid >= 0),
     -- Ending Date for the Auction
-    ClosingDate DATE NOT NULL,
+    ClosingDate DATETIME NOT NULL,
     -- The ID of the User who created the Auction
     SellerId INT NOT NULL,
     -- A Boolean value to determine whether the Auction has been closed or not
@@ -122,5 +122,3 @@ CREATE INDEX idx_items_creator ON Items(CreatorId);
 CREATE INDEX idx_items_image ON Items(ImageId);
 CREATE INDEX idx_auctions_seller ON Auctions(SellerId);
 CREATE INDEX idx_auctions_buyer ON Auctions(BuyerId);
-
-
