@@ -15,23 +15,19 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 import java.io.IOException;
 import java.util.Locale;
 
-/**
- * Servlet implementation class FrontServlet
+/*
+ * This Servet handles the Login page and process.
+ * GET requests are translated into redirects to the LoginPage.html, rendered through Thymeleaf.
+ * POST requests are elaborated as login tentatives, meaning they are supposed to carry a User's username
+ * and password, which are checked with what's in the Database and used to authenticate the User, if ok..
  */
 public class FrontServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	 private TemplateEngine templateEngine;
 	 private JakartaServletWebApplication application;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public FrontServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
+	 // Initializes the Thymeleaf Template Engine, used to render the HTML page
     @Override
     public void init() {
         FileTemplateResolver resolver = new FileTemplateResolver();
@@ -47,6 +43,7 @@ public class FrontServlet extends HttpServlet {
         application = JakartaServletWebApplication.buildApplication(getServletContext());
     }
     
+	// Renders the LoginPage.html file through the Thymeleaf Template Engine, and sends the output to the User's browser
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -58,7 +55,6 @@ public class FrontServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         templateEngine.process("LoginPage", context, response.getWriter());
     }
-
 
 
 	/**
