@@ -8,7 +8,7 @@ package it.polimi.tiw.beans;
 public class User {
     private int id;
     private String username;
-    private String psw;
+    // NO PASSWORD FIELD
     private String firstName;
     private String surname;
     private String address;
@@ -29,14 +29,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPsw() {
-        return psw;
-    }
-
-    public void setPsw(String psw) {
-        this.psw = psw;
     }
 
     public String getFirstName() {
