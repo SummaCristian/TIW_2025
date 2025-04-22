@@ -44,17 +44,38 @@ public class SignUpPageServlet extends HttpServlet {
     
 	// Renders the LoginPage.html file through the Thymeleaf Template Engine, and sends the output to the User's browser
     private void loadPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    	 IWebExchange webExchange = application.buildExchange(request, response);
-         WebContext context = new WebContext(webExchange, Locale.getDefault());
-         
-         // Checks if there is any error in the request
-         if (request.getAttribute("error") != null) {
-             context.setVariable("error", request.getAttribute("error"));
-         }
+        IWebExchange webExchange = application.buildExchange(request, response);
+        WebContext context = new WebContext(webExchange, Locale.getDefault());
 
-         response.setContentType("text/html;charset=UTF-8");
-         templateEngine.process("SignUpPage", context, response.getWriter());
+        // Set error message if present
+        if (request.getAttribute("error") != null) {
+            context.setVariable("error", request.getAttribute("error"));
+        }
+
+        // Copy any pre-filled inputs (e.g., from failed validation)
+        String[] fieldNames = { "username", "password1", "password2", "firstName", "lastName", "address" };
+        for (String name : fieldNames) {
+            if (request.getAttribute(name) != null) {
+                context.setVariable(name, request.getAttribute(name));
+            }
+        }
+
+        // Decide which phase to render
+        String phase = (String) request.getAttribute("phase");
+        String templateToRender = "SignUpPage"; // default
+        
+        System.out.println("Received: " + phase);
+
+        if ("2".equals(phase)) {
+        	// Phase2: renders the page with the User's personal info
+            templateToRender = "SignUpPage2";
+        }
+
+        // Renders the selected page and sends it to the User
+        response.setContentType("text/html;charset=UTF-8");
+        templateEngine.process(templateToRender, context, response.getWriter());
     }
+
     
 	// Renders the LoginPage.html file through the Thymeleaf Template Engine, and sends the output to the User's browser
     @Override

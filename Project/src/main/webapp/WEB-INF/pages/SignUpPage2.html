@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Login Page</title>
+<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+
+<body>
+
+	<h1>Welcome!</h1>
+
+	<div  class="formdiv">
+		<h1>Sign up</h1>
+
+        <!-- Error message -->
+		<p th:if="${error}" th:text="${error}" style="color: red;"/>
+
+		<form th:action="@{/SignUpServlet}" method="POST">
+			<fieldset>
+                <!-- Hidden input, it specifies to the Servlet that we have already checked the credentials -->
+				<input type="hidden" name="phase" value="2">
+
+                <!-- Previous inputs -->
+                <input type="hidden" name="username" th:value="${username}">
+                <input type="hidden" name="password1" th:value="${password1}">
+                <input type="hidden" name="password2" th:value="${password2}">
+
+                
+				<p>
+					First Name: <input type="text" name="firstName" required />
+				</p>
+				<p>
+					Last Name: <input type="text" name="lastName" required />
+				</p>
+				<p>
+					Address: <input type="text" name="address" required />
+				</p>
+				<button type="submit" name="Sign up">Sign up</button>
+			</fieldset>
+		</form>
+
+		<a th:href="@{/login}">Go back</a>
+	</div>
+</body>
+</html>

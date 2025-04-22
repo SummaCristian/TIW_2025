@@ -14,16 +14,22 @@
 	<div  class="formdiv">
 		<h1>Sign up</h1>
 
+		<!-- Error message -->
+		<p th:if="${error}" th:text="${error}" style="color: red;"/>
+
 		<form th:action="@{/SignUpServlet}" method="POST">
 			<fieldset>
+				<!-- Hidden input, it specifies to the Servlet that we are stil checking the credentials -->
+				<input type="hidden" name="phase" value="1">
+
 				<p>
 					Username: <input type="text" name="username" required />
 				</p>
 				<p>
-					Password: <input type="password" name="password" required />
+					Password: <input type="password" name="password1" required />
 				</p>
 				<p>
-					Confirm password: <input type="password" name="password" required />
+					Confirm password: <input type="password" name="password2" required />
 				</p>
 				<button type="submit" name="Sign up">Sign up</button>
 			</fieldset>
