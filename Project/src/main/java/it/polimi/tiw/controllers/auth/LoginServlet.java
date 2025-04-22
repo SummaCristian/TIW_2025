@@ -27,7 +27,9 @@ public class LoginServlet extends HttpServlet {
 	// Database connection
 	private Connection connection = null;
        
-	// Initializes the Servlet, creating the DB Connection as well
+	/*
+	 *  Initializes the Servlet, creating the DB Connection as well
+	 */
     public void init() throws ServletException {
     	try {
     		connection = DBUtil.getConnection();
