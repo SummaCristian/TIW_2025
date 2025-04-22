@@ -1,4 +1,4 @@
-package it.polimi.tiw.controllers;
+package it.polimi.tiw.controllers.auth;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * POST requests are elaborated as sign up tentatives, meaning they are supposed to carry a new User's username
  * and password (+ confirm password), which is checked and added into the Database if ok.
  */
-@WebServlet("/signup")
+@WebServlet("/SignUpServlet")
 public class SignUpServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	

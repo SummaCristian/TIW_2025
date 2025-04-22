@@ -6,6 +6,13 @@ import java.sql.SQLException;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
+/**
+ * This class provides an easy and clean way to pars the .env file for DB access info.
+ * It automatically locates the .env file, provided it is located inside the WEB-INF folder, and
+ * reads its content.
+ * 
+ * It provides an easy way to get a Database Connection, via the getConnection() method.
+ */
 public class DBUtil {
     private static final Dotenv dotenv;
 
@@ -20,8 +27,6 @@ public class DBUtil {
         if (rawPath.matches("^/[A-Z]:/.*")) {
             rawPath = rawPath.substring(1); // Remove leading slash
         }
-
-        System.out.println("✅ Cleaned .env path: " + rawPath);
 
         dotenv = Dotenv.configure()
                 .directory(rawPath)
@@ -39,6 +44,7 @@ public class DBUtil {
     private static final String DB_USER = dotenv.get("DB_USER");
     private static final String DB_PASS = dotenv.get("DB_PASS");
 
+    // Returns a configured connection to the Database
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
     }
