@@ -13,8 +13,11 @@
 
 	<div  class="formdiv">
 		<h1>Login</h1>
+		
+		<!-- Error message -->
+		<p th:if="${error}" th:text="${error}" style="color: red;"/>
 
-		<form action="#" th:action="@{/}" method="POST">
+		<form th:action="@{/LoginServlet}" method="POST">
 			<fieldset>
 				<p>
 					Username: <input type="text" name="username" required />

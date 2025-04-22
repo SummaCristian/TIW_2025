@@ -21,6 +21,7 @@ import java.util.Locale;
  * POST requests are elaborated as login tentatives, meaning they are supposed to carry a User's username
  * and password, which are checked with what's in the Database and used to authenticate the User, if ok..
  */
+@WebServlet("/login")
 public class FrontServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -45,24 +46,32 @@ public class FrontServlet extends HttpServlet {
     
 	// Renders the LoginPage.html file through the Thymeleaf Template Engine, and sends the output to the User's browser
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         IWebExchange webExchange = application.buildExchange(request, response);
         WebContext context = new WebContext(webExchange, Locale.getDefault());
+        
+        // Checks if there is any error in the request
+        if (request.getAttribute("error") != null) {
+            context.setVariable("error", request.getAttribute("error"));
+        }
 
         response.setContentType("text/html;charset=UTF-8");
         templateEngine.process("LoginPage", context, response.getWriter());
     }
 
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	// Renders the LoginPage.html file through the Thymeleaf Template Engine, and sends the output to the User's browser
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		IWebExchange webExchange = application.buildExchange(request, response);
+        WebContext context = new WebContext(webExchange, Locale.getDefault());
+        
+        // Checks if there is any error in the request
+        if (request.getAttribute("error") != null) {
+            context.setVariable("error", request.getAttribute("error"));
+        }
+
+        response.setContentType("text/html;charset=UTF-8");
+        templateEngine.process("LoginPage", context, response.getWriter());
 	}
 
 }
