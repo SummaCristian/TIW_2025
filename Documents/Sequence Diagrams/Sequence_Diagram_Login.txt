@@ -1,0 +1,55 @@
+title Sequence Diagram Sign Up
+
+actor User
+participant FrontServlet
+
+participantgroup #lightgreen **Login**
+participant LoginServlet
+participant LoginPageServlet
+participant LoginPage.html #aqua
+end
+
+participant UserDAO #orange
+
+participant Home
+
+User-->FrontServlet: localhost:8080/Project_TIW
+
+alt case 1
+#Already logged in
+FrontServlet->Home: forward() [session != null]
+else case 2
+# Not logged in
+FrontServlet->LoginPageServlet:forward() [session == null]
+LoginPageServlet->LoginPage.html:process()
+
+
+loop #0727fe #white until completes without Exceptions
+LoginPage.html-->User: Rendered page
+User-->LoginPage.html: input
+LoginPage.html->LoginServlet:forward()
+
+LoginServlet->UserDAO: checkCredentials()
+
+alt case 1
+UserDAO-->LoginServlet: MissingParametersException
+LoginServlet->LoginPageServlet: forward() [with error]
+LoginPageServlet->LoginPage.html: process() [with error]
+else case 2
+UserDAO-->LoginServlet: UserNotFoundException
+LoginServlet->LoginPageServlet: forward() [with error]
+LoginPageServlet->LoginPage.html: process() [with error]
+else case 3
+UserDAO-->LoginServlet: IncorrectPasswordException
+LoginServlet->LoginPageServlet: forward() [with error]
+LoginPageServlet->LoginPage.html: process() [with error]
+else case 4
+#Success
+UserDAO-->LoginServlet: return user
+
+end
+end
+
+LoginServlet->Home: forward()
+
+end

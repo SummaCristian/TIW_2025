@@ -1,0 +1,80 @@
+title Sequence Diagram Sign Up
+
+actor User
+participant FrontServlet
+
+participantgroup #lightgreen **Login**
+participant LoginPageServlet
+participant LoginPage.html #aqua
+participant SignUpServlet
+participant SignUpPageServlet
+participant SignUpPage.html #aqua
+participant SignUpPage2.html #aqua
+end
+
+participant UserDAO #orange
+
+participant Home
+
+User-->FrontServlet: localhost:8080/Project_TIW
+
+FrontServlet->LoginPageServlet:forward() [session == null]
+LoginPageServlet->LoginPage.html:process()
+
+LoginPage.html-->User: Rendered page
+User-->LoginPage.html: input (clicks "Sign Up")
+LoginPage.html->SignUpServlet:forward()
+
+loop #2f2e7b #white All info in the request
+SignUpServlet->SignUpPageServlet: forward()
+SignUpPageServlet->SignUpPage.html: process()
+SignUpPage.html-->User: rendered page
+User-->SignUpPage.html: input
+SignUpPage.html->SignUpServlet: forward() [phase == 1]
+
+SignUpServlet->UserDAO: validateCredentials()
+
+alt case 1
+UserDAO-->SignUpServlet: MissingParametersException
+else case 2
+UserDAO-->SignUpServlet: MismatchingPasswordsException
+else case 3
+UserDAO-->SignUpServlet: DuplicateUsernameException
+else case 4
+#Success
+UserDAO-->SignUpServlet: [Returns nothing]
+SignUpServlet->SignUpPageServlet: forward()
+SignUpPageServlet->SignUpPage2.html: process()
+SignUpPage2.html-->User: rendered page
+User-->SignUpPage2.html: input
+SignUpPage2.html->SignUpServlet: forward() [phase == 2]
+
+SignUpServlet->UserDAO: validateCredentials()
+
+alt case 1
+UserDAO-->SignUpServlet: MissingParametersException
+SignUpServlet->SignUpPageServlet: forward() [with error]
+SignUpPageServlet->SignUpPage.html: process() [with error]
+note over SignUpPage.html: Restarts SignUp process like before
+else case 2
+UserDAO-->SignUpServlet: MismatchingPasswordsException
+SignUpServlet->SignUpPageServlet: forward() [with error]
+SignUpPageServlet->SignUpPage.html: process() [with error]
+note over SignUpPage.html: Restarts SignUp process like before
+else case 3
+UserDAO-->SignUpServlet: DuplicateUsernameException
+SignUpServlet->SignUpPageServlet: forward() [with error]
+SignUpPageServlet->SignUpPage.html: process() [with error]
+note over SignUpPage.html: Restarts SignUp process like before
+else case 4
+#Success
+UserDAO-->SignUpServlet: returns nothing
+SignUpServlet->UserDAO: insert(user)
+
+end
+
+end
+
+end
+
+SignUpPageServlet->Home: forward()
