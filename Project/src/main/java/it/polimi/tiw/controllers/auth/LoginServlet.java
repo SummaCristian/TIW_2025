@@ -23,13 +23,18 @@ import it.polimi.tiw.utils.DBUtil;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	// Database connection
+	private Connection connection = null;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public LoginServlet() {
-        super();
-        // TODO Auto-generated constructor stub
+	// Initializes the Servlet, creating the DB Connection as well
+    public void init() throws ServletException {
+    	try {
+    		connection = DBUtil.getConnection();
+    	} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ServletException("Database error", e);
+		}
     }
 
 	/**
@@ -49,7 +54,7 @@ public class LoginServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		
 		// Connects to the DB
-		try (Connection connection = DBUtil.getConnection()) {
+		try {
 			// Creates and intializes the DAO for Users
 			UserDAO userDAO = new UserDAO(connection);
 			// Tries to authenticate the User
@@ -63,6 +68,9 @@ public class LoginServlet extends HttpServlet {
 			// TODO: Redirect the user
 			// response.sendRedirect("Home");
 			System.out.println("Logged in");
+		} catch (MissingParametersException e) {
+			request.setAttribute("error", "Missing some parameters");
+			request.getRequestDispatcher("/login").forward(request, response);
 		} catch (UserNotFoundException e) {
 			request.setAttribute("error", "User not found");
 			request.getRequestDispatcher("/login").forward(request, response);
@@ -72,6 +80,19 @@ public class LoginServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ServletException("Database error", e);
+		}
+	}
+	
+	/*
+	 * Destroys the Servlet object, closing the Connection while doing so.
+	 */
+	public void destroy() {
+		try {
+			if (connection != null) {
+				connection.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
