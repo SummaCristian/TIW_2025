@@ -6,6 +6,9 @@ participant FrontServlet
 participantgroup #lightgreen **Login**
 participant LoginPageServlet
 participant LoginPage.html #aqua
+end
+
+participantgroup #yellow **SignUp**
 participant SignUpServlet
 participant SignUpPageServlet
 participant SignUpPage.html #aqua
