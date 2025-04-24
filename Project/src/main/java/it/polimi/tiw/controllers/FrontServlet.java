@@ -25,7 +25,7 @@ public class FrontServlet extends HttpServlet {
                 : null;
 
         if (user != null) {
-            // User is already logged in → redirect or forward to home/dashboard
+            // User is already logged in → forward to home/dashboard
             request.getRequestDispatcher("/home").forward(request, response);
         } else {
             // Not logged in → forward to login page

@@ -65,11 +65,10 @@ public class LoginServlet extends HttpServlet {
 			// Authentification successful
 			// Adds the User's info to the session
 			HttpSession session = request.getSession();
-			session.setAttribute("user", session);
+			session.setAttribute("user", user);
 			
-			// TODO: Redirect the user
-			// response.sendRedirect("Home");
-			System.out.println("Logged in");
+			// Redirect to HomePage
+			request.getRequestDispatcher("/home").forward(request, response);
 		} catch (MissingParametersException e) {
 			request.setAttribute("error", "Missing some parameters");
 			request.getRequestDispatcher("/login").forward(request, response);

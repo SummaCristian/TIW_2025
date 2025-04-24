@@ -41,8 +41,8 @@ public class SignUpServlet extends HttpServlet {
 		}
     }
 
-	// Renders the SignUpPage.html file through the Thymeleaf Template Engine, and sends the output to the User's browser
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+    // Dummy method
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		response.getWriter().println("SignUp Servlet");
 	}
 	
@@ -194,6 +194,9 @@ public class SignUpServlet extends HttpServlet {
 			
 			// Inserts the User in the DB.
 			userDAO.insert(user, password1);
+			
+			// Sends the User back to the Login Page, where they can use their new credentials
+			request.getRequestDispatcher("/login").forward(request, response);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
