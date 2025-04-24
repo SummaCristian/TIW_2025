@@ -64,8 +64,6 @@ public class SignUpPageServlet extends HttpServlet {
         String phase = (String) request.getAttribute("phase");
         String templateToRender = "SignUpPage"; // default
         
-        System.out.println("Received: " + phase);
-
         if ("2".equals(phase)) {
         	// Phase2: renders the page with the User's personal info
             templateToRender = "SignUpPage2";

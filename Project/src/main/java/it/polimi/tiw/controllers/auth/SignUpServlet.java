@@ -66,16 +66,12 @@ public class SignUpServlet extends HttpServlet {
 		}
 		
 		switch (phase) {
-		    case "1":
-		    	System.out.println("1");
-		    	
+		    case "1":		    	
 		        // Phase 1: Credentials check
 		        handlePhase1(request, response);
 		        break;
 
-		    case "2":
-		    	System.out.println("2");
-		    	
+		    case "2":		    	
 		        // Phase 2: User's info
 		        handlePhase2(request, response);
 		        break;

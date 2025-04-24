@@ -3,6 +3,7 @@ package it.polimi.tiw.DAOs;
 import java.sql.*;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.exceptions.*;
+import it.polimi.tiw.utils.PasswordUtil;
 
 /*
  * This class acts as a DAO (Data Access Object) for the Users Table in the DB.
@@ -30,6 +31,10 @@ public class UserDAO {
 			throw new MissingParametersException();
 		}
     	
+    	// Encrypts the password passed as parameter (coming from the Request) 
+    	// using the same algorithm used during SignUp
+    	String hashedPassword = PasswordUtil.hashPassword(password);
+    	
     	// Prepares the Query statement
         String query = "SELECT * FROM Users WHERE Username = ?";
         PreparedStatement statement = null;
@@ -49,7 +54,8 @@ public class UserDAO {
                 	
                 	// Checks the password
                 	String correctPsw = results.getString("Psw");
-                	if (!correctPsw.equals(password)) {
+                	
+                	if (!correctPsw.equals(hashedPassword)) {
                 		// Incorrect password, throws the exception
                 		throw new IncorrectPasswordException();
                 	}
@@ -140,8 +146,12 @@ public class UserDAO {
     /*
      * Inserts the User passed as parameter inside the Database.
      * Since User Beans can't contain the actual password, it must be passed as parameter too.
+     * Passwords are hashed inside this method, NEEDS to be passed in clear.
      */
     public void insert(User user, String password) throws SQLException {
+    	// Encrypts the password
+    	String hashedPassword = PasswordUtil.hashPassword(password);
+    	
     	// Stores the old value for the AUTO COMMIT feature
     	boolean oldAutoCommit = conn.getAutoCommit();
     	
@@ -158,7 +168,7 @@ public class UserDAO {
             	// Compiles the Statement
             	statement = conn.prepareStatement(query);
             	statement.setString(1, user.getUsername());
-            	statement.setString(2, password);
+            	statement.setString(2, hashedPassword);
             	statement.setString(3, user.getFirstName());
             	statement.setString(4, user.getSurname());
             	statement.setString(5, user.getAddress());
