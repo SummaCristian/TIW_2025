@@ -9,6 +9,7 @@ import java.sql.Date;
  * or the current highest offer, if not closed yet.
  */
 public class Auction {
+	// Auction data
     private int id;
     private int basePrice;
     private int minIncrement;
@@ -18,6 +19,13 @@ public class Auction {
     private boolean isSold;
     private Integer buyerId;       // Nullable
     private Integer finalPrice;    // Nullable
+    
+    // Seller User data
+    private String sellerUsername;
+    
+    // Buyer User data
+    private String buyerUsername;	// Nullable
+    private String buyerAddress;	// Nullable
 
     // --- Getters and Setters ---
 
@@ -92,4 +100,28 @@ public class Auction {
     public void setFinalPrice(Integer finalPrice) {
         this.finalPrice = finalPrice;
     }
+
+	public String getSellerUsername() {
+		return sellerUsername;
+	}
+
+	public void setSellerUsername(String sellerUsername) {
+		this.sellerUsername = sellerUsername;
+	}
+
+	public String getBuyerUsername() {
+		return buyerUsername;
+	}
+
+	public void setBuyerUsername(String buyerUsername) {
+		this.buyerUsername = buyerUsername;
+	}
+
+	public String getBuyerAddress() {
+		return buyerAddress;
+	}
+
+	public void setBuyerAddress(String buyerAddress) {
+		this.buyerAddress = buyerAddress;
+	}
 }
