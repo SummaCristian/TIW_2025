@@ -10,10 +10,10 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Servlet implementation class SignOutServlet
+ * Servlet implementation class LogOutServlet
  */
-@WebServlet("/signout")
-public class SignOutServlet extends HttpServlet {
+@WebServlet("/logout")
+public class LogOutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	/*
