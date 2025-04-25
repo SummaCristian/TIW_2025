@@ -32,7 +32,15 @@ public class AuctionDAO {
     	List<Auction> auctions = new ArrayList<>();
     	
     	// Prepares the Query statement
-    	String query = "SELECT * FROM Auctions WHERE SellerId = ? AND IsSold = ? ORDER BY ClosingDate ASC";
+    	 String query = "SELECT Auctions.*, " +
+                 "Seller.Username AS SellerUsername, " +
+                 "Buyer.Username AS BuyerUsername, " +
+                 "Buyer.Address AS BuyerAddress " +
+                 "FROM Auctions " +
+                 "JOIN Users AS Seller ON Auctions.SellerId = Seller.Id " +
+                 "LEFT JOIN Users AS Buyer ON Auctions.BuyerId = Buyer.Id " +
+                 "WHERE SellerId = ? AND IsSold = ? " +
+                 "ORDER BY ClosingDate ASC";
     	PreparedStatement statement = null;
     	ResultSet results = null;
     	try {
@@ -56,9 +64,12 @@ public class AuctionDAO {
     	            auction.setHighestBid(results.getObject("HighestBid") != null ? results.getInt("HighestBid") : null);
     	            auction.setClosingDate(results.getDate("ClosingDate"));
     	            auction.setSellerId(results.getInt("SellerId"));
+    	            auction.setSellerUsername(results.getObject("SellerUsername") != null ? results.getString("SellerUsername") : null);
     	            auction.setSold(results.getBoolean("IsSold"));
     	            auction.setBuyerId(results.getObject("BuyerId") != null ? results.getInt("BuyerId") : null);
-    	            auction.setFinalPrice(results.getObject("FinalPrice") != null ? results.getInt("FinalPrice") : null);
+    	            auction.setBuyerUsername(results.getObject("BuyerUsername") != null ? results.getString("BuyerUsername") : null);
+    	            auction.setBuyerAddress(results.getObject("BuyerAddress") != null ? results.getString("BuyerAddress") : null);
+    	            auction.setFinalPrice(results.getObject("FinalPrice") !=  null ? results.getInt("FinalPrice") : null);
 
     	            // Adds the Bean into the List
     	            auctions.add(auction);
@@ -85,7 +96,15 @@ public class AuctionDAO {
     	List<Auction> auctions = new ArrayList<>();
     	
     	// Prepares the Query statement
-    	String query = "SELECT * FROM Auctions WHERE SellerId != ? AND IsSold = False ORDER BY ClosingDate ASC";
+    	String query = "SELECT Auctions.*, " +
+                "Seller.Username AS SellerUsername, " +
+                "Buyer.Username AS BuyerUsername, " +
+                "Buyer.Address AS BuyerAddress " +
+                "FROM Auctions " +
+                "JOIN Users AS Seller ON Auctions.SellerId = Seller.Id " +
+                "LEFT JOIN Users AS Buyer ON Auctions.BuyerId = Buyer.Id " +
+                "WHERE Auctions.SellerId != ? AND Auctions.IsSold = false " +
+                "ORDER BY Auctions.ClosingDate ASC";
     	PreparedStatement statement = null;
     	ResultSet results = null;
     	try {
@@ -108,9 +127,12 @@ public class AuctionDAO {
     	            auction.setHighestBid(results.getObject("HighestBid") != null ? results.getInt("HighestBid") : null);
     	            auction.setClosingDate(results.getDate("ClosingDate"));
     	            auction.setSellerId(results.getInt("SellerId"));
+    	            auction.setSellerUsername(results.getObject("SellerUsername") != null ? results.getString("SellerUsername") : null);
     	            auction.setSold(results.getBoolean("IsSold"));
     	            auction.setBuyerId(results.getObject("BuyerId") != null ? results.getInt("BuyerId") : null);
-    	            auction.setFinalPrice(results.getObject("FinalPrice") != null ? results.getInt("FinalPrice") : null);
+    	            auction.setBuyerUsername(results.getObject("BuyerUsername") != null ? results.getString("BuyerUsername") : null);
+    	            auction.setBuyerAddress(results.getObject("BuyerAddress") != null ? results.getString("BuyerAddress") : null);
+    	            auction.setFinalPrice(results.getObject("FinalPrice") !=  null ? results.getInt("FinalPrice") : null);
 
     	            // Adds the Bean into the List
     	            auctions.add(auction);
@@ -137,7 +159,15 @@ public class AuctionDAO {
     	List<Auction> auctions = new ArrayList<>();
     	
     	// Prepares the Query statement
-    	String query = "SELECT * FROM Auctions WHERE BuyerId = ? ORDER BY ClosingDate DESC";
+    	String query = "SELECT Auctions.*, " +
+                "Seller.Username AS SellerUsername, " +
+                "Buyer.Username AS BuyerUsername, " +
+                "Buyer.Address AS BuyerAddress " +
+                "FROM Auctions " +
+                "JOIN Users AS Seller ON Auctions.SellerId = Seller.Id " +
+                "LEFT JOIN Users AS Buyer ON Auctions.BuyerId = Buyer.Id " +
+                "WHERE Auctions.BuyerId = ? " +
+                "ORDER BY Auctions.ClosingDate DESC";
     	PreparedStatement statement = null;
     	ResultSet results = null;
     	try {
@@ -160,9 +190,12 @@ public class AuctionDAO {
     	            auction.setHighestBid(results.getObject("HighestBid") != null ? results.getInt("HighestBid") : null);
     	            auction.setClosingDate(results.getDate("ClosingDate"));
     	            auction.setSellerId(results.getInt("SellerId"));
+    	            auction.setSellerUsername(results.getObject("SellerUsername") != null ? results.getString("SellerUsername") : null);
     	            auction.setSold(results.getBoolean("IsSold"));
     	            auction.setBuyerId(results.getObject("BuyerId") != null ? results.getInt("BuyerId") : null);
-    	            auction.setFinalPrice(results.getObject("FinalPrice") != null ? results.getInt("FinalPrice") : null);
+    	            auction.setBuyerUsername(results.getObject("BuyerUsername") != null ? results.getString("BuyerUsername") : null);
+    	            auction.setBuyerAddress(results.getObject("BuyerAddress") != null ? results.getString("BuyerAddress") : null);
+    	            auction.setFinalPrice(results.getObject("FinalPrice") !=  null ? results.getInt("FinalPrice") : null);
 
     	            // Adds the Bean into the List
     	            auctions.add(auction);
