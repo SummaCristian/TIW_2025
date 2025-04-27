@@ -33,7 +33,8 @@ public class GeneralFilter implements Filter {
         boolean loggedIn = (req.getSession(false) != null) && (req.getSession(false).getAttribute("user") != null);
 
         boolean isPublicPath = path.equals("/login") || path.equals("/signup") ||
-                                path.equals("/LoginServlet") || path.equals("/SignUpServlet") || path.equals("/app");
+                                path.equals("/LoginServlet") || path.equals("/SignUpServlet") || 
+                                path.equals("/app") || path.equals("/logout");
 
         boolean isStaticResource = path.startsWith("/css/") || path.startsWith("/images/") || path.startsWith("/js/");
 
