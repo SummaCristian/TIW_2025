@@ -66,6 +66,8 @@ public class LoginServlet extends HttpServlet {
 			// Adds the User's info to the session
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
+			// Login Time
+			session.setAttribute("loginTime", System.currentTimeMillis());
 			
 			// Redirect to HomePage
 			request.getRequestDispatcher("/home").forward(request, response);
