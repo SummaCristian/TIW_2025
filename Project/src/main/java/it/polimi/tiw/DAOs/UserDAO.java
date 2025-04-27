@@ -15,6 +15,21 @@ public class UserDAO {
     public UserDAO(Connection conn) {
         this.conn = conn;
     }
+    
+    /*
+     * Builds the Bean from the data retrieved from a Query's ResultSet
+     */
+    private User buildUser(ResultSet results) throws SQLException {
+    	User user = new User(
+           	results.getInt("Id"),
+            results.getString("Username"),
+            results.getString("FirstName"),
+            results.getString("Surname"),
+            results.getString("Address")
+        );
+    	
+    	return user;
+    }
 
     /*
      * Performs a credentials check to authenticate a User.
@@ -60,14 +75,8 @@ public class UserDAO {
                 		throw new IncorrectPasswordException();
                 	}
                 	
-                	// Creates the User Bean with the data extracted from the DB.
-                    User user = new User(
-                    	results.getInt("Id"),
-                    	results.getString("Username"),
-                    	results.getString("FirstName"),
-                    	results.getString("Surname"),
-                    	results.getString("Address")
-                    );
+                	// Builds the Bean object
+                	User user = buildUser(results);
                     
                     // Returns the User
                     return user;

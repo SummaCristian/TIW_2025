@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.tiw.beans.Auction;
+import it.polimi.tiw.beans.Item;
 import it.polimi.tiw.beans.User;
 
 /*
@@ -20,6 +21,29 @@ public class AuctionDAO {
 
     public AuctionDAO(Connection conn) {
         this.conn = conn;
+    }
+    
+    /*
+     * Builds the Bean from the data retrieved from a Query's ResultsSet
+     */
+    private Auction buildAuction(ResultSet results, List<Item> itemsInAuction) throws SQLException {
+    	Auction auction = new Auction(
+            results.getInt("Id"),
+            results.getInt("BasePrice"),
+            results.getInt("MinIncrement"),
+            results.getObject("HighestBid") != null ? results.getInt("HighestBid") : null,
+            results.getDate("ClosingDate"),
+            results.getInt("SellerId"),
+            results.getBoolean("IsSold"),
+            results.getObject("BuyerId") != null ? results.getInt("BuyerId") : null,
+    	    results.getObject("FinalPrice") !=  null ? results.getInt("FinalPrice") : null,
+    	    results.getObject("SellerUsername") != null ? results.getString("SellerUsername") : null,
+            results.getObject("BuyerUsername") != null ? results.getString("BuyerUsername") : null,
+            results.getObject("BuyerAddress") != null ? results.getString("BuyerAddress") : null,
+            itemsInAuction
+        );
+    	
+    	return auction;
     }
     
     /*
@@ -54,22 +78,15 @@ public class AuctionDAO {
     			// Runs the Query
     			results = statement.executeQuery();
     			
+    			// Prepares the ItemDAO, used to query the Items belonging to each Auction
+    			ItemDAO itemDao = new ItemDAO(conn);
+    			
     			while (results.next()) {
-    				// Puts the data into a Bean object
-    	            Auction auction = new Auction(
-    	            	results.getInt("Id"),
-    	            	results.getInt("BasePrice"),
-    	            	results.getInt("MinIncrement"),
-    	            	results.getObject("HighestBid") != null ? results.getInt("HighestBid") : null,
-    	            	results.getDate("ClosingDate"),
-    	            	results.getInt("SellerId"),
-    	            	results.getBoolean("IsSold"),
-    	            	results.getObject("BuyerId") != null ? results.getInt("BuyerId") : null,
-    	    	        results.getObject("FinalPrice") !=  null ? results.getInt("FinalPrice") : null,
-    	    	        results.getObject("SellerUsername") != null ? results.getString("SellerUsername") : null,
-    	            	results.getObject("BuyerUsername") != null ? results.getString("BuyerUsername") : null,
-    	            	results.getObject("BuyerAddress") != null ? results.getString("BuyerAddress") : null
-    	            );
+    				// Queries the Items inside the Auction
+    				List<Item> itemsInAuction = itemDao.getItemsInAuction(results.getInt("Id"));
+    				
+    				// Builds the Bean object
+    	            Auction auction = buildAuction(results, itemsInAuction);
     	            
     	            // Adds the Bean into the List
     	            auctions.add(auction);
@@ -117,22 +134,15 @@ public class AuctionDAO {
     			// Runs the Query
     			results = statement.executeQuery();
     			
+    			// Prepares the ItemDAO, used to query the Items belonging to each Auction
+    			ItemDAO itemDao = new ItemDAO(conn);
+    			
     			while (results.next()) {
-    				// Puts the data into a Bean object
-    				Auction auction = new Auction(
-        	            results.getInt("Id"),
-        	            results.getInt("BasePrice"),
-        	            results.getInt("MinIncrement"),
-        	            results.getObject("HighestBid") != null ? results.getInt("HighestBid") : null,
-        	            results.getDate("ClosingDate"),
-        	            results.getInt("SellerId"),
-        	            results.getBoolean("IsSold"),
-        	            results.getObject("BuyerId") != null ? results.getInt("BuyerId") : null,
-        	    	    results.getObject("FinalPrice") !=  null ? results.getInt("FinalPrice") : null,
-        	    	    results.getObject("SellerUsername") != null ? results.getString("SellerUsername") : null,
-        	            results.getObject("BuyerUsername") != null ? results.getString("BuyerUsername") : null,
-        	            results.getObject("BuyerAddress") != null ? results.getString("BuyerAddress") : null
-        	        );
+    				// Queries the Items inside the Auction
+    				List<Item> itemsInAuction = itemDao.getItemsInAuction(results.getInt("Id"));
+    				
+    				// Builds the Bean object
+    				Auction auction = buildAuction(results, itemsInAuction);
     				
     	            // Adds the Bean into the List
     	            auctions.add(auction);
@@ -180,22 +190,16 @@ public class AuctionDAO {
     			// Runs the Query
     			results = statement.executeQuery();
     			
+    			// Prepares the ItemDAO, used to query the Items belonging to each Auction
+    			ItemDAO itemDao = new ItemDAO(conn);
+    			
     			while (results.next()) {
-    				// Puts the data into a Bean object
-    				Auction auction = new Auction(
-        	            results.getInt("Id"),
-        	            results.getInt("BasePrice"),
-        	            results.getInt("MinIncrement"),
-        	            results.getObject("HighestBid") != null ? results.getInt("HighestBid") : null,
-        	            results.getDate("ClosingDate"),
-        	            results.getInt("SellerId"),
-        	            results.getBoolean("IsSold"),
-        	            results.getObject("BuyerId") != null ? results.getInt("BuyerId") : null,
-        	    	    results.getObject("FinalPrice") !=  null ? results.getInt("FinalPrice") : null,
-        	    	    results.getObject("SellerUsername") != null ? results.getString("SellerUsername") : null,
-        	            results.getObject("BuyerUsername") != null ? results.getString("BuyerUsername") : null,
-        	            results.getObject("BuyerAddress") != null ? results.getString("BuyerAddress") : null
-        	        );
+    				// Queries the Items inside the Auction
+    				List<Item> itemsInAuction = itemDao.getItemsInAuction(results.getInt("Id"));
+    				
+    				// Builds the Bean object
+    				Auction auction = buildAuction(results, itemsInAuction);
+    				
     	            // Adds the Bean into the List
     	            auctions.add(auction);
     	        }
