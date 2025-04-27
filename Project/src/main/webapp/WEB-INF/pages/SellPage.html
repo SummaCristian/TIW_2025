@@ -4,7 +4,7 @@
 <meta charset="ISO-8859-1">
 <title>Sell</title>
 <link rel="stylesheet" type="text/css" media="all"
-	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+	href="../css/mystyle.css" th:href="@{/css/mystyle.css}" />
 </head>
 
 <body>
@@ -16,16 +16,32 @@
         <a th:href="@{/home}">Home</a>
 		
         <!-- Auctions created by the User and not closed yet -->
-        <h2>Open Auctions</h2>
+        <h2 class="section-title">Open Auctions</h2>
 
         <div th:if="${openAuctions != null and !openAuctions.isEmpty()}">
             <ul>
                 <li th:each="auction : ${openAuctions}">
                     <p>
                         Auction #<span th:text="${auction.id}">1</span><br>
-                        Base Price: <span th:text="${auction.basePrice}">100€</span><br>
-                        Closing Date: <span th:text="${auction.closingDate}">31/12/2025</span><br>
-                        Current Highest Bid: <span th:text="${auction.highestBid != null ? auction.highestBid : 'No offers yet'}">No offers yet</span>
+                        Current Highest Bid: <span th:text="${auction.highestBid != null ? auction.highestBid : 'No offers yet'}">No offers yet</span><br>
+                        Remaining time (since login): <span th:text="${auction.remainingTime}">1 day, 2 hours, 35 minutes</span><br>
+
+                        <!-- Items in Auction -->
+                         <div th:if="${auction.items != null and !auction.items.isEmpty()}">
+                            <ul>
+                                <li th:each="item: ${auction.items}">
+                                    <p>
+                                        Item #<span th:text="${item.id}">1</span> <br>
+                                        <span th:text="${item.itemName}">Item Name</span>
+                                    </p>
+                                </li>
+                            </ul>
+                         </div>
+
+                         <div th:unless="${auction.items != null && !auction.items.isEmpty()}">
+                            <!-- No items in this Auction -->
+                             <p>No items in this Auction</p>
+                         </div>
                     </p>
                     <hr>
                 </li>
@@ -40,16 +56,29 @@
         <br>
 
         <!-- Auctions created by the User and closed -->
-        <h2>Closed Auctions</h2>
+        <h2 class="section-title">Closed Auctions</h2>
 
         <div th:if="${closedAuctions != null and !closedAuctions.isEmpty()}">
             <ul>
                 <li th:each="auction : ${closedAuctions}">
                     <p>
-                        Auction #<span th:text="${auction.id}">2</span><br>
-                        Final Price: <span th:text="${auction.finalPrice != null ? auction.finalPrice : 'Not sold'}">200€</span><br>
-                        Closing Date: <span th:text="${auction.closingDate}">01/01/2025</span><br>
-                        Winner User ID: <span th:text="${auction.buyerId != null ? auction.buyerId : 'No winner'}">No winner</span>
+                        Auction #<span th:text="${auction.id}">1</span><br>
+                        Base price: <span th:text="${auction.basePrice}">100</span> € <br>
+                        Minimum increment: <span th:text="${auction.minIncrement}">10</span> € <br>
+                        Closed at: <span th:text="${#dates.format(auction.closingDate, 'dd/MM/yyyy HH:mm')}">01/01/2025 23:59</span> <br>
+                        Sold by: <span th:text="${auction.sellerUsername}">Seller Username</span>
+
+                        <div th:if="${auction.isSold}">
+                            <!-- Sold -> Display the Buyer's Info -->
+                             Bought by: <span th:text="${auction.buyerUsername}">Buyer Username</span> <br>
+                             Final price: <span th:text="${auction.finalPrice}">250</span> € <br>
+                             Delivered to: <span th:text="${auction.buyerAddress}">Buyer Address</span>
+                        </div>
+
+                        <div th:unless="${auction.isSold}">
+                            <!-- Not sold -->
+                             <p>Not sold</p>
+                        </div>
                     </p>
                     <hr>
                 </li>
