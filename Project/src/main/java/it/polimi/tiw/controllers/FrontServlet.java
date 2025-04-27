@@ -13,22 +13,27 @@ import java.io.IOException;
  * In both GET and POST, if the User is not logged in he is redirected to "/login",
  * otherwise he is redirected to the main page.
  */
-@WebServlet("/")
+@WebServlet("/app")
 public class FrontServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     // Shared logic for both GET and POST
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Check if user is logged in
+        String path = request.getRequestURI().substring(request.getContextPath().length());
+        
+        if (path.startsWith("/css/") || path.startsWith("/js/") || path.startsWith("/images/")) {
+            // Static resource: do nothing, let Tomcat serve it
+            return;
+        }
+
+        // Otherwise, normal app flow
         Object user = request.getSession(false) != null
                 ? request.getSession(false).getAttribute("user")
                 : null;
 
         if (user != null) {
-            // User is already logged in → forward to home/dashboard
             request.getRequestDispatcher("/home").forward(request, response);
         } else {
-            // Not logged in → forward to login page
             request.getRequestDispatcher("/login").forward(request, response);
         }
     }
