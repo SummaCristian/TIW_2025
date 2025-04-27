@@ -1,6 +1,7 @@
 package it.polimi.tiw.beans;
 
 import java.sql.Date;
+import java.util.List;
 
 /*
  * This is a Java Bean corresponding to the Database's Auctions table.
@@ -27,6 +28,12 @@ public class Auction {
     private String buyerUsername;	// Nullable
     private String buyerAddress;	// Nullable
     
+    // Remaining Time (ClosingDate - Login Time), in a formatted String form
+    private String remainingTime;
+    
+    // Items inside the Auction
+    private List<Item> items;
+    
     // --- Constructors ---
     
     // Empty Constructor
@@ -45,7 +52,9 @@ public class Auction {
     	Integer finalPrice,
     	String sellerUsername,
     	String buyerUsername,
-    	String buyerAddress
+    	String buyerAddress,
+    	String remainingTime,
+    	List<Item> items
     ) {
     	this.id = id;
     	this.basePrice = basePrice;
@@ -60,6 +69,10 @@ public class Auction {
     	this.sellerUsername = sellerUsername;
     	this.buyerUsername = buyerUsername;
     	this.buyerAddress = buyerAddress;
+    	
+    	this.remainingTime = remainingTime;
+    	
+    	this.items = items;
     }
 
     // --- Getters and Setters ---
@@ -158,5 +171,21 @@ public class Auction {
 
 	public void setBuyerAddress(String buyerAddress) {
 		this.buyerAddress = buyerAddress;
+	}
+
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
+
+	public String getRemainingTime() {
+		return remainingTime;
+	}
+
+	public void setRemainingTime(String remainingTime) {
+		this.remainingTime = remainingTime;
 	}
 }

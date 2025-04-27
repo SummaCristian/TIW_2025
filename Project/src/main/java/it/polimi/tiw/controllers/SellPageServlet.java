@@ -69,8 +69,11 @@ public class SellPageServlet extends HttpServlet {
     	// Open Auctions
     	List<Auction> openAuctions = null;
     	
+    	// The User's Login Time
+    	long loginTime = (long) request.getSession().getAttribute("loginTime");
+    	
     	try {
-			openAuctions = auctionDao.getAuctionsCreatedBy(user, false);
+			openAuctions = auctionDao.getAuctionsCreatedBy(user, false, loginTime);
 		} catch (SQLException e) {
 			// Leave openAuctions to null, letting Thymeleaf handle the error
 		}
@@ -81,7 +84,7 @@ public class SellPageServlet extends HttpServlet {
     	List<Auction> closedAuctions = null;
     	
     	try {
-    		closedAuctions = auctionDao.getAuctionsCreatedBy(user, true);
+    		closedAuctions = auctionDao.getAuctionsCreatedBy(user, true, loginTime);
     	} catch (SQLException e) {
     		// Leave closedAuctions to null, letting Thymeleaf handle the error
     	}

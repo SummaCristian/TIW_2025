@@ -26,7 +26,7 @@ public class AuctionDAO {
     /*
      * Builds the Bean from the data retrieved from a Query's ResultsSet
      */
-    private Auction buildAuction(ResultSet results, List<Item> itemsInAuction) throws SQLException {
+    private Auction buildAuction(ResultSet results, List<Item> itemsInAuction, String formattedRemainingTime) throws SQLException {
     	Auction auction = new Auction(
             results.getInt("Id"),
             results.getInt("BasePrice"),
@@ -40,6 +40,7 @@ public class AuctionDAO {
     	    results.getObject("SellerUsername") != null ? results.getString("SellerUsername") : null,
             results.getObject("BuyerUsername") != null ? results.getString("BuyerUsername") : null,
             results.getObject("BuyerAddress") != null ? results.getString("BuyerAddress") : null,
+            formattedRemainingTime,
             itemsInAuction
         );
     	
@@ -47,11 +48,41 @@ public class AuctionDAO {
     }
     
     /*
+     * Creates the Formatted String representing the Remaining Time for an Auction.
+     * Remaining Time is calculated as Auction.ClosingDate - Login Time (from Session).
+     * Format supports DAY, HOUR, MINUTES, optionals if 0, plural if necessary.
+     * Returns "Closed" if the difference is negative.
+     */
+    private String formatRemainingTime(long millis) {
+        if (millis <= 0) {
+            return "Closed";
+        }
+
+        long totalMinutes = millis / (60 * 1000);
+        long days = totalMinutes / (60 * 24);
+        long hours = (totalMinutes % (60 * 24)) / 60;
+        long minutes = totalMinutes % 60;
+
+        StringBuilder sb = new StringBuilder();
+        if (days > 0) {
+            sb.append(days).append(" day").append(days > 1 ? "s" : "").append(", ");
+        }
+        if (hours > 0 || days > 0) { // show hours even if 0, if days are present
+            sb.append(hours).append(" hour").append(hours != 1 ? "s" : "").append(", ");
+        }
+        sb.append(minutes).append(" minute").append(minutes != 1 ? "s" : "");
+
+        return sb.toString();
+    }
+
+    
+    /*
      * Returns a List of all the Auctions created by the User passed as parameter.
      * The Boolean parameter allows to specify if the Auctions should be closed or not.
-     * The List of Auctions is ordered in Ascending Order based on the ClosingDate
+     * The List of Auctions is ordered in Ascending Order based on the ClosingDate.
+     * It also takes as parameter a long, corresponding to the User's Login Time from Session.
      */
-    public List<Auction> getAuctionsCreatedBy(User user, boolean closed) throws SQLException {
+    public List<Auction> getAuctionsCreatedBy(User user, boolean closed, long loginTime) throws SQLException {
     	// Prepares the List to return
     	List<Auction> auctions = new ArrayList<>();
     	
@@ -85,8 +116,16 @@ public class AuctionDAO {
     				// Queries the Items inside the Auction
     				List<Item> itemsInAuction = itemDao.getItemsInAuction(results.getInt("Id"));
     				
+    				// Calculates the Remaining Time
+    				long closingTime = results.getDate("ClosingDate").getTime();
+
+    				long diffMillis = closingTime - loginTime;
+
+    				String formattedRemainingTime = formatRemainingTime(diffMillis);
+
+    				
     				// Builds the Bean object
-    	            Auction auction = buildAuction(results, itemsInAuction);
+    	            Auction auction = buildAuction(results, itemsInAuction, formattedRemainingTime);
     	            
     	            // Adds the Bean into the List
     	            auctions.add(auction);
@@ -108,7 +147,7 @@ public class AuctionDAO {
 	 * Returns a List of all the Auctions NOT created by the User passed as parameter AND stil open.
 	 * The List is ordered by the ClosingDate in Ascending order.
 	 */
-    public List<Auction> getAuctionsNotCreatedBy(User user) throws SQLException {
+    public List<Auction> getAuctionsNotCreatedBy(User user, long loginTime) throws SQLException {
     	// Prepares the List to return
     	List<Auction> auctions = new ArrayList<>();
     	
@@ -141,8 +180,16 @@ public class AuctionDAO {
     				// Queries the Items inside the Auction
     				List<Item> itemsInAuction = itemDao.getItemsInAuction(results.getInt("Id"));
     				
+    				// Calculates the Remaining Time
+    				long closingTime = results.getDate("ClosingDate").getTime();
+
+    				long diffMillis = closingTime - loginTime;
+
+    				String formattedRemainingTime = formatRemainingTime(diffMillis);
+
+    				
     				// Builds the Bean object
-    				Auction auction = buildAuction(results, itemsInAuction);
+    	            Auction auction = buildAuction(results, itemsInAuction, formattedRemainingTime);
     				
     	            // Adds the Bean into the List
     	            auctions.add(auction);
@@ -164,7 +211,7 @@ public class AuctionDAO {
 	 * Returns a List of all the Auctions won by the User passed as parameter.
 	 * The List is ordered from the NEWEST to the OLDEST.
 	 */
-    public List<Auction> getAuctionsWonBy(User user) throws SQLException {
+    public List<Auction> getAuctionsWonBy(User user, long loginTime) throws SQLException {
     	// Prepares the List to return
     	List<Auction> auctions = new ArrayList<>();
     	
@@ -197,8 +244,16 @@ public class AuctionDAO {
     				// Queries the Items inside the Auction
     				List<Item> itemsInAuction = itemDao.getItemsInAuction(results.getInt("Id"));
     				
+    				// Calculates the Remaining Time
+    				long closingTime = results.getDate("ClosingDate").getTime();
+
+    				long diffMillis = closingTime - loginTime;
+
+    				String formattedRemainingTime = formatRemainingTime(diffMillis);
+
+    				
     				// Builds the Bean object
-    				Auction auction = buildAuction(results, itemsInAuction);
+    	            Auction auction = buildAuction(results, itemsInAuction, formattedRemainingTime);
     				
     	            // Adds the Bean into the List
     	            auctions.add(auction);
