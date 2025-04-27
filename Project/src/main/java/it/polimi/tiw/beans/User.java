@@ -10,8 +10,28 @@ public class User {
     private String username;
     // NO PASSWORD FIELD
     private String firstName;
-    private String surname;
+    private String lastName;
     private String address;
+    
+    // --- Constructor ---
+    
+    // Empty Constructor
+    public User() {}
+    
+    // Full Constructor
+    public User(
+    	int id,
+    	String username,
+    	String firstName,
+    	String lastName,
+    	String address
+    ) {
+    	this.id = id;
+    	this.username = username;
+    	this.firstName = firstName;
+    	this.lastName = lastName;
+    	this.address = address;
+    }
 
     // --- Getters and Setters ---
 
@@ -40,11 +60,11 @@ public class User {
     }
 
     public String getSurname() {
-        return surname;
+        return lastName;
     }
 
     public void setSurname(String surname) {
-        this.surname = surname;
+        this.lastName = surname;
     }
 
     public String getAddress() {

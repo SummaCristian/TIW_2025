@@ -26,6 +26,41 @@ public class Auction {
     // Buyer User data
     private String buyerUsername;	// Nullable
     private String buyerAddress;	// Nullable
+    
+    // --- Constructors ---
+    
+    // Empty Constructor
+    public Auction() {}
+    
+    // Full Constructor
+    public Auction(
+    	int id,
+    	int basePrice,
+    	int minIncrement,
+    	Integer highestBid,
+    	Date closingDate,
+    	int sellerId,
+    	boolean isSold,
+    	Integer buyerId,
+    	Integer finalPrice,
+    	String sellerUsername,
+    	String buyerUsername,
+    	String buyerAddress
+    ) {
+    	this.id = id;
+    	this.basePrice = basePrice;
+    	this.minIncrement = minIncrement;
+    	this.highestBid = highestBid;
+    	this.closingDate = closingDate;
+    	this.sellerId = sellerId;
+    	this.isSold = isSold;
+    	this.buyerId = buyerId;
+    	this.finalPrice = finalPrice;
+    	
+    	this.sellerUsername = sellerUsername;
+    	this.buyerUsername = buyerUsername;
+    	this.buyerAddress = buyerAddress;
+    }
 
     // --- Getters and Setters ---
 

@@ -61,13 +61,14 @@ public class UserDAO {
                 	}
                 	
                 	// Creates the User Bean with the data extracted from the DB.
-                    User user = new User();
-                    user.setId(results.getInt("Id"));
-                    user.setUsername(results.getString("Username"));
-                    // The Password is not stored in the Bean, it never leaves the DB or DAO for security reasons.
-                    user.setFirstName(results.getString("FirstName"));
-                    user.setSurname(results.getString("Surname"));
-                    user.setAddress(results.getString("Address"));
+                    User user = new User(
+                    	results.getInt("Id"),
+                    	results.getString("Username"),
+                    	results.getString("FirstName"),
+                    	results.getString("Surname"),
+                    	results.getString("Address")
+                    );
+                    
                     // Returns the User
                     return user;
                 } else {

@@ -9,6 +9,18 @@ public class Image {
     private int id;
     private String fileName;
     private String filePath;
+    
+    // --- Constructors ---
+    
+    // Empty Constructor
+    public Image() {}
+    
+    // Full Constructor
+    public Image(int id, String fileName, String filePath) {
+    	this.id = id;
+    	this.fileName = fileName;
+    	this.filePath = filePath;
+    }
 
     // --- Getters and Setters ---
 

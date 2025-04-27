@@ -32,15 +32,15 @@ public class AuctionDAO {
     	List<Auction> auctions = new ArrayList<>();
     	
     	// Prepares the Query statement
-    	 String query = "SELECT Auctions.*, " +
-                 "Seller.Username AS SellerUsername, " +
-                 "Buyer.Username AS BuyerUsername, " +
-                 "Buyer.Address AS BuyerAddress " +
-                 "FROM Auctions " +
-                 "JOIN Users AS Seller ON Auctions.SellerId = Seller.Id " +
-                 "LEFT JOIN Users AS Buyer ON Auctions.BuyerId = Buyer.Id " +
-                 "WHERE SellerId = ? AND IsSold = ? " +
-                 "ORDER BY ClosingDate ASC";
+    	 String query = "SELECT Auctions.*, "
+                 + "Seller.Username AS SellerUsername, "
+                 + "Buyer.Username AS BuyerUsername, "
+                 + "Buyer.Address AS BuyerAddress "
+                 + "FROM Auctions "
+                 + "JOIN Users AS Seller ON Auctions.SellerId = Seller.Id "
+                 + "LEFT JOIN Users AS Buyer ON Auctions.BuyerId = Buyer.Id "
+                 + "WHERE SellerId = ? AND IsSold = ? "
+                 + "ORDER BY ClosingDate ASC";
     	PreparedStatement statement = null;
     	ResultSet results = null;
     	try {
@@ -56,21 +56,21 @@ public class AuctionDAO {
     			
     			while (results.next()) {
     				// Puts the data into a Bean object
-    	            Auction auction = new Auction();
+    	            Auction auction = new Auction(
+    	            	results.getInt("Id"),
+    	            	results.getInt("BasePrice"),
+    	            	results.getInt("MinIncrement"),
+    	            	results.getObject("HighestBid") != null ? results.getInt("HighestBid") : null,
+    	            	results.getDate("ClosingDate"),
+    	            	results.getInt("SellerId"),
+    	            	results.getBoolean("IsSold"),
+    	            	results.getObject("BuyerId") != null ? results.getInt("BuyerId") : null,
+    	    	        results.getObject("FinalPrice") !=  null ? results.getInt("FinalPrice") : null,
+    	    	        results.getObject("SellerUsername") != null ? results.getString("SellerUsername") : null,
+    	            	results.getObject("BuyerUsername") != null ? results.getString("BuyerUsername") : null,
+    	            	results.getObject("BuyerAddress") != null ? results.getString("BuyerAddress") : null
+    	            );
     	            
-    	            auction.setId(results.getInt("Id"));
-    	            auction.setBasePrice(results.getInt("BasePrice"));
-    	            auction.setMinIncrement(results.getInt("MinIncrement"));
-    	            auction.setHighestBid(results.getObject("HighestBid") != null ? results.getInt("HighestBid") : null);
-    	            auction.setClosingDate(results.getDate("ClosingDate"));
-    	            auction.setSellerId(results.getInt("SellerId"));
-    	            auction.setSellerUsername(results.getObject("SellerUsername") != null ? results.getString("SellerUsername") : null);
-    	            auction.setSold(results.getBoolean("IsSold"));
-    	            auction.setBuyerId(results.getObject("BuyerId") != null ? results.getInt("BuyerId") : null);
-    	            auction.setBuyerUsername(results.getObject("BuyerUsername") != null ? results.getString("BuyerUsername") : null);
-    	            auction.setBuyerAddress(results.getObject("BuyerAddress") != null ? results.getString("BuyerAddress") : null);
-    	            auction.setFinalPrice(results.getObject("FinalPrice") !=  null ? results.getInt("FinalPrice") : null);
-
     	            // Adds the Bean into the List
     	            auctions.add(auction);
     	        }
@@ -119,21 +119,21 @@ public class AuctionDAO {
     			
     			while (results.next()) {
     				// Puts the data into a Bean object
-    	            Auction auction = new Auction();
-    	            
-    	            auction.setId(results.getInt("Id"));
-    	            auction.setBasePrice(results.getInt("BasePrice"));
-    	            auction.setMinIncrement(results.getInt("MinIncrement"));
-    	            auction.setHighestBid(results.getObject("HighestBid") != null ? results.getInt("HighestBid") : null);
-    	            auction.setClosingDate(results.getDate("ClosingDate"));
-    	            auction.setSellerId(results.getInt("SellerId"));
-    	            auction.setSellerUsername(results.getObject("SellerUsername") != null ? results.getString("SellerUsername") : null);
-    	            auction.setSold(results.getBoolean("IsSold"));
-    	            auction.setBuyerId(results.getObject("BuyerId") != null ? results.getInt("BuyerId") : null);
-    	            auction.setBuyerUsername(results.getObject("BuyerUsername") != null ? results.getString("BuyerUsername") : null);
-    	            auction.setBuyerAddress(results.getObject("BuyerAddress") != null ? results.getString("BuyerAddress") : null);
-    	            auction.setFinalPrice(results.getObject("FinalPrice") !=  null ? results.getInt("FinalPrice") : null);
-
+    				Auction auction = new Auction(
+        	            results.getInt("Id"),
+        	            results.getInt("BasePrice"),
+        	            results.getInt("MinIncrement"),
+        	            results.getObject("HighestBid") != null ? results.getInt("HighestBid") : null,
+        	            results.getDate("ClosingDate"),
+        	            results.getInt("SellerId"),
+        	            results.getBoolean("IsSold"),
+        	            results.getObject("BuyerId") != null ? results.getInt("BuyerId") : null,
+        	    	    results.getObject("FinalPrice") !=  null ? results.getInt("FinalPrice") : null,
+        	    	    results.getObject("SellerUsername") != null ? results.getString("SellerUsername") : null,
+        	            results.getObject("BuyerUsername") != null ? results.getString("BuyerUsername") : null,
+        	            results.getObject("BuyerAddress") != null ? results.getString("BuyerAddress") : null
+        	        );
+    				
     	            // Adds the Bean into the List
     	            auctions.add(auction);
     	        }
@@ -182,21 +182,20 @@ public class AuctionDAO {
     			
     			while (results.next()) {
     				// Puts the data into a Bean object
-    	            Auction auction = new Auction();
-    	            
-    	            auction.setId(results.getInt("Id"));
-    	            auction.setBasePrice(results.getInt("BasePrice"));
-    	            auction.setMinIncrement(results.getInt("MinIncrement"));
-    	            auction.setHighestBid(results.getObject("HighestBid") != null ? results.getInt("HighestBid") : null);
-    	            auction.setClosingDate(results.getDate("ClosingDate"));
-    	            auction.setSellerId(results.getInt("SellerId"));
-    	            auction.setSellerUsername(results.getObject("SellerUsername") != null ? results.getString("SellerUsername") : null);
-    	            auction.setSold(results.getBoolean("IsSold"));
-    	            auction.setBuyerId(results.getObject("BuyerId") != null ? results.getInt("BuyerId") : null);
-    	            auction.setBuyerUsername(results.getObject("BuyerUsername") != null ? results.getString("BuyerUsername") : null);
-    	            auction.setBuyerAddress(results.getObject("BuyerAddress") != null ? results.getString("BuyerAddress") : null);
-    	            auction.setFinalPrice(results.getObject("FinalPrice") !=  null ? results.getInt("FinalPrice") : null);
-
+    				Auction auction = new Auction(
+        	            results.getInt("Id"),
+        	            results.getInt("BasePrice"),
+        	            results.getInt("MinIncrement"),
+        	            results.getObject("HighestBid") != null ? results.getInt("HighestBid") : null,
+        	            results.getDate("ClosingDate"),
+        	            results.getInt("SellerId"),
+        	            results.getBoolean("IsSold"),
+        	            results.getObject("BuyerId") != null ? results.getInt("BuyerId") : null,
+        	    	    results.getObject("FinalPrice") !=  null ? results.getInt("FinalPrice") : null,
+        	    	    results.getObject("SellerUsername") != null ? results.getString("SellerUsername") : null,
+        	            results.getObject("BuyerUsername") != null ? results.getString("BuyerUsername") : null,
+        	            results.getObject("BuyerAddress") != null ? results.getString("BuyerAddress") : null
+        	        );
     	            // Adds the Bean into the List
     	            auctions.add(auction);
     	        }

@@ -13,6 +13,26 @@ public class Offer {
     private int auctionId;
     private int offeredPrice;
     private Timestamp offerDate;
+    
+    // --- Constructors ---
+    
+    // Empty Constructor
+    public Offer() {}
+    
+    // Full Constructor
+    public Offer(
+    	int id,
+    	int userId,
+    	int auctionId,
+    	int offeredPrice,
+    	Timestamp offerDate
+    ) {
+    	this.id = id;
+    	this.userId = userId;
+    	this.auctionId = auctionId;
+    	this.offeredPrice = offeredPrice;
+    	this.offerDate = offerDate;
+    }
 
     // --- Getters and Setters ---
 

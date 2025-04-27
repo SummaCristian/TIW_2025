@@ -11,9 +11,33 @@ public class Item {
     private String itemName;
     private String itemDescription;
     private int price;
-    private int imageId;
+    private Image image;
     private int creatorId;
     private Integer auctionId; // Nullable
+    
+    // --- Constructors ---
+    
+    // Empty Constructor
+    public Item() {}
+    
+    // Full Constructor
+    public Item(
+    	int id,
+    	String itemName,
+    	String itemDescription,
+    	int price,
+    	Image image,
+    	int creatorId,
+    	Integer auctionId
+    ) {
+    	this.id = id;
+    	this.itemName = itemName;
+    	this.itemDescription = itemDescription;
+    	this.price = price;
+    	this.image = image;
+    	this.creatorId = creatorId;
+    	this.auctionId = auctionId;
+    }
 
     // --- Getters and Setters ---
 
@@ -49,12 +73,12 @@ public class Item {
         this.price = price;
     }
 
-    public int getImageId() {
-        return imageId;
+    public Image getImageId() {
+        return image;
     }
 
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     public int getCreatorId() {
