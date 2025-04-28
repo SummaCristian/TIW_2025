@@ -69,7 +69,7 @@
 	                                			<path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
 	                                			<path d="M12 18V6"/>
 	                           				</svg>
-	                           			|	<p th:text="${auction.highestBid + '€'}">500€</p>
+	                           				<p th:text="${auction.highestBid + '€'}">500€</p>
 	                        			</div>
 	
 	                        			<div th:if="${auction.highestBid == null}" class="offer-pill offer-pill-no-offers">
@@ -117,6 +117,41 @@
 	                    			</div>
 	                			</div>
 	
+								<div class="auction-header">
+			                        <!-- Items inside the Auction -->
+			                        <div class="title-with-image">			
+			                            <svg class="icon" viewBox="0 0 24 24">
+			                                <path d="M2.97 12.92A2 2 0 0 0 2 14.63v3.24a2 2 0 0 0 .97 1.71l3 1.8a2 2 0 0 0 2.06 0L12 19v-5.5l-5-3-4.03 2.42Z"/>
+			                                <path d="m7 16.5-4.74-2.85"/>
+			                                <path d="m7 16.5 5-3"/>
+			                                <path d="M7 16.5v5.17"/>
+			                                <path d="M12 13.5V19l3.97 2.38a2 2 0 0 0 2.06 0l3-1.8a2 2 0 0 0 .97-1.71v-3.24a2 2 0 0 0-.97-1.71L17 10.5l-5 3Z"/>
+			                                <path d="m17 16.5-5-3"/>
+			                                <path d="m17 16.5 4.74-2.85"/>
+			                                <path d="M17 16.5v5.17"/>
+			                                <path d="M7.97 4.42A2 2 0 0 0 7 6.13v4.37l5 3 5-3V6.13a2 2 0 0 0-.97-1.71l-3-1.8a2 2 0 0 0-2.06 0l-3 1.8Z"/>
+			                                <path d="M12 8 7.26 5.15"/>
+			                                <path d="m12 8 4.74-2.85"/>
+			                                <path d="M12 13.5V8"/>
+			                            </svg>
+			                            
+			                            <div class="text-group">	
+			                                <h2 class="subsection-title">Items</h2>
+			                                <p class="header-description">Products included in this closed auction</p>
+			                            </div>
+			                        </div>
+			                        
+			                        <!-- Button to open details -->
+			                        <div class="button-primary">
+			                        	<p>See more</p>
+			                        	
+			                        	<svg class="icon" viewBox="0 0 24 24">
+			                        		<path d="m9 18 6-6-6-6"/>
+			                        	</svg>
+			                        </div>
+			                        
+			                    </div>
+								
 	                			<ul class="item-list">
 	                    			<li th:each="item : ${auction.items}" class="item-container">
 	                    				<!--  Image  -->
@@ -155,56 +190,144 @@
 		</div>
 		
 		<div>
-			<!-- Auctions created by the User and closed -->
-			<div class="title-with-image">			
-	    		<svg class="icon" viewBox="0 0 24 24">
-	        		<path d="M10 2h4"/>
-	        		<path d="M4.6 11a8 8 0 0 0 1.7 8.7 8 8 0 0 0 8.7 1.7"/>
-	        		<path d="M7.4 7.4a8 8 0 0 1 10.3 1 8 8 0 0 1 .9 10.2"/>
-	        		<path d="m2 2 20 20"/>
-	        		<path d="M12 12v-2"/>
-	    		</svg>
-	    
-	    		<div class="text-group">	
-	        		<h2 class="section-title">Closed Auctions</h2>
-	        		<p class="header-description">See all the Auctions you have created that are already closed</p>
-	    		</div>
-			</div>
-	
-			<div class="container">
-			    <div th:if="${closedAuctions != null and !closedAuctions.isEmpty()}">
-	        		<ul>
-	            		<li th:each="auction : ${closedAuctions}">
-	                		<div>
-	                    		<p>
-	                        		Auction #<span th:text="${auction.id}">1</span><br>
-	                        		Base price: <span th:text="${auction.basePrice}">100</span> €<br>
-	                        		Minimum increment: <span th:text="${auction.minIncrement}">10</span><br>
-	                        		Closed at: <span th:text="${#dates.format(auction.closingDate, 'dd/MM/yyyy HH:mm')}">01/01/2025 12:00</span><br>
-	                        		Seller: <span th:text="${auction.sellerUsername}">Seller Username</span>
-	                    		</p>
-	
-	                    		<div th:if="${auction.isSold}">
-	                       			 <p>
-	                        		    Bought by: <span th:text="${auction.buyerUsername}">Buyer Username</span><br>
-	                            		Final price: <span th:text="${auction.finalPrice}">250</span><br>
-	                            		Delivered to: <span th:text="${auction.buyerAddress}">Buyer Address</span>
-	                        		</p>
-	                    		</div>
-	
-	                    		<div th:unless="${auction.isSold}">
-	                        		<p>Not sold</p>
-	                    		</div>
-	                		</div>
-	            		</li>
-	        		</ul>
-	    		</div>
-	
-	    		<div th:unless="${closedAuctions != null and !closedAuctions.isEmpty()}">
-	        		<p class="no-element-in-list">No closed auctions available</p>
-	    		</div>
-			</div>
-		</div>
+    <!-- Title for closed auctions -->
+    <div class="title-with-image">			
+        <svg class="icon" viewBox="0 0 24 24">
+            <path d="M10 2h4"/>
+            <path d="M4.6 11a8 8 0 0 0 1.7 8.7 8 8 0 0 0 8.7 1.7"/>
+            <path d="M7.4 7.4a8 8 0 0 1 10.3 1 8 8 0 0 1 .9 10.2"/>
+            <path d="m2 2 20 20"/>
+            <path d="M12 12v-2"/>
+        </svg>
+
+        <div class="text-group">	
+            <h2 class="section-title">Closed Auctions</h2>
+            <p class="header-description">See all the Auctions you have created that are already closed</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div th:if="${closedAuctions != null and !closedAuctions.isEmpty()}">
+            <ul>
+                <li th:each="auction : ${closedAuctions}">
+                    <div>
+                        <!-- Auction Header -->
+                        <div class="auction-header">
+                            <div>
+                                <p class="auction-detail">Auction #<span th:text="${auction.id}">1</span></p>
+                                
+                                <p class="auction-detail auction-detail-secondary">Base price: <span th:text="${auction.basePrice}"></span>€</p>
+                                
+                                <p class="auction-detail auction-detail-secondary">Minimum increment: <span th:text="${auction.minIncrement}"></span>€</p>
+                                
+                                <p class="auction-detail auction-detail-secondary">Seller: <span th:text="${auction.sellerUsername}">Seller Username</span></p>
+                            </div>
+
+                            <div>
+                                <div class="closed-status-container">
+                                    <div th:if="${auction.isSold}" class="closed-status closed-status-closed">
+                                        <svg class="icon" viewBox="0 0 24 24">
+                                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                        </svg>
+                                        <p>Sold</p>
+                                    </div>
+
+                                    <div th:unless="${auction.isSold}" class="closed-status closed-status-open">
+                                        <svg class="icon" viewBox="0 0 24 24">
+                                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                                            <path d="M7 11V7a5 5 0 0 1 9.9-1"/>
+                                        </svg>
+                                        <p>Not Sold</p>
+                                    </div>
+                                </div>
+
+                                <div class="remaining-time-container">
+                                    <p class="auction-detail auction-detail-secondary">Closed at:</p>
+                                    
+                                    <div class="remaining-time-pill">
+                                        <svg class="icon" viewBox="0 0 24 24">
+                                            <path d="M5 22h14"/>
+                                            <path d="M5 2h14"/>
+                                            <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/>
+                                            <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
+                                        </svg>
+                                        <p th:text="${#dates.format(auction.closingDate, 'dd/MM/yyyy HH:mm')}">01/01/2025 12:00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+						<div class="auction-header">
+	                        <!-- Items inside the Auction -->
+	                        <div class="title-with-image">			
+	                            <svg class="icon" viewBox="0 0 24 24">
+	                                <path d="M2.97 12.92A2 2 0 0 0 2 14.63v3.24a2 2 0 0 0 .97 1.71l3 1.8a2 2 0 0 0 2.06 0L12 19v-5.5l-5-3-4.03 2.42Z"/>
+	                                <path d="m7 16.5-4.74-2.85"/>
+	                                <path d="m7 16.5 5-3"/>
+	                                <path d="M7 16.5v5.17"/>
+	                                <path d="M12 13.5V19l3.97 2.38a2 2 0 0 0 2.06 0l3-1.8a2 2 0 0 0 .97-1.71v-3.24a2 2 0 0 0-.97-1.71L17 10.5l-5 3Z"/>
+	                                <path d="m17 16.5-5-3"/>
+	                                <path d="m17 16.5 4.74-2.85"/>
+	                                <path d="M17 16.5v5.17"/>
+	                                <path d="M7.97 4.42A2 2 0 0 0 7 6.13v4.37l5 3 5-3V6.13a2 2 0 0 0-.97-1.71l-3-1.8a2 2 0 0 0-2.06 0l-3 1.8Z"/>
+	                                <path d="M12 8 7.26 5.15"/>
+	                                <path d="m12 8 4.74-2.85"/>
+	                                <path d="M12 13.5V8"/>
+	                            </svg>
+	                            
+	                            <div class="text-group">	
+	                                <h2 class="subsection-title">Items</h2>
+	                                <p class="header-description">Products included in this closed auction</p>
+	                            </div>
+	                        </div>
+	                        
+	                        <!-- Button to open details -->
+	                        <div class="button-primary">
+	                        	<p>See more</p>
+	                        	
+	                        	<svg class="icon" viewBox="0 0 24 24">
+	                        		<path d="m9 18 6-6-6-6"/>
+	                        	</svg>
+	                        </div>
+	                        
+	                    </div>
+
+                        <ul class="item-list">
+                            <li th:each="item : ${auction.items}" class="item-container">
+                                <div class="text-group">
+                                    <!-- If image exists -->
+                                    <img th:if="${item.image != null}"
+                                         th:src="@{/{file}(file=${item.image.filePath})}"
+                                         alt="Item Image"
+                                         class="item-image" />
+                                    
+                                    <!-- If image missing -->
+                                    <img th:unless="${item.image != null}"
+                                         th:src="@{/images/placeholder.svg}"
+                                         alt="No Image Available"
+                                         class="item-image" />
+
+                                    <p class="item-detail" th:text="${item.itemName}">Example Item Name</p>
+                                    <p class="item-detail-tertiary">Item #<span th:text="${item.id}">1</span></p>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <div th:if="${auction.items == null or auction.items.isEmpty()}">
+                            <p class="no-element-in-list">No items in this auction</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div th:unless="${closedAuctions != null and !closedAuctions.isEmpty()}">
+            <p class="no-element-in-list">No closed auctions available</p>
+        </div>
+    </div>
+</div>
+
 		
 		<!-- TODO: Add Forms -->
 		
