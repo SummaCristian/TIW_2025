@@ -43,6 +43,7 @@ public class ItemDAO {
 			results.getInt("AuctionId")
 		);
 		
+		
 		return item;
 	}
 	

@@ -73,7 +73,7 @@ public class Item {
         this.price = price;
     }
 
-    public Image getImageId() {
+    public Image getImage() {
         return image;
     }
 

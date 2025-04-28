@@ -36,7 +36,8 @@ public class GeneralFilter implements Filter {
                                 path.equals("/LoginServlet") || path.equals("/SignUpServlet") || 
                                 path.equals("/app") || path.equals("/logout");
 
-        boolean isStaticResource = path.startsWith("/css/") || path.startsWith("/images/") || path.startsWith("/js/");
+        boolean isStaticResource = path.startsWith("/css/") || path.startsWith("/images/") || 
+        		path.startsWith("/js/") || path.startsWith("/uploads");
 
         // 💥 Special case: ROOT path
         if (path.equals("/")) {
