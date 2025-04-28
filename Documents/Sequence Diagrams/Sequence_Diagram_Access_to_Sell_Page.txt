@@ -1,0 +1,42 @@
+title Access to Sell Page
+
+actor User
+
+participantgroup #lightgreen Home
+participant HomeServlet
+participant HomePage.html #aqua
+end
+
+participantgroup #lightgreen Sell
+participant SellPageServlet
+participant SellPage.html
+end
+
+participant AuctionDAO #orange
+participant ItemDAO #orange
+
+database DB #green
+
+User-->HomeServlet:
+HomeServlet->HomePage.html: process()
+HomePage.html-->User: Rendered page
+
+User-->HomePage.html: Clicks on "Sell" link
+HomePage.html->SellPageServlet: forward()
+
+// Accessing data
+SellPageServlet->AuctionDAO: getAuctionsCreatedBy(user)
+AuctionDAO->>DB: QUERY
+DB-->>AuctionDAO:
+
+AuctionDAO->ItemDAO: getItemsInAuction(auctionId)
+ItemDAO->>DB: QUERY
+DB-->>ItemDAO:
+ItemDAO-->AuctionDAO: return
+
+AuctionDAO-->SellPageServlet: return
+
+// Processing the page
+SellPageServlet->SellPage.html: process()
+
+SellPage.html-->User: Rendered page
