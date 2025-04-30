@@ -34,6 +34,9 @@ public class Auction {
     // Items inside the Auction
     private List<Item> items;
     
+    // Offers inside the Auction
+    private List<Offer> offers;
+    
     // --- Constructors ---
     
     // Empty Constructor
@@ -54,7 +57,8 @@ public class Auction {
     	String buyerUsername,
     	String buyerAddress,
     	String remainingTime,
-    	List<Item> items
+    	List<Item> items,
+    	List<Offer> offers
     ) {
     	this.id = id;
     	this.basePrice = basePrice;
@@ -73,6 +77,7 @@ public class Auction {
     	this.remainingTime = remainingTime;
     	
     	this.items = items;
+    	this.offers = offers;
     }
 
     // --- Getters and Setters ---
@@ -187,5 +192,13 @@ public class Auction {
 
 	public void setRemainingTime(String remainingTime) {
 		this.remainingTime = remainingTime;
+	}
+
+	public List<Offer> getOffers() {
+		return offers;
+	}
+
+	public void setOffers(List<Offer> offers) {
+		this.offers = offers;
 	}
 }

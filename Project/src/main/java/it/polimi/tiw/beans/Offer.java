@@ -14,6 +14,8 @@ public class Offer {
     private int offeredPrice;
     private Timestamp offerDate;
     
+    private String username;
+    
     // --- Constructors ---
     
     // Empty Constructor
@@ -23,6 +25,7 @@ public class Offer {
     public Offer(
     	int id,
     	int userId,
+    	String username,
     	int auctionId,
     	int offeredPrice,
     	Timestamp offerDate
@@ -32,6 +35,8 @@ public class Offer {
     	this.auctionId = auctionId;
     	this.offeredPrice = offeredPrice;
     	this.offerDate = offerDate;
+    	
+    	this.setUsername(username);
     }
 
     // --- Getters and Setters ---
@@ -75,4 +80,12 @@ public class Offer {
     public void setOfferDate(Timestamp offerDate) {
         this.offerDate = offerDate;
     }
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 }

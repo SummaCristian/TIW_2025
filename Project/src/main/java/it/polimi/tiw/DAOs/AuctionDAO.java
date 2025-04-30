@@ -9,6 +9,7 @@ import java.util.List;
 
 import it.polimi.tiw.beans.Auction;
 import it.polimi.tiw.beans.Item;
+import it.polimi.tiw.beans.Offer;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.exceptions.NoSuchAuctionException;
 
@@ -27,7 +28,12 @@ public class AuctionDAO {
     /*
      * Builds the Bean from the data retrieved from a Query's ResultsSet
      */
-    private Auction buildAuction(ResultSet results, List<Item> itemsInAuction, String formattedRemainingTime) throws SQLException {
+    private Auction buildAuction(
+		ResultSet results,
+		List<Item> itemsInAuction,
+		List<Offer> offersInAuction,
+		String formattedRemainingTime
+	) throws SQLException {
     	Auction auction = new Auction(
             results.getInt("Id"),
             results.getInt("BasePrice"),
@@ -42,7 +48,8 @@ public class AuctionDAO {
             results.getObject("BuyerUsername") != null ? results.getString("BuyerUsername") : null,
             results.getObject("BuyerAddress") != null ? results.getString("BuyerAddress") : null,
             formattedRemainingTime,
-            itemsInAuction
+            itemsInAuction,
+            offersInAuction
         );
     	
     	return auction;
@@ -108,12 +115,17 @@ public class AuctionDAO {
     			
     			// Prepares the ItemDAO, used to query the Items belonging to this Auction
         		ItemDAO itemDao = new ItemDAO(conn);
+        		// Prepares the OfferDAO, used to query the Offers belonging to this Auction
+        		OfferDAO offerDao = new OfferDAO(conn);
         		
         		if (results.next()) {
         			// Found the Auction
         			
         			// Queries the Items inside the Auction
     				List<Item> itemsInAuction = itemDao.getItemsInAuction(id);
+    				
+    				// Queries the Offers inside the Auction
+    				List<Offer> offersInAuction = offerDao.getOffersForAuction(id);
     				
     				// Calculates the Remaining Time
     				long closingTime = results.getDate("ClosingDate").getTime();
@@ -124,7 +136,7 @@ public class AuctionDAO {
 
     				
     				// Builds the Bean object
-    	            auction = buildAuction(results, itemsInAuction, formattedRemainingTime);
+    	            auction = buildAuction(results, itemsInAuction, offersInAuction, formattedRemainingTime);
         		} else {
         			// No Auction for this ID
         			throw new NoSuchAuctionException();
@@ -179,10 +191,15 @@ public class AuctionDAO {
     			
     			// Prepares the ItemDAO, used to query the Items belonging to each Auction
     			ItemDAO itemDao = new ItemDAO(conn);
+    			// Prepares the OfferDAO, used to query the Offers belonging to this Auction
+        		OfferDAO offerDao = new OfferDAO(conn);
     			
     			while (results.next()) {
     				// Queries the Items inside the Auction
     				List<Item> itemsInAuction = itemDao.getItemsInAuction(results.getInt("Id"));
+    				
+    				// Queries the Offers inside the Auction
+    				List<Offer> offersInAuction = offerDao.getOffersForAuction(results.getInt("Id"));
     				
     				// Calculates the Remaining Time
     				long closingTime = results.getDate("ClosingDate").getTime();
@@ -193,7 +210,7 @@ public class AuctionDAO {
 
     				
     				// Builds the Bean object
-    	            Auction auction = buildAuction(results, itemsInAuction, formattedRemainingTime);
+    	            Auction auction = buildAuction(results, itemsInAuction, offersInAuction, formattedRemainingTime);
     	            
     	            // Adds the Bean into the List
     	            auctions.add(auction);
@@ -243,10 +260,15 @@ public class AuctionDAO {
     			
     			// Prepares the ItemDAO, used to query the Items belonging to each Auction
     			ItemDAO itemDao = new ItemDAO(conn);
+    			// Prepares the OfferDAO, used to query the Offers belonging to this Auction
+        		OfferDAO offerDao = new OfferDAO(conn);
     			
     			while (results.next()) {
     				// Queries the Items inside the Auction
     				List<Item> itemsInAuction = itemDao.getItemsInAuction(results.getInt("Id"));
+    				
+    				// Queries the Offers inside the Auction
+    				List<Offer> offersInAuction = offerDao.getOffersForAuction(results.getInt("Id"));
     				
     				// Calculates the Remaining Time
     				long closingTime = results.getDate("ClosingDate").getTime();
@@ -257,7 +279,7 @@ public class AuctionDAO {
 
     				
     				// Builds the Bean object
-    	            Auction auction = buildAuction(results, itemsInAuction, formattedRemainingTime);
+    	            Auction auction = buildAuction(results, itemsInAuction, offersInAuction, formattedRemainingTime);
     				
     	            // Adds the Bean into the List
     	            auctions.add(auction);
@@ -307,10 +329,15 @@ public class AuctionDAO {
     			
     			// Prepares the ItemDAO, used to query the Items belonging to each Auction
     			ItemDAO itemDao = new ItemDAO(conn);
+    			// Prepares the OfferDAO, used to query the Offers belonging to this Auction
+        		OfferDAO offerDao = new OfferDAO(conn);
     			
     			while (results.next()) {
     				// Queries the Items inside the Auction
     				List<Item> itemsInAuction = itemDao.getItemsInAuction(results.getInt("Id"));
+    				
+    				// Queries the Offers inside the Auction
+    				List<Offer> offersInAuction = offerDao.getOffersForAuction(results.getInt("Id"));
     				
     				// Calculates the Remaining Time
     				long closingTime = results.getDate("ClosingDate").getTime();
@@ -321,7 +348,7 @@ public class AuctionDAO {
 
     				
     				// Builds the Bean object
-    	            Auction auction = buildAuction(results, itemsInAuction, formattedRemainingTime);
+    	            Auction auction = buildAuction(results, itemsInAuction, offersInAuction, formattedRemainingTime);
     				
     	            // Adds the Bean into the List
     	            auctions.add(auction);
