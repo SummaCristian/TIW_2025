@@ -10,6 +10,7 @@ import java.util.List;
 import it.polimi.tiw.beans.Auction;
 import it.polimi.tiw.beans.Item;
 import it.polimi.tiw.beans.User;
+import it.polimi.tiw.exceptions.NoSuchAuctionException;
 
 /*
  * This class acts as a DAO (Data Access Object) for the Auctions Table in the DB.
@@ -73,6 +74,73 @@ public class AuctionDAO {
         sb.append(minutes).append(" minute").append(minutes != 1 ? "s" : "");
 
         return sb.toString();
+    }
+    
+    /*
+     * Returns a single Auction based on the ID passed as parameter.
+     * Throws NoSuchAuctionException if the ID is not associated to any Auction.
+     */
+    public Auction getAuctionById(int id, long loginTime) throws NoSuchAuctionException, SQLException {
+    	Auction auction = null;
+    	
+    	// Prepares the Query statement
+    	String query = "SELECT Auctions.*, "
+    			+ "Seller.Username AS SellerUsername, "
+    			+ "Buyer.Username AS BuyerUsername, "
+    			+ "Buyer.Address AS BuyerAddress "
+    			+ "FROM Auctions "
+    			+ "JOIN Users AS Seller ON Auctions.SellerId = Seller.Id "
+    			+ "LEFT JOIN Users AS Buyer ON Auctions.BuyerId = Buyer.Id "
+    			+ "WHERE Auctions.Id = ?";
+    	
+    	PreparedStatement statement = null;
+    	ResultSet results = null;
+    	
+    	try {
+    		// Compiles the Query
+    		statement = conn.prepareStatement(query);
+    		// Sets the Query variable
+    		statement.setInt(1, id);
+    		
+    		try {
+    			// Runs the Query
+    			results = statement.executeQuery();
+    			
+    			// Prepares the ItemDAO, used to query the Items belonging to this Auction
+        		ItemDAO itemDao = new ItemDAO(conn);
+        		
+        		if (results.next()) {
+        			// Found the Auction
+        			
+        			// Queries the Items inside the Auction
+    				List<Item> itemsInAuction = itemDao.getItemsInAuction(id);
+    				
+    				// Calculates the Remaining Time
+    				long closingTime = results.getDate("ClosingDate").getTime();
+
+    				long diffMillis = closingTime - loginTime;
+
+    				String formattedRemainingTime = formatRemainingTime(diffMillis);
+
+    				
+    				// Builds the Bean object
+    	            auction = buildAuction(results, itemsInAuction, formattedRemainingTime);
+        		} else {
+        			// No Auction for this ID
+        			throw new NoSuchAuctionException();
+        		}
+        		
+    		} finally {
+    			// Closed the ResultSet
+    			results.close();
+    		}
+    	} finally {
+    		// Closes the PreparedStatement
+    		statement.close();
+    	}
+    	
+    	// Returns the Auction Bean
+    	return auction;
     }
 
     
