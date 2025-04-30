@@ -50,7 +50,7 @@ public class OfferDAO {
 				+ "FROM Offers "
 				+ "JOIN Users ON Offers.UserId = Users.Id "
 				+ "WHERE Offers.AuctionId = ? "
-				+ "ORDER BY Offers.OfferedDate DESC";
+				+ "ORDER BY Offers.OfferDate DESC";
 		
 		PreparedStatement statement = null;
 		ResultSet results = null;
