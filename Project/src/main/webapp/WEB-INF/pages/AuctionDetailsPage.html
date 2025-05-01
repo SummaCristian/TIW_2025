@@ -36,9 +36,7 @@
 
 		<div>
 			<div class="auction-header">
-	             <div>
-	             	<p class="auction-detail">Auction #<span th:text="${auction.id}">1</span></p>
-	
+	             <div>	
 	                <p class="auction-detail auction-detail-secondary">Current Highest Bid:</p>
 	
 	                <div th:if="${auction.highestBid != null}" class="offer-pill">
@@ -142,6 +140,57 @@
 					</div>
 				</li>
 			</ul>
+			
+			<!-- Offers -->
+			<div class="auction-header">
+				<!-- Offers for the Auction -->
+				<div class="title-with-image">			
+				    <svg class="icon" viewBox="0 0 24 24">
+				    	<path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/>
+				    	<path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/>
+				    	<path d="m2 16 6 6"/>
+				    	<circle cx="16" cy="9" r="2.9"/>
+				    	<circle cx="6" cy="5" r="3"/>
+			    	</svg>
+				    
+				    <div class="text-group">	
+				        <h2 class="subsection-title">Offers</h2>
+				        <p class="header-description">Offers made by the Users</p>
+				    </div>
+				</div>
+			</div>
+			
+			<ul>
+				<li th:each="offer : ${auction.offers}">
+					<div class="offer-container">
+						<div class="offer-details-container">
+							<!-- User icon -->
+							<svg class="icon" viewBox="0 0 24 24">
+								<circle cx="12" cy="12" r="10"/>
+								<circle cx="12" cy="10" r="3"/>
+								<path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/>
+							</svg>
+							
+							<div class="offer-details-text-container">
+								<p th:text="${offer.username}" class="offer-username">Username</p>
+								
+								<p th:text="'#' + ${offer.id} + ' • ' + ${offer.offerDate}" class="offer-details">#1 • 01/01/2025 08:00</p>
+							</div>
+						</div>
+						
+						<div class="offer-pill">
+		                	<svg class="icon" viewBox="0 0 24 24">
+		                    	<circle cx="12" cy="12" r="10"/>
+		                        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
+		                        <path d="M12 18V6"/>
+		                    </svg>
+		                    
+		                    <p th:text="${auction.highestBid + '€'}">500€</p>
+		           		</div>
+					</div>
+				</li>
+			</ul>
+			
 		</div>
 	</div>
 </body>

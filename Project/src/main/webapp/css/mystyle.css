@@ -367,3 +367,39 @@ hr {
 	color: inherit;
 	margin: 0;
 }
+
+.offer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.offer-details-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.offer-details-text-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.offer-username {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  color: #222;
+}
+
+.offer-details {
+  font-size: 0.65rem;
+  color: #666;
+  margin: 0;
+}

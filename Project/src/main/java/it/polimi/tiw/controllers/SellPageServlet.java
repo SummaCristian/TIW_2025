@@ -74,6 +74,7 @@ public class SellPageServlet extends HttpServlet {
     	
     	try {
 			openAuctions = auctionDao.getAuctionsCreatedBy(user, false, loginTime);
+			
 		} catch (SQLException e) {
 			// Leave openAuctions to null, letting Thymeleaf handle the error
 		}

@@ -31,7 +31,7 @@ public class OfferDAO {
 			results.getString("Username"),
 			results.getInt("AuctionId"),
 			results.getInt("OfferedPrice"),
-			results.getTimestamp("OfferedDate")
+			results.getTimestamp("OfferDate")
 		);
 		
 		return offer;

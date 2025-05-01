@@ -223,7 +223,7 @@ public class AuctionDAO {
     		// Closes the PreparedStatement
     		statement.close();
     	}
-    	
+    	    	
     	// Returns the List
     	return auctions;
     }
