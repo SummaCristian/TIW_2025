@@ -66,6 +66,9 @@ public class SellPageServlet extends HttpServlet {
     	AuctionDAO auctionDao = new AuctionDAO(connection);
     	User user = (User) request.getSession().getAttribute("user");
     	
+    	// Writes the User in the Request too
+    	request.setAttribute("user", user);
+    	
     	// Open Auctions
     	List<Auction> openAuctions = null;
     	
