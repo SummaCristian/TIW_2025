@@ -48,6 +48,53 @@ public class ItemDAO {
 	}
 	
 	/*
+	 * Inserts the data passed as parameters into the Database as an Item
+	 */
+	public void insert(Item item) throws SQLException {
+		// Stores the old value for the AUTO COMMIT feature
+		boolean oldAutoCommit = conn.getAutoCommit();
+		
+		try {
+			// Disables AUTO COMMIT
+			conn.setAutoCommit(false);
+			
+			// Prepares the Statement
+			String query = "INSERT "
+					+ "INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId) "
+					+ "VALUES (?, ?, ?, ?, ?)";
+			
+			PreparedStatement statement = null;
+			
+			try {
+				// Compiles the Statement
+				statement = conn.prepareStatement(query);
+				// Sets the Statement variables
+				statement.setString(1, item.getItemName());
+				statement.setString(2, item.getItemDescription());
+				statement.setInt(3, item.getPrice());
+				statement.setInt(4, item.getImage().getId());
+				statement.setInt(5, item.getCreatorId());
+				
+				// Runs the Statement
+				statement.executeUpdate();
+			} finally {
+				// Closes the PreparedStatement
+				statement.close();
+			}
+			
+			// Manual COMMIT
+			conn.commit();
+		} catch (SQLException e) {
+			// If something goes wrong it does a ROLLBACK
+			conn.rollback();
+			throw e;
+		} finally {
+			// After finishing the INSERT, it RESETS the AUTO COMMIT to how it was before
+			conn.setAutoCommit(oldAutoCommit);
+		}
+	}
+	
+	/*
 	 * Returns a List of all Items belonging to the Auction passed as parameter.
 	 * Returns an empty List if there is no Item to be found.
 	 */

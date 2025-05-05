@@ -177,6 +177,7 @@ public class UserDAO {
             try {
             	// Compiles the Statement
             	statement = conn.prepareStatement(query);
+            	// Sets the Statement variables
             	statement.setString(1, user.getUsername());
             	statement.setString(2, hashedPassword);
             	statement.setString(3, user.getFirstName());
