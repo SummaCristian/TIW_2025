@@ -15,7 +15,6 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Locale;
 
 import it.polimi.tiw.DAOs.*;
@@ -79,24 +78,22 @@ public class AuctionDetailsPageServlet extends HttpServlet {
                 // Retrieves the Auction Bean
                 Auction auction = auctionDao.getAuctionById(auctionId, loginTime);
 
-                if (auction != null) {
-                	// Adds the Auction to the request
-                	request.setAttribute("auction", auction);
-                	
-                	// Render the page
-                	IWebExchange webExchange = application.buildExchange(request, response);
-                    WebContext context = new WebContext(webExchange, Locale.getDefault());
-                    
-                    response.setContentType("text/html;charset=UTF-8");
-                    templateEngine.process("AuctionDetailsPage", context, response.getWriter());
-                } else {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Auction not found");
-                }
+                // Adds the Auction to the request
+            	request.setAttribute("auction", auction);
+            	
+            	// Render the page
+            	IWebExchange webExchange = application.buildExchange(request, response);
+                WebContext context = new WebContext(webExchange, Locale.getDefault());
+                
+                response.setContentType("text/html;charset=UTF-8");
+                templateEngine.process("AuctionDetailsPage", context, response.getWriter());
+                
             } catch (NumberFormatException e) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid auction ID");
             } catch (NoSuchAuctionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// The Auction with the ID in the request doesn't exist
+            	String message = "Auction with ID #" + Integer.parseInt(idParam) + " doesn't exist";
+            	response.sendError(HttpServletResponse.SC_NOT_FOUND, message);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

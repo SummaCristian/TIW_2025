@@ -9,6 +9,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
@@ -34,7 +35,7 @@ public class GeneralFilter implements Filter {
 
         boolean isPublicPath = path.equals("/login") || path.equals("/signup") ||
                                 path.equals("/LoginServlet") || path.equals("/SignUpServlet") || 
-                                path.equals("/app") || path.equals("/logout");
+                                path.equals("/app") || path.equals("/logout") || path.equals("/error");
 
         boolean isStaticResource = path.startsWith("/css/") || path.startsWith("/images/") || 
         		path.startsWith("/js/") || path.startsWith("/uploads");
@@ -50,7 +51,13 @@ public class GeneralFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             // ❌ Not logged in and trying to access something protected
-            res.sendRedirect(contextPath + "/app");
+        	
+        	// Create a temporary session
+        	HttpSession session = req.getSession();
+        	// Add the error message
+        	session.setAttribute("loginError", "Please log in to continue");
+        	// Redirect
+        	res.sendRedirect(contextPath + "/app");
         }
     }
 
