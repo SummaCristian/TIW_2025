@@ -70,7 +70,7 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("loginTime", System.currentTimeMillis());
 			
 			// Redirect to HomePage
-			request.getRequestDispatcher("/home").forward(request, response);
+			response.sendRedirect(request.getContextPath() + "/home");
 		} catch (MissingParametersException e) {
 			request.setAttribute("error", "Missing some parameters");
 			request.getRequestDispatcher("/login").forward(request, response);

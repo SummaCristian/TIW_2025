@@ -45,11 +45,6 @@ public class HomePageServlet extends HttpServlet {
     private void loadPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
     	IWebExchange webExchange = application.buildExchange(request, response);
         WebContext context = new WebContext(webExchange, Locale.getDefault());
-        
-        // Checks if there is any error in the request
-        if (request.getAttribute("error") != null) {
-            context.setVariable("error", request.getAttribute("error"));
-        }
 
         response.setContentType("text/html;charset=UTF-8");
         templateEngine.process("HomePage", context, response.getWriter());
