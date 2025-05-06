@@ -140,4 +140,53 @@ public class ItemDAO {
 		// Returns the List
 		return items;
 	}
+	
+	/*
+	 * Returns a List of all Items NOT belonging to any Auction created by the 
+	 * User whose ID is passed as parameter.
+	 * Returns an empty List if there is no Item to be found.
+	 */
+	public List<Item> getAvailableItemsForUserId(int userId) throws SQLException {
+		// Prepares the List to return
+		List<Item> items = new ArrayList<>();
+		
+		// Prepares the Query Statement
+		String query = "SELECT Items.*, Images.* "
+				+ "FROM Items "
+				+ "JOIN Images ON Items.ImageId = Images.Id "
+				+ "WHERE Items.AuctionId IS NULL "
+				+ "AND Items.CreatorId = ?";
+		
+		PreparedStatement statement = null;
+		ResultSet results = null;
+		
+		try {
+			// Compiles the Query
+			statement = conn.prepareStatement(query);
+			// Sets the Query variable
+			statement.setInt(1, userId);
+			
+			try {
+				// Runs the Query
+				results = statement.executeQuery();
+				
+				while (results.next()) {
+					// Builds the Bean object
+					Item item = buildItem(results);
+					
+					// Adds the Bean into the List
+					items.add(item);
+				}
+			} finally {
+				// Closes the ResultSet
+				results.close();
+			}
+		} finally {
+			// Closes the PreparedStatement
+			statement.close();
+		}
+		
+		// Returns the List
+		return items;
+	}
 }

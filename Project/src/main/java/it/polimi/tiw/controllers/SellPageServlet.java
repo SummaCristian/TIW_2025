@@ -64,16 +64,17 @@ public class SellPageServlet extends HttpServlet {
     private void loadPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
     	// Retrieve all the necessary data
     	AuctionDAO auctionDao = new AuctionDAO(connection);
+    	ItemDAO itemDao = new ItemDAO(connection);
     	User user = (User) request.getSession().getAttribute("user");
     	
     	// Writes the User in the Request too
     	request.setAttribute("user", user);
     	
-    	// Open Auctions
-    	List<Auction> openAuctions = null;
-    	
     	// The User's Login Time
     	long loginTime = (long) request.getSession().getAttribute("loginTime");
+    	
+    	// Open Auctions
+    	List<Auction> openAuctions = null;
     	
     	try {
 			openAuctions = auctionDao.getAuctionsCreatedBy(user, false, loginTime);
@@ -94,6 +95,18 @@ public class SellPageServlet extends HttpServlet {
     	}
     	
     	request.setAttribute("closedAuctions", closedAuctions);
+    	
+    	// Items available for new Auctions
+    	List<Item> availableItems = null;
+    	
+    	try {
+    		availableItems = itemDao.getAvailableItemsForUserId(user.getId());
+    	} catch (SQLException e) {
+    		// Leaves availableItems to null, letting Thymeleaf handle the error
+    	}
+    	
+    	request.setAttribute("availableItems", availableItems);
+    	
     	
     	// Render the page
     	IWebExchange webExchange = application.buildExchange(request, response);

@@ -404,8 +404,74 @@
 				</div>
 				
 				<div class="container">
+					<form method="post" action="/CreateAuction" enctype="multipart/form-data">
+					    <!-- Base Price -->
+					    <label for="basePrice">Base Price (€):</label>
+					    <input type="number" name="basePrice" id="basePrice" placeholder="___ €" required min="1" step="1">
+					    
+					    <!-- Minimum Increment -->
+					    <label for="minIncrement">Minimum Increment (€):</label>
+					    <input type="number" name="minIncrement" id="minIncrement" placeholder="___ €" required min="1" step="1">
+					    
+					    <!-- Closing Date -->
+					    <label for="closingDate">Closing Date:</label>
+					    <input type="datetime-local" name="closingDate" id="closingDate" required>
+					    
+					    <!-- Select Items -->
+						<p class="section-title">Select Items for this Auction:</p>
+						
+						<ul class="item-list" th:if="${!#lists.isEmpty(availableItems)}">
+						    <li th:each="item : ${availableItems}">
+							    <input type="checkbox"
+							           name="itemIds"
+							           th:value="${item.id}"
+							           th:id="'item-' + ${item.id}"
+							           class="item-checkbox"
+							           hidden />
+							
+							    <label th:for="'item-' + ${item.id}" class="item-container">
+							        <div class="checkmark-overlay">
+							            <svg viewBox="0 0 24 24" class="checkmark-icon">
+							                <polyline points="20 6 9 17 4 12" />
+							            </svg>
+							        </div>
+							
+							        <!-- Image -->
+							        <img th:if="${item.image != null}"
+							             th:src="@{/{file}(file=${item.image.filePath})}"
+							             class="item-image" />
+							        <img th:unless="${item.image != null}"
+							             th:src="@{/images/placeholder.svg}"
+							             class="item-image" />
+							
+							        <!-- Text -->
+							        <div class="text-group">
+							            <p class="item-detail" th:text="${item.itemName}">Item Name</p>
+							            <p class="item-detail-secondary" th:text="'€' + ${item.price}">€123</p>
+							            <p class="item-detail-tertiary">Item #<span th:text="${item.id}">1</span></p>
+							        </div>
+							    </label>
+							</li>
+						    
+						</ul>				
 
+						<p class="no-element-in-list" th:if="${#lists.isEmpty(availableItems)}">
+						    No available items. You need at least one to create an auction.
+						</p>
+						
+						
+					    <!-- Hidden Seller ID -->
+					    <input type="hidden" name="creatorId" th:value="${user.id}" />
+						
+						<!-- Submit -->
+						<button type="submit" class="button-primary"
+						        th:disabled="${#lists.isEmpty(availableItems)}"
+						        th:classappend="${#lists.isEmpty(availableItems)} ? ' disabled-button' : ''">
+						    Create Auction
+						</button>
+					</form>
 				</div>
+
 			</div>
 		</div>
 			
