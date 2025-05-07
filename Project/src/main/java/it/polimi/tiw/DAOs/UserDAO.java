@@ -86,12 +86,16 @@ public class UserDAO {
                 }
             } finally {
             	// Closes the ResultSet
-            	results.close();
+            	if(results != null) {
+            		results.close();
+            	}
             	
             }
         } finally {
         	// Closes the PreparedStatement
-        	statement.close();
+        	if(statement != null) {
+        		statement.close();
+        	}
         }
     }
     
@@ -137,11 +141,15 @@ public class UserDAO {
                 }
             } finally {
             	// Closes the ResultSet
-            	results.close();
+            	if(results != null) {
+            		results.close();
+            	}
             }
         } finally {
         	// Closes the PreparedStatement
-        	statement.close();
+        	if(statement != null) {
+        		statement.close();
+        	}
         }
 
         // Checks if the two passwords match
@@ -188,7 +196,9 @@ public class UserDAO {
             	statement.executeUpdate();
             } finally {
             	// Closes the PreparedStatement
-            	statement.close();
+            	if(statement != null) {
+            		statement.close();
+            	}
             }
             
             // Manual COMMIT

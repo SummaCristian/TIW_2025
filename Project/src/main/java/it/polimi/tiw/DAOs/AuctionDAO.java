@@ -144,11 +144,15 @@ public class AuctionDAO {
         		
     		} finally {
     			// Closed the ResultSet
-    			results.close();
+    			if(results != null) {
+    				results.close();
+    			}
     		}
     	} finally {
     		// Closes the PreparedStatement
-    		statement.close();
+    		if(statement != null) {
+    			statement.close();
+    		}
     	}
     	
     	// Returns the Auction Bean
@@ -217,11 +221,15 @@ public class AuctionDAO {
     	        }
     		} finally {
     			// Closes the ResultSet
-    			results.close();
+    			if(results != null) {
+    				results.close();
+    			}
     		}
     	} finally {
     		// Closes the PreparedStatement
-    		statement.close();
+    		if(statement != null) {
+    			statement.close();
+    		}
     	}
     	    	
     	// Returns the List
@@ -286,11 +294,15 @@ public class AuctionDAO {
     	        }
     		} finally {
     			// Closes the ResultSet
-    			results.close();
+    			if(results != null) {
+    				results.close();
+    			}
     		}
     	} finally {
     		// Closes the PreparedStatement
-    		statement.close();
+    		if(statement != null) {
+    			statement.close();
+    		}
     	}
     	
     	// Returns the List
@@ -355,11 +367,15 @@ public class AuctionDAO {
     	        }
     		} finally {
     			// Closes the ResultSet
-    			results.close();
+    			if(results != null) {
+    				results.close();
+    			}
     		}
     	} finally {
     		// Closes the PreparedStatement
-    		statement.close();
+    		if(statement != null) {
+    			statement.close();
+    		}
     	}
     	
     	// Returns the List

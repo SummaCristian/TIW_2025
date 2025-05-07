@@ -75,11 +75,15 @@ public class OfferDAO {
 				
 			} finally {
 				// Closes the ResultSet
-				results.close();
+				if(results != null) {
+					results.close();
+				}
 			}
 		} finally {
 			// Closes the PreparedStatement
-			statement.close();
+			if(statement != null) {
+				statement.close();
+			}
 		}
 		
 		return offers;

@@ -67,12 +67,16 @@ public class ImageDAO {
 				
 			} finally {
 				// Closes the ResultSet
-				results.close();
+				if(results != null) {
+					results.close();
+				}
 			}
 			
 		} finally {
 			// CLoses the PreparedStatement
-			statement.close();
+			if(statement != null) {
+				statement.close();
+			}
 		}
 		
 		return image;
@@ -138,7 +142,9 @@ public class ImageDAO {
 			
 		} finally {
 			// Closes the PreparedStatement
-			statement.close();
+			if(statement != null) {
+				statement.close();
+			}
 		}
 	}
 }
