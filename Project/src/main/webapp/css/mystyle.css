@@ -46,6 +46,18 @@ select:focus {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
 }
 
+input[type="file"]:valid + label.custom-file-upload {
+  border-color: #22c55e;
+  background-color: #ecfdf5;
+  color: #166534;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+}
+
+input[type="file"]:valid + label.custom-file-upload .upload-icon {
+  stroke: #22c55e;
+}
+
+
 textarea {
   resize: vertical;
   min-height: 100px;
