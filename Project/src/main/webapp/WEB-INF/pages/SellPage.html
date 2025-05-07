@@ -347,7 +347,10 @@
 				</div>
 				
 				<div class="container">
-					<form method="post" action="/CreateItem" enctype="multipart/form-data">
+					<!-- Error message -->
+					<p th:if="${itemError}" th:text="${itemError}" class="error"/>
+				
+					<form method="POST" th:action="@{/CreateItem}" enctype="multipart/form-data">
 					    <!-- Item Name -->
 					    <label for="itemName">Item Name:</label>
 					    <input type="text" name="itemName" id="itemName" placeholder="Item Name" required minlength="1" maxlength="255">

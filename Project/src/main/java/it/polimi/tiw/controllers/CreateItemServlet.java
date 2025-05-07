@@ -13,15 +13,18 @@ import it.polimi.tiw.DAOs.ImageDAO;
 import it.polimi.tiw.DAOs.ItemDAO;
 import it.polimi.tiw.beans.Image;
 import it.polimi.tiw.beans.Item;
+import it.polimi.tiw.exceptions.MissingParametersException;
 import it.polimi.tiw.exceptions.NoSuchImageException;
 import it.polimi.tiw.utils.DBUtil;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
+@MultipartConfig
 @WebServlet("/CreateItem")
 public class CreateItemServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -57,9 +60,39 @@ public class CreateItemServlet extends HttpServlet {
 		// Reading data from Request
 		String itemName = request.getParameter("itemName");
 		String itemDescription = request.getParameter("itemDescription");
-		int itemPrice = Integer.parseInt(request.getParameter("price"));
-		int creatorId = Integer.parseInt(request.getParameter("creatorId"));
+		String itemPriceParam = request.getParameter("price");
+		String creatorIdParam = request.getParameter("creatorId");
 		Part imagePart = request.getPart("image");
+		
+		System.out.println("itemName: " + itemName);
+		System.out.println("itemDescription: " + itemDescription);
+		System.out.println("itemPrice: " + itemPriceParam);
+		System.out.println("creatorId: " + creatorIdParam);
+		
+		// Checking the data
+		try {
+			checkData(
+				itemName,
+				itemDescription,
+				itemPriceParam,
+				creatorIdParam,
+				imagePart
+			);
+		} catch (MissingParametersException e) {
+			// Missing some data
+			
+			// Return the User to the same page, with an error message
+			request.setAttribute("itemError", "Missing parameters. Please try again...");
+			
+			request.getRequestDispatcher("/sell").forward(request, response);
+			
+			return;
+		}
+		
+		
+		
+		int itemPrice =  Integer.parseInt(itemPriceParam);
+		int creatorId = Integer.parseInt(creatorIdParam);
         String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
         
         // Saving Image
@@ -107,11 +140,36 @@ public class CreateItemServlet extends HttpServlet {
 				}
         	}
         	
+        	// Returns the User to the Sell Page
+        	response.sendRedirect(request.getContextPath() + "/sell");
+        	
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+	}
+	
+	/*
+	 * Checks if all the data is here or if something is missing
+	 * Throws MissingParametersException if something is missing
+	 * Returns nothing if everything is ok
+	 */
+	private void checkData(
+			String itemName,
+			String itemDescription,
+			String itemPriceParam,
+			String creatorIdParam,
+			Part imagePart
+	) throws MissingParametersException {
+		if (itemName == null || itemName.isBlank() 
+				|| itemDescription == null || itemDescription.isBlank() 
+				|| itemPriceParam == null || itemPriceParam.isBlank() 
+				||	creatorIdParam == null || creatorIdParam.isBlank()
+				|| imagePart == null
+		) {
+			throw new MissingParametersException();
+		}
 	}
 	
 	/*
