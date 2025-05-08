@@ -9,7 +9,7 @@ import it.polimi.tiw.beans.User;
 import it.polimi.tiw.exceptions.DuplicateUsernameException;
 import it.polimi.tiw.exceptions.MismatchingPasswordsException;
 import it.polimi.tiw.exceptions.MissingParametersException;
-import it.polimi.tiw.utils.DBUtil;
+import it.polimi.tiw.utils.EnvUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -34,7 +34,7 @@ public class SignUpServlet extends HttpServlet {
 	 */
     public void init() throws ServletException {
     	try {
-    		connection = DBUtil.getConnection();
+    		connection = EnvUtil.getConnection();
     	} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ServletException("Database error", e);

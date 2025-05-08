@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import it.polimi.tiw.DAOs.UserDAO;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.exceptions.*;
-import it.polimi.tiw.utils.DBUtil;
+import it.polimi.tiw.utils.EnvUtil;
 
 /**
  * Servlet implementation class LoginServlet
@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 	 */
     public void init() throws ServletException {
     	try {
-    		connection = DBUtil.getConnection();
+    		connection = EnvUtil.getConnection();
     	} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ServletException("Database error", e);

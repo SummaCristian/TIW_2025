@@ -41,7 +41,7 @@ public class AuctionDetailsPageServlet extends HttpServlet {
     public void init() {
     	// Initializes the Database connection
     	try {
-			connection = DBUtil.getConnection();
+			connection = EnvUtil.getConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

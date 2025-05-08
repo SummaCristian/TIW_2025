@@ -11,11 +11,9 @@ import java.sql.SQLException;
 
 import it.polimi.tiw.DAOs.ImageDAO;
 import it.polimi.tiw.DAOs.ItemDAO;
-import it.polimi.tiw.beans.Image;
 import it.polimi.tiw.beans.Item;
 import it.polimi.tiw.exceptions.MissingParametersException;
-import it.polimi.tiw.exceptions.NoSuchImageException;
-import it.polimi.tiw.utils.DBUtil;
+import it.polimi.tiw.utils.EnvUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -37,7 +35,7 @@ public class CreateItemServlet extends HttpServlet {
     public void init() {
     	// Initializes the Database connection
     	try {
-			connection = DBUtil.getConnection();
+			connection = EnvUtil.getConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,11 +62,6 @@ public class CreateItemServlet extends HttpServlet {
 		String creatorIdParam = request.getParameter("creatorId");
 		Part imagePart = request.getPart("image");
 		
-		System.out.println("itemName: " + itemName);
-		System.out.println("itemDescription: " + itemDescription);
-		System.out.println("itemPrice: " + itemPriceParam);
-		System.out.println("creatorId: " + creatorIdParam);
-		
 		// Checking the data
 		try {
 			checkData(
@@ -89,56 +82,73 @@ public class CreateItemServlet extends HttpServlet {
 			return;
 		}
 		
+		// Everything is ok, continue
 		
-		
+		// Parse Integer Data from Strings
 		int itemPrice =  Integer.parseInt(itemPriceParam);
 		int creatorId = Integer.parseInt(creatorIdParam);
-        String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
         
-        // Saving Image
-        String uploadPath = getServletContext().getRealPath("/images/uploaded_images");
-
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
-        }
-
-        String fullImagePath = uploadPath + File.separator + fileName;
-        try (InputStream fileContent = imagePart.getInputStream()) {
-            Files.copy(fileContent, Paths.get(fullImagePath), StandardCopyOption.REPLACE_EXISTING);
-        }
-        
-        String relativePath = "images/uploaded_images/" + fileName;
-        
-        ImageDAO imageDao = new ImageDAO(connection);
         try {
-			// Saves the Image into the Database
-        	int imageId = imageDao.insert(fileName, relativePath);
-			
-			// Creates the Image Bean
-        	Image image = new Image(imageId, fileName, relativePath);
-        	
-        	// Adds the Item to the Database
+        	// Adds the Item to the Database (without Image)
         	Item item = new Item();
         	item.setItemName(itemName);
         	item.setItemDescription(itemDescription);
         	item.setPrice(itemPrice);
-        	item.setImage(image);
+        	// Image is null
         	item.setCreatorId(creatorId);
         	
         	ItemDAO itemDao = new ItemDAO(connection);
         	
+        	int itemId = 0;
+        	
         	try {
-        		itemDao.insert(item);
+        		itemId = itemDao.insert(item);
         	} catch (SQLException e) {
-        		// Something went wrong with the INSERT for the Item, so we DELETE the Image from its Table
-        		try {
-					imageDao.delete(item.getImage().getId());
-				} catch (NoSuchImageException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+        		// Something went wrong with the INSERT for the Item
+        		e.printStackTrace();
         	}
+        	
+        	// Item inserted correctly, now it needs to save the Image
+        	
+        	// Generate unique filename based on Item ID
+        	String originalFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+        	String extension = "";
+        	int dotIndex = originalFileName.lastIndexOf('.');
+        	if (dotIndex >= 0) {
+        	    extension = originalFileName.substring(dotIndex);
+        	} else {
+        		// Missing extension, failsafe
+        		extension = ".png";
+        	}
+        	
+        	String fileName = "item_" + itemId + extension;
+            
+            // Saving Image
+            String uploadPath = getServletContext().getRealPath("/images/uploaded_images");
+
+            // Checks the saving directory
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+            	// Folder doesn't exist, creating it now
+                uploadDir.mkdirs();
+            }
+
+            String fullImagePath = uploadPath + File.separator + fileName;
+            
+            try (InputStream fileContent = imagePart.getInputStream()) {
+            	// Write the File into the Folder
+                Files.copy(fileContent, Paths.get(fullImagePath), StandardCopyOption.REPLACE_EXISTING);
+            }
+            
+            String relativePath = "images/uploaded_images/" + fileName;
+            
+            ImageDAO imageDao = new ImageDAO(connection);
+            
+            // Saves the Image into the Database
+        	int imageId = imageDao.insert(fileName, relativePath);
+        	
+        	// Updates the Item to include the Image's ID
+        	itemDao.addImageToItem(itemId, imageId);
         	
         	// Returns the User to the Sell Page
         	response.sendRedirect(request.getContextPath() + "/sell");
