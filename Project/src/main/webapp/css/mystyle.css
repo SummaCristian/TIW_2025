@@ -336,6 +336,9 @@ hr {
     max-width: 100%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    
+	border: 2px solid transparent;
+	box-sizing: border-box;
 }
 
 .item-container:hover {
@@ -344,11 +347,14 @@ hr {
 
 .item-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, auto));
+    grid-template-columns: repeat(auto-fill, minmax(140px, auto));
     gap: 1.5rem;
     padding: 0;
     margin-top: 1rem;
     list-style: none;
+    
+    overflow: visible;
+    contain: layout-paint;
 }
 
 
@@ -544,13 +550,13 @@ form {
     background-color: #e0f2fe;
     border: 2px solid #3b82f6;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-    transform: scale(1.03);
+    transform: scale(0.97);
 }
 
 /* Show checkmark overlay */
 .item-checkbox:checked + .item-container .checkmark-overlay {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(0.97);
 }
 
 .checkmark-overlay {

@@ -440,16 +440,16 @@
 							            </svg>
 							        </div>
 							
-							        <!-- Image -->
-							        <img th:if="${item.image != null}"
-							             th:src="@{/{file}(file=${item.image.filePath})}"
-							             class="item-image" />
-							        <img th:unless="${item.image != null}"
-							             th:src="@{/resources/placeholder.svg}"
-							             class="item-image" />
-							
-							        <!-- Text -->
 							        <div class="text-group">
+							        	<!-- Image -->
+								        <img th:if="${item.image != null}"
+								             th:src="@{/{file}(file=${item.image.filePath})}"
+								             class="item-image" />
+								        <img th:unless="${item.image != null}"
+								             th:src="@{/resources/placeholder.svg}"
+								             class="item-image" />
+								
+								        
 							            <p class="item-detail" th:text="${item.itemName}">Item Name</p>
 							            <p class="item-detail-secondary" th:text="'€' + ${item.price}">€123</p>
 							            <p class="item-detail-tertiary">Item #<span th:text="${item.id}">1</span></p>
