@@ -37,8 +37,10 @@ public class GeneralFilter implements Filter {
                                 path.equals("/LoginServlet") || path.equals("/SignUpServlet") || 
                                 path.equals("/app") || path.equals("/logout") || path.equals("/error");
 
-        boolean isStaticResource = path.startsWith("/css/") || path.startsWith("/images/") || 
-        		path.startsWith("/js/") || path.startsWith("/uploads");
+        boolean isStaticResource = path.startsWith("/css/") || 
+        		path.startsWith("/js/") || path.startsWith("/resources/") ;
+        
+        boolean isImageServlet = path.startsWith("/images/");
 
         // 💥 Special case: ROOT path
         if (path.equals("/")) {
@@ -46,7 +48,7 @@ public class GeneralFilter implements Filter {
             return;
         }
 
-        if (loggedIn || isPublicPath || isStaticResource) {
+        if (loggedIn || isPublicPath || isStaticResource || isImageServlet) {
             // ✅ User is allowed to proceed
             chain.doFilter(request, response);
         } else {

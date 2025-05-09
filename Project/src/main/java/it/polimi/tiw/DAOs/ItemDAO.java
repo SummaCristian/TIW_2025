@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,10 @@ public class ItemDAO {
 	/*
 	 * Inserts the data passed as parameters into the Database as an Item
 	 */
-	public void insert(Item item) throws SQLException {
+	public int insert(Item item) throws SQLException {
+		// The ID assigned to the Item by the Database
+		int itemId = 0;
+		
 		// Stores the old value for the AUTO COMMIT feature
 		boolean oldAutoCommit = conn.getAutoCommit();
 		
@@ -67,19 +71,91 @@ public class ItemDAO {
 			
 			try {
 				// Compiles the Statement
-				statement = conn.prepareStatement(query);
+				statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 				// Sets the Statement variables
 				statement.setString(1, item.getItemName());
 				statement.setString(2, item.getItemDescription());
 				statement.setInt(3, item.getPrice());
-				statement.setInt(4, item.getImage().getId());
+				
+				// Image could be NULL or an actual ID
+	            if (item.getImage() != null) {
+	            	// There already it an Image, put the ID into the statement
+	                statement.setInt(4, item.getImage().getId());
+	            } else {
+	            	// No Image, put NULL into that field
+	                statement.setNull(4, java.sql.Types.INTEGER);
+	            }
+				
 				statement.setInt(5, item.getCreatorId());
 				
 				// Runs the Statement
 				statement.executeUpdate();
+				
+				// The Statement returns the set of ID(s) assigned to the inserted Item(s)
+				try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+				    if (generatedKeys.next()) {
+				    	// The ID that was assigned to the Item
+				        itemId = generatedKeys.getInt(1);
+				    } else {
+				    	// Error
+				        throw new SQLException("Creating Item failed, no ID obtained.");
+				    }
+				}
 			} finally {
 				// Closes the PreparedStatement
-				statement.close();
+				if (statement != null) {
+					statement.close();
+				}
+			}
+			
+			// Manual COMMIT
+			conn.commit();
+		} catch (SQLException e) {
+			// If something goes wrong it does a ROLLBACK
+			conn.rollback();
+			throw e;
+		} finally {
+			// After finishing the INSERT, it RESETS the AUTO COMMIT to how it was before
+			conn.setAutoCommit(oldAutoCommit);
+		}
+		
+		// Returns the ID assigned to the Item
+		return itemId;
+	}
+	
+	/*
+	 * Updates an Item record by adding an Image to it
+	 */
+	public void addImageToItem(int itemId, int imageId) throws SQLException {
+		// Stores the old value for the AUTO COMMIT feature
+		boolean oldAutoCommit = conn.getAutoCommit();
+		
+		try {
+			// Disables AUTO COMMIT
+			conn.setAutoCommit(false);
+			
+			// Prepares the Statement
+			String query = "UPDATE Items "
+					+ "SET ImageId = ? "
+					+ "WHERE Id = ?";
+			
+			PreparedStatement statement = null;
+			
+			try {
+				// Compiles the Statement
+				statement = conn.prepareStatement(query);
+				// Sets the Statement variables
+				statement.setInt(1, imageId);
+				statement.setInt(2, itemId);
+				
+				// Runs the Statement
+				statement.executeUpdate();
+				
+			} finally {
+				// Closes the PreparedStatement
+				if (statement != null) {
+					statement.close();
+				}
 			}
 			
 			// Manual COMMIT

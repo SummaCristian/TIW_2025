@@ -124,7 +124,7 @@ public class CreateItemServlet extends HttpServlet {
         	String fileName = "item_" + itemId + extension;
             
             // Saving Image
-            String uploadPath = getServletContext().getRealPath("/images/uploaded_images");
+            String uploadPath = EnvUtil.getUploadDir();
 
             // Checks the saving directory
             File uploadDir = new File(uploadPath);

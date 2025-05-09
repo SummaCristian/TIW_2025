@@ -164,7 +164,7 @@
 											
 											<!-- If image missing -->
 											<img th:unless="${item.image != null}"
-											     th:src="@{/images/placeholder.svg}"
+											     th:src="@{/resources/placeholder.svg}"
 											     alt="No Image Available"
 											     class="item-image" />
 	
@@ -304,7 +304,7 @@
 		                                    
 		                                    <!-- If image missing -->
 		                                    <img th:unless="${item.image != null}"
-		                                         th:src="@{/images/placeholder.svg}"
+		                                         th:src="@{/resources/placeholder.svg}"
 		                                         alt="No Image Available"
 		                                         class="item-image" />
 		
@@ -445,7 +445,7 @@
 							             th:src="@{/{file}(file=${item.image.filePath})}"
 							             class="item-image" />
 							        <img th:unless="${item.image != null}"
-							             th:src="@{/images/placeholder.svg}"
+							             th:src="@{/resources/placeholder.svg}"
 							             class="item-image" />
 							
 							        <!-- Text -->
