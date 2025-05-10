@@ -55,6 +55,7 @@ public class CreateAuctionServlet extends HttpServlet {
 	 * Forwards back to the Sell page with errors if there is any.
 	 * Forwards back to the Sell page with no error if everything is ok. 
 	 */
+    @Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Reading data from Request
 		String minIncrementParam = request.getParameter("minIncrement");
@@ -105,7 +106,6 @@ public class CreateAuctionServlet extends HttpServlet {
         	// Checks if all the Items are NOT part of other Auctions and if they all belong to the User
         	for (Item item: items) {
         		if (item.getAuctionId() != null) {
-        			System.out.println("Item #" + item.getId() + " in Auction #" + item.getAuctionId());
         			throw new ItemAlreadyInAuctionException();
         		}
         		
@@ -138,7 +138,7 @@ public class CreateAuctionServlet extends HttpServlet {
 			return;
 			
 		} catch (NoItemsSelectedException e) {
-			// The Items were selected to be put into this Auction
+			// No Items were selected to be put into this Auction
 
 			// Return the User to the same page, with an error message
 			forwardWithError(request, response, "Auctions must contain at least 1 Item. Please try again...");
@@ -179,18 +179,10 @@ public class CreateAuctionServlet extends HttpServlet {
         		0,
         		basePrice,
         		minIncrement,
-        		null,
         		closingDate,
         		sellerId,
         		false,
-        		null,
-        		null,
-        		null,
-        		null,
-        		null,
-        		"",
-        		items,
-        		null
+        		items
         	);
         	
         	// Inserts the Auction in the Database
@@ -202,8 +194,8 @@ public class CreateAuctionServlet extends HttpServlet {
         	response.sendRedirect(request.getContextPath() + "/auction-details?id=" + auctionId);
         	
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "A database error occurred. Please try again later.");
 		}
 
 	}

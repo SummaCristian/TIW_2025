@@ -1,6 +1,5 @@
 package it.polimi.tiw.beans;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -79,6 +78,36 @@ public class Auction {
     	
     	this.items = items;
     	this.offers = offers;
+    }
+    
+ // Partial Constructor - No Nullable elements
+    public Auction(
+    	int id,
+    	int basePrice,
+    	int minIncrement,
+    	LocalDateTime closingDate,
+    	int sellerId,
+    	boolean isSold,
+    	List<Item> items
+    ) {
+    	this.id = id;
+    	this.basePrice = basePrice;
+    	this.minIncrement = minIncrement;
+    	this.highestBid = null;
+    	this.closingDate = closingDate;
+    	this.sellerId = sellerId;
+    	this.isSold = isSold;
+    	this.buyerId = null;
+    	this.finalPrice = null;
+    	
+    	this.sellerUsername = null;
+    	this.buyerUsername = null;
+    	this.buyerAddress = null;
+    	
+    	this.remainingTime = null;
+    	
+    	this.items = items;
+    	this.offers = null;
     }
 
     // --- Getters and Setters ---
