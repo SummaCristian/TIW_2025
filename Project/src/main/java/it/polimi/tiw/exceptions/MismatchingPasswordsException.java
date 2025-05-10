@@ -3,7 +3,7 @@ package it.polimi.tiw.exceptions;
 public class MismatchingPasswordsException extends Exception {
     
     public MismatchingPasswordsException() {
-        super("Incorrect password");
+        super("Password and Confirm Password where not the same");
     }
 
     public MismatchingPasswordsException(String message) {
