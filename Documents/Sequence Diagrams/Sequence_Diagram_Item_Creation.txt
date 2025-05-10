@@ -1,0 +1,57 @@
+title Item Creation
+
+actor User
+
+participantgroup #lightgreen Sell
+participant SellPageServlet
+participant SellPage.html
+end
+
+participant CreateItemServlet
+
+participant ItemDAO #orange
+participant ImageDAO #orange
+
+database DB #green
+
+# Access to Sell Page
+User-->SellPageServlet:
+note over SellPageServlet: Loads data
+SellPageServlet->SellPage.html: process()
+SellPage.html-->User: Rendered Page
+
+# The User Submits the Item Creation Form
+User->SellPage.html: Submit Form
+SellPage.html->CreateItemServlet: forward()
+
+alt Missing Parameters
+# Malformed Request
+CreateItemServlet->SellPageServlet: forward() [with error]
+SellPageServlet->SellPage.html: process() [with error]
+SellPage.html-->User: Rendered Page [with error]
+
+else Success
+# Everything ok
+
+# Inserts the Item in the DB
+CreateItemServlet->ItemDAO: insert(item)
+ItemDAO->DB: INSERT
+# DB returns the Item's ID (to put in the Image)
+DB-->>ItemDAO: ID
+ItemDAO-->CreateItemServlet: return itemId
+
+# Saves the Image file
+box over CreateItemServlet #yellow : Saves the image file
+
+# Inserts the Image in the DB
+CreateItemServlet->ImageDAO: insert(image) [with ItemId]
+ImageDAO->DB: INSERT
+DB-->>ImageDAO:
+ImageDAO-->CreateItemServlet: return
+
+# Returns the User to the Sell Page
+CreateItemServlet->SellPageServlet: redirect()
+SellPageServlet->SellPage.html: process() [updated]
+SellPage.html-->User: Rendered Page [updated]
+
+end

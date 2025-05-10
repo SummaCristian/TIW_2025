@@ -1,0 +1,67 @@
+title Auction Creation
+
+actor User
+
+participantgroup #lightgreen Sell
+participant SellPageServlet
+participant SellPage.html
+end
+
+participant CreateAuctionServlet
+
+participant AuctionDAO #orange
+participant ItemDAO #orange
+
+database DB #green
+
+# Access to Sell Page
+User-->SellPageServlet:
+note over SellPageServlet: Loads data
+SellPageServlet->SellPage.html: process()
+SellPage.html-->User: Rendered Page
+
+# The User Submits the Auction Creation Form
+User->SellPage.html: Submit Form
+SellPage.html->CreateAuctionServlet: forward()
+
+# Retrieves the Items from the DB using the IDs in the request
+CreateAuctionServlet->ItemDAO: getItemsByIDs(itemIds)
+ItemDAO->DB: QUERY
+DB-->>ItemDAO:
+ItemDAO-->CreateAuctionServlet: return items
+
+alt Missing Parameters, Malformed Request
+# Malformed Request
+CreateAuctionServlet->SellPageServlet: forward() [with error]
+SellPageServlet->SellPage.html: process() [with error]
+SellPage.html-->User: Rendered Page [with error]
+
+else Success
+# Everything ok
+
+# Inserts the Auction in the DB
+CreateAuctionServlet->AuctionDAO: insert(auction)
+AuctionDAO->DB: INSERT
+# DB returns the Auction's ID (to put in the Items)
+DB-->>AuctionDAO: ID
+AuctionDAO-->CreateAuctionServlet: return auctionId
+
+# Updates the Item's AuctionId reference
+CreateAuctionServlet->ItemDAO: updateItemsAuctionID(items, auctionId)
+
+loop Item item: items
+ItemDAO->DB: UPDATE
+DB-->>ItemDAO:
+
+end
+
+ItemDAO-->AuctionDAO: return
+AuctionDAO-->CreateAuctionServlet: return auctionId
+
+
+# Returns the User to the Sell Page
+CreateAuctionServlet->SellPageServlet: redirect()
+SellPageServlet->SellPage.html: process() [updated]
+SellPage.html-->User: Rendered Page [updated]
+
+end
