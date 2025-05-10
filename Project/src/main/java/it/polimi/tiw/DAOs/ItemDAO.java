@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import it.polimi.tiw.beans.*;
 
@@ -41,7 +42,7 @@ public class ItemDAO {
 			results.getInt("Price"),
 			image,
 			results.getInt("CreatorId"),
-			results.getInt("AuctionId")
+			results.getObject("AuctionId", Integer.class) // Could be NULL
 		);
 		
 		
@@ -124,6 +125,44 @@ public class ItemDAO {
 	}
 	
 	/*
+	 * Updates the Items.AuctionId in a list of Items to the ID passed as parameter
+	 * DOES NOT TOUCH AUTO-COMMIT.
+	 * DOES NOT COMMIT.
+	 * DOES NOT ROLLBACK.
+	 * These things MUST be handled by the caller.
+	 */
+	public void updateItemsAuctionId(List<Item> items, int auctionId) throws SQLException {
+		// Prepares the Statement
+		String query = "UPDATE Items SET AuctionId = ? WHERE Id = ?";
+		
+		PreparedStatement statement = null;
+		
+		try {
+			// Compiles the Statement
+			statement = conn.prepareStatement(query);
+			
+			// Creates a copy of the Statement for each Item to update
+			for (Item item: items) {
+				// Sets the Statement variables
+	            statement.setInt(1, auctionId);
+	            statement.setInt(2, item.getId());
+	            
+	            // Adds the Statement to the Batch
+	            statement.addBatch();
+	        }
+			
+			// Executes ALL the Statements in the Batch
+	        statement.executeBatch();
+	        
+		} finally {
+			// Closes the PreparedStatement
+			if (statement != null) {
+				statement.close();
+			}
+		}
+	}
+	
+	/*
 	 * Updates an Item record by adding an Image to it
 	 */
 	public void addImageToItem(int itemId, int imageId) throws SQLException {
@@ -192,6 +231,70 @@ public class ItemDAO {
 			statement = conn.prepareStatement(query);
 			// Sets the Query variable
 			statement.setInt(1, auctionId);
+			
+			try {
+				// Runs the Query
+				results = statement.executeQuery();
+				
+				while (results.next()) {
+					// Builds the Bean object
+					Item item = buildItem(results);
+					
+					// Adds the Bean into the List
+					items.add(item);
+				}
+			} finally {
+				// Closes the ResultSet
+				if(results != null) {
+					results.close();
+				}
+			}
+		} finally {
+			// Closes the PreparedStatement
+			if(statement != null) {
+				statement.close();
+			}
+		}
+		
+		// Returns the List
+		return items;
+	}
+	
+	/*
+	 * Returns a List of all Items whose ID is contained in the List passed as parameterr.
+	 * Returns an empty List if there is no Item to be found.
+	 */
+	public List<Item> getItemsByIDs(List<Integer> itemIds) throws SQLException {
+		// Prepares the List to return
+		List<Item> items = new ArrayList<>();
+		
+		// Edge case: empty list. No need to run a query for that
+		if (itemIds == null || itemIds.isEmpty()) {
+			return items;
+		}
+		
+		// Prepares the Query Statement
+		
+		// Turns the List of IDs into a String of PLACEHOLDERS (?), separated by COMMA (,)
+		String placeholders = itemIds.stream()
+                						.map(id -> "?")
+                						.collect(Collectors.joining(", "));
+		
+		String query = "SELECT Items.*, Images.* "
+				+ "FROM Items "
+				+ "JOIN Images ON Items.ImageId = Images.Id "
+				+ "WHERE Items.Id IN (" + placeholders + ")";
+		
+		PreparedStatement statement = null;
+		ResultSet results = null;
+		
+		try {
+			// Compiles the Query
+			statement = conn.prepareStatement(query);
+			// Sets all the Query variables
+			for (int i = 0; i < itemIds.size(); i++) {
+				statement.setInt(i + 1, itemIds.get(i));
+			}
 			
 			try {
 				// Runs the Query

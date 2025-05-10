@@ -30,7 +30,7 @@ public class CreateItemServlet extends HttpServlet {
 	// Database connection
 	private Connection connection = null;
 	
-	// Initializes the Thymeleaf Template Engine, used to render the HTML page, and the DB connection
+	// Initializes the DB connection
     @Override
     public void init() {
     	// Initializes the Database connection

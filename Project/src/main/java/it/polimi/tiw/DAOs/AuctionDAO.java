@@ -1,9 +1,12 @@
 package it.polimi.tiw.DAOs;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,12 +37,21 @@ public class AuctionDAO {
 		List<Offer> offersInAuction,
 		String formattedRemainingTime
 	) throws SQLException {
+    	// Parses the ClosingDate
+    	Timestamp timestamp = results.getTimestamp("ClosingDate");
+		LocalDateTime closingDate = null;
+
+		if (timestamp != null) {
+		    closingDate = timestamp.toLocalDateTime();
+		}
+    	
+		// Creates the Bean
     	Auction auction = new Auction(
             results.getInt("Id"),
             results.getInt("BasePrice"),
             results.getInt("MinIncrement"),
             results.getObject("HighestBid") != null ? results.getInt("HighestBid") : null,
-            results.getDate("ClosingDate"),
+            closingDate,
             results.getInt("SellerId"),
             results.getBoolean("IsSold"),
             results.getObject("BuyerId") != null ? results.getInt("BuyerId") : null,
@@ -81,6 +93,81 @@ public class AuctionDAO {
         sb.append(minutes).append(" minute").append(minutes != 1 ? "s" : "");
 
         return sb.toString();
+    }
+    
+    /*
+     * Inserts the Auction passed as parameter into the Database.
+     * Returns the Auction's ID, assigned by the DB.
+     * If the Auction Bean contains Items, those Items are updated so that they reference
+     * this Auction in their AuctionId.
+     */
+    public int insert(Auction auction) throws SQLException {
+    	// The ID assigned by the DB
+    	int auctionId = 0;
+    	
+    	// Stores the old value for the AUTO COMMIT feature
+    	boolean oldAutoCommit = conn.getAutoCommit();
+    	
+    	try {
+			// Disables AUTO COMMIT
+			conn.setAutoCommit(false);
+			
+			// Prepares the Statement
+			String query = "INSERT "
+					+ "INTO Auctions (BasePrice, MinIncrement, ClosingDate, SellerId) "
+					+ "VALUES (?, ?, ?, ?)";
+			
+			PreparedStatement statement = null;
+			
+			try {
+				// Compiles the Statement
+				statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+				// Sets the Statement variables
+				statement.setInt(1, auction.getBasePrice());
+				statement.setInt(2, auction.getMinIncrement());
+				statement.setTimestamp(3, Timestamp.valueOf(auction.getClosingDate()));
+				statement.setInt(4, auction.getSellerId());
+				
+				// Runs the Statement
+				statement.executeUpdate();
+				
+				// The Statement returns the set of ID(s) assigned to the inserted Item(s)
+				try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+				    if (generatedKeys.next()) {
+				    	// The ID that was assigned to the Auction
+				        auctionId = generatedKeys.getInt(1);
+				    } else {
+				    	// Error
+				        throw new SQLException("Creating Auction failed, no ID obtained.");
+				    }
+				}
+			} finally {
+				// Closes the PreparedStatement
+				if (statement != null) {
+					statement.close();
+				}
+			}
+			
+			// If the Auction contains Items, updates them with this Auction ID just retrieved
+			if (auction.getItems() != null && !auction.getItems().isEmpty()) {
+			    ItemDAO itemDAO = new ItemDAO(conn);
+			    itemDAO.updateItemsAuctionId(auction.getItems(), auctionId);
+			}
+			
+			// Manual COMMIT
+			conn.commit();
+		} catch (SQLException e) {
+			// If something goes wrong it does a ROLLBACK
+			// This ROLLBACK also rolls back the Items.AuctionId update
+			conn.rollback();
+			throw e;
+		} finally {
+			// After finishing the INSERT, it RESETS the AUTO COMMIT to how it was before
+			conn.setAutoCommit(oldAutoCommit);
+		}
+		
+		// Returns the ID assigned to the Auction    	
+    	return auctionId;
     }
     
     /*
@@ -133,7 +220,6 @@ public class AuctionDAO {
     				long diffMillis = closingTime - loginTime;
 
     				String formattedRemainingTime = formatRemainingTime(diffMillis);
-
     				
     				// Builds the Bean object
     	            auction = buildAuction(results, itemsInAuction, offersInAuction, formattedRemainingTime);

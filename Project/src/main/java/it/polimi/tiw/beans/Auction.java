@@ -1,6 +1,7 @@
 package it.polimi.tiw.beans;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /*
@@ -15,7 +16,7 @@ public class Auction {
     private int basePrice;
     private int minIncrement;
     private Integer highestBid;    // Nullable
-    private Date closingDate;
+    private LocalDateTime closingDate;
     private int sellerId;
     private boolean isSold;
     private Integer buyerId;       // Nullable
@@ -48,7 +49,7 @@ public class Auction {
     	int basePrice,
     	int minIncrement,
     	Integer highestBid,
-    	Date closingDate,
+    	LocalDateTime closingDate,
     	int sellerId,
     	boolean isSold,
     	Integer buyerId,
@@ -114,11 +115,11 @@ public class Auction {
         this.highestBid = highestBid;
     }
 
-    public Date getClosingDate() {
+    public LocalDateTime getClosingDate() {
         return closingDate;
     }
 
-    public void setClosingDate(Date closingDate) {
+    public void setClosingDate(LocalDateTime closingDate) {
         this.closingDate = closingDate;
     }
 
