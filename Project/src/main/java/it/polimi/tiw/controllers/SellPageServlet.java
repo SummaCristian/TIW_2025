@@ -15,6 +15,7 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 
@@ -106,6 +107,17 @@ public class SellPageServlet extends HttpServlet {
     	}
     	
     	request.setAttribute("availableItems", availableItems);
+    	
+    	// A Default Date and Time for the Create Auction form's ClosingDate.
+    	// Set at tomorrow at 3:00 PM (15:00)
+    	LocalDateTime tomorrowAt3PM = LocalDateTime.now()
+    		    .plusDays(1)
+    		    .withHour(15)
+    		    .withMinute(0)
+    		    .withSecond(0)
+    		    .withNano(0);
+
+    	request.setAttribute("defaultClosingDate", tomorrowAt3PM);
     	
     	
     	// Render the page

@@ -351,39 +351,56 @@
 					<p th:if="${itemError}" th:text="${itemError}" class="error"/>
 				
 					<form method="POST" th:action="@{/CreateItem}" enctype="multipart/form-data">
-					    <!-- Item Name -->
-					    <label for="itemName">Item Name:</label>
-					    <input type="text" name="itemName" id="itemName" placeholder="Item Name" required minlength="1" maxlength="255">
-					
-					    <!-- Description -->
-					    <label for="itemDescription">Description:</label>
-					    <textarea name="itemDescription" id="itemDescription" rows="4" placeholder="Description" required maxlength="1023"></textarea>
-					
-					    <!-- Price -->
-					    <label for="price">Price (€):</label>
-					    <input type="number" name="price" id="price" placeholder="___ €" required min="1" step="1">
-					
-					    <!-- Image Upload -->
-					    <div class="form-group">
-						  <input type="file" name="image" id="image" accept="image/*" required class="hidden-file-input" />
-							  <label for="image" class="custom-file-upload">
-							    <svg class="icon upload-icon" viewBox="0 0 24 24">
-							        <path d="M16 5h6"/>
-							        <path d="M19 2v6"/>
-							        <path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/>
-							        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
-							        <circle cx="9" cy="9" r="2"/>
-							    </svg>
-							    <p>Click to upload image</p>
-							</label>
-
+						<div class="form-columns">
+							<!-- LEFT HALF: Text Entries -->
+							<div class="form-left">
+							    <!-- Item Name -->
+							    <label for="itemName">Item Name:</label>
+							    <input type="text" name="itemName" id="itemName" placeholder="Name" required minlength="1" maxlength="255">
+							
+							    <!-- Description -->
+							    <label for="itemDescription">Description:</label>
+							    <textarea name="itemDescription" id="itemDescription" rows="4" placeholder="Description" required maxlength="1023"></textarea>
+							
+							    <!-- Price -->
+							    <label for="price">Price (€):</label>
+							    <input type="number" name="price" id="price" placeholder="___ €" required min="1" step="1">
+						    </div>
+						
+							<!-- RIGHT HALF: Image Upload -->
+						    <div class="form-right">
+						    	<!-- Image Upload -->
+							    <div class="form-group">
+								    <label for="image" class="custom-file-upload">
+										<input type="file" name="image" id="image" accept="image/*" required class="hidden-file-input" />
+										<svg class="icon upload-icon" viewBox="0 0 24 24">
+											<path d="M16 5h6"/>
+											<path d="M19 2v6"/>
+											<path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/>
+											<path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+											<circle cx="9" cy="9" r="2"/>
+										</svg>
+										<p>Click to upload image</p>
+									</label>
+		
+								</div>
+							</div>
+							
 						</div>
 					    
 					    <!-- Hidden User ID  -->
 					    <input type="hidden" name="creatorId" th:value="${user.id}" />
 					
 					    <!-- Submit -->
-					    <button type="submit" class="button-primary">Create Item</button>
+					    <button type="submit" class="button-primary">
+					    	<svg class="icon" viewBox="0 0 24 24">
+						    	<path d="M12 8v8"/>
+						    	<path d="M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41L13.7 2.71a2.41 2.41 0 0 0-3.41 0z"/>
+						    	<path d="M8 12h8"/>
+					    	</svg>
+					    	
+					    	<p>Create Item</p>
+					    </button>
 					</form>
 					
 				</div>
@@ -394,7 +411,7 @@
 		<div>
 			<!-- Title -->
 			<div>
-				<div class="title-with-image">			
+				<div class="title-with-image">
 				    <svg class="icon" viewBox="0 0 24 24">
 				    	<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/>
 				    	<line x1="12" x2="12" y1="8" y2="16"/>
@@ -412,16 +429,26 @@
 					<p th:if="${auctionError}" th:text="${auctionError}" class="error"/>
 				
 					<form method="post" th:action="@{/CreateAuction}">
-					    <!-- Minimum Increment -->
-					    <label for="minIncrement">Minimum Increment (€):</label>
-					    <input type="number" name="minIncrement" id="minIncrement" placeholder="___ €" required min="1" step="1">
-					    
-					    <!-- Closing Date -->
-					    <label for="closingDate">Closing Date:</label>
-					    <input type="datetime-local" name="closingDate" id="closingDate" required>
-					    
+						<div class="form-columns">
+							<!-- LEFT HALF: Minimum Increment -->
+							<div class="form-column">
+							    <!-- Minimum Increment -->
+							    <label for="minIncrement">Minimum Increment (€):</label>
+							    <input type="number" name="minIncrement" id="minIncrement" placeholder="___ €" required min="1" step="1">
+							</div>
+							
+							<!-- RIGHT HALF: Closing Date -->    
+							<div class="form-column">
+							    <!-- Closing Date -->
+							    <label for="closingDate">Closing Date:</label>
+							    <input type="datetime-local" name="closingDate" id="closingDate" 
+							    	th:value="${#temporals.format(defaultClosingDate, 'yyyy-MM-dd\'T\'HH:mm')}" required>
+						    </div>
+							    
+						</div>
+						
 					    <!-- Select Items -->
-						<p class="section-title">Select Items for this Auction:</p>
+						<label>Select Items for this Auction:</label>
 						
 						<ul class="item-list" th:if="${!#lists.isEmpty(availableItems)}">
 						    <li th:each="item : ${availableItems}">
@@ -470,7 +497,14 @@
 						<button type="submit" class="button-primary"
 						        th:disabled="${#lists.isEmpty(availableItems)}"
 						        th:classappend="${#lists.isEmpty(availableItems)} ? ' disabled-button' : ''">
-						    Create Auction
+						    
+						    <svg class="icon" viewBox="0 0 24 24">
+						    	<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/>
+						    	<line x1="12" x2="12" y1="8" y2="16"/>
+						    	<line x1="8" x2="16" y1="12" y2="12"/>
+						    </svg>
+						    
+						    <p>Create Auction</p>
 						</button>
 					</form>
 				</div>
