@@ -80,7 +80,7 @@ public class Auction {
     	this.offers = offers;
     }
     
- // Partial Constructor - No Nullable elements
+    // Partial Constructor - No Nullable elements
     public Auction(
     	int id,
     	int basePrice,

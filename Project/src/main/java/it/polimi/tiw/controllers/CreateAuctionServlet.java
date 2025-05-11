@@ -15,6 +15,7 @@ import it.polimi.tiw.beans.Item;
 import it.polimi.tiw.exceptions.InvalidDateException;
 import it.polimi.tiw.exceptions.ItemAlreadyInAuctionException;
 import it.polimi.tiw.exceptions.MissingParametersException;
+import it.polimi.tiw.exceptions.NegativeIncrementException;
 import it.polimi.tiw.exceptions.NoItemsSelectedException;
 import it.polimi.tiw.exceptions.NotOwningItemException;
 import it.polimi.tiw.utils.EnvUtil;
@@ -84,6 +85,11 @@ public class CreateAuctionServlet extends HttpServlet {
 			// Parse Integer Data from Strings
 			minIncrement = Integer.parseInt(minIncrementParam);
 			sellerId = Integer.parseInt(sellerIdParam);
+			
+			// Checks if the minIncrement is > 0
+			if (minIncrement <= 0) {
+				throw new NegativeIncrementException();
+			}
 			
 			// Parse Date from String
 			closingDate = parseDate(closingDateParam);
@@ -161,6 +167,14 @@ public class CreateAuctionServlet extends HttpServlet {
 
 			return;
 			
+		} catch (NegativeIncrementException e) {
+			// The Minimum Increment passed was <= 0
+			
+			// Return the User to the same page, with an error message
+			forwardWithError(request, response, "An Auction's minimum increment can't be 0 or negative. Please try again...");
+			
+			return;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "A database error occurred. Please try again later.");
@@ -215,6 +229,10 @@ public class CreateAuctionServlet extends HttpServlet {
 				|| closingDate == null || closingDate.isBlank() 
 				|| sellerId == null || sellerId.isBlank()
 		) {
+			throw new MissingParametersException();
+		}
+		
+		if (itemIds == null || itemIds.length == 0) {
 			throw new MissingParametersException();
 		}
 		
