@@ -4,7 +4,12 @@ actor User
 
 participantgroup #lightgreen Sell
 participant SellPageServlet
-participant SellPage.html
+participant SellPage.html #aqua
+end
+
+participantgroup #lightgreen Auction Details
+participant AuctionDetailsPageServlet
+participant AuctionDetailsPage.html #aqua
 end
 
 participant CreateAuctionServlet
@@ -59,9 +64,9 @@ ItemDAO-->AuctionDAO: return
 AuctionDAO-->CreateAuctionServlet: return auctionId
 
 
-# Returns the User to the Sell Page
-CreateAuctionServlet->SellPageServlet: redirect()
-SellPageServlet->SellPage.html: process() [updated]
-SellPage.html-->User: Rendered Page [updated]
+# Redirects the User to the Auction Details Page
+CreateAuctionServlet->AuctionDetailsPageServlet: redirect()
+AuctionDetailsPageServlet->AuctionDetailsPage.html: process()
+AuctionDetailsPage.html-->User: Rendered Page
 
 end
