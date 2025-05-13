@@ -28,8 +28,8 @@ public class GeneralFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        String contextPath = req.getContextPath(); // ex: /Project_TIW
-        String path = req.getRequestURI().substring(contextPath.length()); // ex: /css/mystyle.css
+        String contextPath = req.getContextPath();
+        String path = req.getRequestURI().substring(contextPath.length());
 
         boolean loggedIn = (req.getSession(false) != null) && (req.getSession(false).getAttribute("user") != null);
 
@@ -42,30 +42,24 @@ public class GeneralFilter implements Filter {
         
         boolean isImageServlet = path.startsWith("/images/");
 
-        // 💥 Special case: ROOT path
+        // Special case: ROOT path
         if (path.equals("/")) {
-            res.sendRedirect(contextPath + "/app"); // Redirect root to /app
+            res.sendRedirect(contextPath + "/app");
             return;
         }
 
         if (loggedIn || isPublicPath || isStaticResource || isImageServlet) {
-            // ✅ User is allowed to proceed
+            // User is allowed to proceed
             chain.doFilter(request, response);
         } else {
-            // ❌ Not logged in and trying to access something protected
+            // Not logged in and trying to access something protected
         	
         	// Create a temporary session
         	HttpSession session = req.getSession();
         	// Add the error message
         	session.setAttribute("loginError", "Please log in to continue");
-        	// Redirect
+        	// Redirect to the website
         	res.sendRedirect(contextPath + "/app");
         }
-    }
-
-
-    @Override
-    public void destroy() {
-        // (Optional) Nothing needed here
     }
 }
