@@ -35,7 +35,7 @@ public class LogOutServlet extends HttpServlet {
 		signOut(request);
 		
 		// Forward back to the Login Screen
-		request.getRequestDispatcher("/").forward(request, response);
+		response.sendRedirect(request.getContextPath() + "/app");
 	}
 
 	
