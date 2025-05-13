@@ -8,188 +8,204 @@
 </head>
 
 <body>
-	<div class="formdiv">
-		<!--  Top buttons  -->
-		<div class=top-buttons>
-			<!-- HomePage link-->
-			<a th:href="@{/sell}" class="button-link">
-				<svg class="icon" viewBox="0 0 24 24">
-					<path d="m15 18-6-6 6-6" />
-				</svg>
-				
-				<span>Sell</span>
-			</a>
-			
-			<a th:href="@{/logout}" class="button-link button-link-destructive">
-				<svg class="icon" viewBox="0 0 24 24">
-					<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-					<polyline points="16 17 21 12 16 7"/>
-					<line x1="21" x2="9" y1="12" y2="12"/>
-				</svg>
-				
-				<span>Logout</span>
-			</a>
-		</div>
-		
-		<!--  Title  -->
-		<h1 th:text="'Auction #' + ${auction.id}">Auction Details></h1>
-
-		<div>
-			<div class="auction-header">
-	             <div>	
-	                <p class="auction-detail auction-detail-secondary">Current Highest Bid:</p>
-	
-	                <div th:if="${auction.highestBid != null}" class="offer-pill">
-	                	<svg class="icon" viewBox="0 0 24 24">
-	                    	<circle cx="12" cy="12" r="10"/>
-	                        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
-	                         <path d="M12 18V6"/>
-	                    </svg>
-	                    <p th:text="${auction.highestBid + '€'}">500€</p>
-	           		</div>
-	
-	                 <div th:if="${auction.highestBid == null}" class="offer-pill offer-pill-no-offers">
-	                     <svg class="icon" viewBox="0 0 24 24">
-	                         <circle cx="12" cy="12" r="10"/>
-	                         <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
-	                         <path d="M12 18V6"/>
-	                    </svg>
-	                     <p>No offers yet...</p>
-	                 </div>
-	             </div>
-	
-	             <div>
-	                 <div class="closed-status-container">
-	                     <div th:if="${auction.isSold}" class="closed-status closed-status-closed">
-	                         <svg class="icon" viewBox="0 0 24 24">
-	                         	<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
-	                             <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-	                         </svg>
-	                         <p>Closed</p>
-	                     </div>
-	
-	                     <div th:unless="${auction.isSold}" class="closed-status closed-status-open">
-	                         <svg class="icon" viewBox="0 0 24 24">
-	                             <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
-	                             <path d="M7 11V7a5 5 0 0 1 9.9-1"/>
-	                         </svg>
-	                         <p>Open</p>
-	                    </div>
-	                 </div>
-	
-	                 <div class="remaining-time-container">
-	                     <p class="auction-detail auction-detail-secondary">Remaining time:</p>
-	                     
-	                     <div class="remaining-time-pill">
-	                         <svg class="icon" viewBox="0 0 24 24">
-	                             <path d="M5 22h14"/>
-	                             <path d="M5 2h14"/>
-	                             <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/>
-	                             <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
-	                         </svg>
-	                         <p th:text="${auction.remainingTime}">1d, 2h, 35min</p>
-	                     </div>
-	                 </div>
-	             </div>
-	         </div>
-	
-			<div class="auction-header">
-				<!-- Items inside the Auction -->
-				<div class="title-with-image">			
-				    <svg class="icon" viewBox="0 0 24 24">
-				        <path d="M2.97 12.92A2 2 0 0 0 2 14.63v3.24a2 2 0 0 0 .97 1.71l3 1.8a2 2 0 0 0 2.06 0L12 19v-5.5l-5-3-4.03 2.42Z"/>
-				        <path d="m7 16.5-4.74-2.85"/>
-				        <path d="m7 16.5 5-3"/>
-				        <path d="M7 16.5v5.17"/>
-				        <path d="M12 13.5V19l3.97 2.38a2 2 0 0 0 2.06 0l3-1.8a2 2 0 0 0 .97-1.71v-3.24a2 2 0 0 0-.97-1.71L17 10.5l-5 3Z"/>
-				        <path d="m17 16.5-5-3"/>
-				        <path d="m17 16.5 4.74-2.85"/>
-				        <path d="M17 16.5v5.17"/>
-				        <path d="M7.97 4.42A2 2 0 0 0 7 6.13v4.37l5 3 5-3V6.13a2 2 0 0 0-.97-1.71l-3-1.8a2 2 0 0 0-2.06 0l-3 1.8Z"/>
-				        <path d="M12 8 7.26 5.15"/>
-				        <path d="m12 8 4.74-2.85"/>
-				        <path d="M12 13.5V8"/>
-				    </svg>
-				    
-				    <div class="text-group">	
-				        <h2 class="subsection-title">Items</h2>
-				        <p class="header-description">Products included in this closed auction</p>
-				    </div>
-				</div>
-			</div>
-				
-			<ul class="item-list">
-			 	<li th:each="item : ${auction.items}" class="item-container">
-			 		<!--  Image  -->
-					<div class="text-group">
-						<!-- If image exists -->
-						<img th:if="${item.image != null}"
-			     			th:src="@{/{file}(file=${item.image.filePath})}"
-			     			alt="Item Image"
-			     			class="item-image" />
-	
-						<!-- If image missing -->
-						<img th:unless="${item.image != null}"
-						th:src="@{/images/placeholder.svg}"
-						alt="No Image Available"
-						class="item-image" />
-	
-									                 			
-						<p class="item-detail" th:text="${item.itemName}">Example Item Name</p>
-						<p class="item-detail-tertiary">Item #<span th:text="${item.id}">1</span></p>
-					</div>
-				</li>
-			</ul>
-			
-			<!-- Offers -->
-			<div class="auction-header">
-				<!-- Offers for the Auction -->
-				<div class="title-with-image">			
-				    <svg class="icon" viewBox="0 0 24 24">
-				    	<path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/>
-				    	<path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/>
-				    	<path d="m2 16 6 6"/>
-				    	<circle cx="16" cy="9" r="2.9"/>
-				    	<circle cx="6" cy="5" r="3"/>
-			    	</svg>
-				    
-				    <div class="text-group">	
-				        <h2 class="subsection-title">Offers</h2>
-				        <p class="header-description">Offers made by the Users</p>
-				    </div>
-				</div>
-			</div>
-			
-			<ul>
-				<li th:each="offer : ${auction.offers}">
-					<div class="offer-container">
-						<div class="offer-details-container">
-							<!-- User icon -->
-							<svg class="icon" viewBox="0 0 24 24">
-								<circle cx="12" cy="12" r="10"/>
-								<circle cx="12" cy="10" r="3"/>
-								<path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/>
-							</svg>
-							
-							<div class="offer-details-text-container">
-								<p th:text="${offer.username}" class="offer-username">Username</p>
-								
-								<p th:text="'#' + ${offer.id} + ' • ' + ${offer.offerDate}" class="offer-details">#1 • 01/01/2025 08:00</p>
-							</div>
-						</div>
+	<div class="formcard-wrapper">
+		<div class="form-columns">
+			<div class="formcard-wide fade-scale-in">
+				<!--  Top buttons  -->
+				<div class=top-buttons>
+					<!-- HomePage link-->
+					<a th:href="@{/sell}" class="button-link">
+						<svg class="icon" viewBox="0 0 24 24">
+							<path d="m15 18-6-6 6-6" />
+						</svg>
 						
-						<div class="offer-pill">
-		                	<svg class="icon" viewBox="0 0 24 24">
-		                    	<circle cx="12" cy="12" r="10"/>
-		                        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
-		                        <path d="M12 18V6"/>
-		                    </svg>
-		                    
-		                    <p th:text="${auction.highestBid + '€'}">500€</p>
-		           		</div>
+						<span>Sell</span>
+					</a>
+					
+					<a th:href="@{/logout}" class="button-link button-link-destructive">
+						<svg class="icon" viewBox="0 0 24 24">
+							<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+							<polyline points="16 17 21 12 16 7"/>
+							<line x1="21" x2="9" y1="12" y2="12"/>
+						</svg>
+						
+						<span>Logout</span>
+					</a>
+				</div>
+			
+				<!--  Title  -->
+				<h1 th:text="'Auction #' + ${auction.id}">Auction Details></h1>
+		
+				<div>
+					<div class="auction-header">
+			             <div>	
+			                <p class="auction-detail auction-detail-secondary">Current Highest Bid:</p>
+			
+			                <div th:if="${auction.highestBid != null}" class="offer-pill">
+			                	<svg class="icon" viewBox="0 0 24 24">
+			                    	<circle cx="12" cy="12" r="10"/>
+			                        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
+			                         <path d="M12 18V6"/>
+			                    </svg>
+			                    <p th:text="${auction.highestBid + '€'}">500€</p>
+			           		</div>
+			
+			                 <div th:if="${auction.highestBid == null}" class="offer-pill offer-pill-no-offers">
+			                     <svg class="icon" viewBox="0 0 24 24">
+			                         <circle cx="12" cy="12" r="10"/>
+			                         <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
+			                         <path d="M12 18V6"/>
+			                    </svg>
+			                     <p>No offers yet...</p>
+			                 </div>
+			             </div>
+			
+			             <div>
+			                 <div class="closed-status-container">
+			                     <div th:if="${auction.isSold}" class="closed-status closed-status-closed">
+			                         <svg class="icon" viewBox="0 0 24 24">
+			                         	<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+			                             <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+			                         </svg>
+			                         <p>Closed</p>
+			                     </div>
+			
+			                     <div th:unless="${auction.isSold}" class="closed-status closed-status-open">
+			                         <svg class="icon" viewBox="0 0 24 24">
+			                             <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+			                             <path d="M7 11V7a5 5 0 0 1 9.9-1"/>
+			                         </svg>
+			                         <p>Open</p>
+			                    </div>
+			                 </div>
+			
+			                 <div class="remaining-time-container">
+			                     <p class="auction-detail auction-detail-secondary">Remaining time:</p>
+			                     
+			                     <div class="remaining-time-pill">
+			                         <svg class="icon" viewBox="0 0 24 24">
+			                             <path d="M5 22h14"/>
+			                             <path d="M5 2h14"/>
+			                             <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/>
+			                             <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>
+			                         </svg>
+			                         <p th:text="${auction.remainingTime}">1d, 2h, 35min</p>
+			                     </div>
+			                 </div>
+			             </div>
+			         </div>
+		
+					<div class="auction-header">
+						<!-- Items inside the Auction -->
+						<div class="title-with-image">			
+						    <svg class="icon" viewBox="0 0 24 24">
+						        <path d="M2.97 12.92A2 2 0 0 0 2 14.63v3.24a2 2 0 0 0 .97 1.71l3 1.8a2 2 0 0 0 2.06 0L12 19v-5.5l-5-3-4.03 2.42Z"/>
+						        <path d="m7 16.5-4.74-2.85"/>
+						        <path d="m7 16.5 5-3"/>
+						        <path d="M7 16.5v5.17"/>
+						        <path d="M12 13.5V19l3.97 2.38a2 2 0 0 0 2.06 0l3-1.8a2 2 0 0 0 .97-1.71v-3.24a2 2 0 0 0-.97-1.71L17 10.5l-5 3Z"/>
+						        <path d="m17 16.5-5-3"/>
+						        <path d="m17 16.5 4.74-2.85"/>
+						        <path d="M17 16.5v5.17"/>
+						        <path d="M7.97 4.42A2 2 0 0 0 7 6.13v4.37l5 3 5-3V6.13a2 2 0 0 0-.97-1.71l-3-1.8a2 2 0 0 0-2.06 0l-3 1.8Z"/>
+						        <path d="M12 8 7.26 5.15"/>
+						        <path d="m12 8 4.74-2.85"/>
+						        <path d="M12 13.5V8"/>
+						    </svg>
+						    
+						    <div class="text-group">	
+						        <h2 class="subsection-title">Items</h2>
+						        <p class="header-description">Products included in this closed auction</p>
+						    </div>
+						</div>
 					</div>
-				</li>
-			</ul>
+					
+					<ul class="item-list">
+					 	<li th:each="item : ${auction.items}" class="item-container">
+					 		<!--  Image  -->
+							<div class="text-group">
+								<!-- If image exists -->
+								<img th:if="${item.image != null}"
+					     			th:src="@{/{file}(file=${item.image.filePath})}"
+					     			alt="Item Image"
+					     			class="item-image" />
+			
+								<!-- If image missing -->
+								<img th:unless="${item.image != null}"
+								th:src="@{/images/placeholder.svg}"
+								alt="No Image Available"
+								class="item-image" />
+			
+											                 			
+								<p class="item-detail" th:text="${item.itemName}">Example Item Name</p>
+								<p class="item-detail-tertiary" th:text="${item.itemDescription}">Example Item Description</p>
+								<p class="item-detail-secondary" th:text="${item.price} + €">€123</p>
+								<p class="item-detail-tertiary">Item #<span th:text="${item.id}">1</span></p>
+							</div>
+						</li>
+					</ul>
+				
+				</div>
+					
+			</div>
+			
+			<div class="formcard-narrow slide-in-right">
+				<div class="offer-scrollview">
+					<!-- Offers -->
+					<div class="auction-header">
+						<!-- Offers for the Auction -->
+						<div class="title-with-image">			
+						    <svg class="icon" viewBox="0 0 24 24">
+						    	<path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/>
+						    	<path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/>
+						    	<path d="m2 16 6 6"/>
+						    	<circle cx="16" cy="9" r="2.9"/>
+						    	<circle cx="6" cy="5" r="3"/>
+					    	</svg>
+						    
+						    <div class="text-group">	
+						        <h2 class="subsection-title">Offers</h2>
+						        <p class="header-description">Offers made by the Users</p>
+						    </div>
+						</div>
+					</div>
+					
+					<ul class="offer-list">
+						<li th:each="offer : ${auction.offers}" class="offer-bubble"
+		    				th:classappend="${offer.userId} == ${session.user.id} ? ' offer-bubble-own' : ''"
+		   					>
+							<div>
+								<div class="offer-details-container" th:classappend="${offer.userId} == ${session.user.id} ? ' offer-details-own' : ''">
+									<!-- User icon -->
+									<svg class="icon" viewBox="0 0 24 24">
+										<circle cx="12" cy="12" r="10"/>
+										<circle cx="12" cy="10" r="3"/>
+										<path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/>
+									</svg>
+									
+									<div class="offer-details-text-container">
+										<p th:text="${offer.username}" class="offer-username">Username</p>
+										
+										<p th:text="'#' + ${offer.id} + ' • ' + ${#dates.format(offer.offerDate, 'dd MMM HH:mm')}" class="offer-details">#1 • 01/01/2025 08:00</p>
+									</div>
+								</div>
+								
+								<div class="offer-content" th:classappend="${offer.userId} == ${session.user.id} ? ' offer-content-own' : ''">
+									<div class="offer-pill" th:classappend="${offer.userId} == ${session.user.id} ? ' offer-pill-own' : ''">
+					                	<svg class="icon" viewBox="0 0 24 24">
+					                    	<circle cx="12" cy="12" r="10"/>
+					                        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
+					                        <path d="M12 18V6"/>
+					                    </svg>
+					                    
+					                    <p th:text="${auction.highestBid + '€'}">500€</p>
+					           		</div>
+				           		</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>
