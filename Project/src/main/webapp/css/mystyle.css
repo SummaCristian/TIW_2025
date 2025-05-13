@@ -6,7 +6,7 @@ body {
 }
 
 .formdiv {
-  width: 100%;
+  width: 95%;
   max-width: 1200px;
   margin: 30px auto;
   background-color: white;
@@ -42,6 +42,13 @@ h1, h2 {
   flex-wrap: wrap;
   gap: 2rem;
   justify-content: space-between;
+}
+
+.form-columns-packed {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2rem;
+	justify-content: flex-start;
 }
 
 .form-column {

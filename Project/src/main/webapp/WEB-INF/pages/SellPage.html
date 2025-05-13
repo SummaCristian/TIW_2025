@@ -60,6 +60,8 @@
 	                			<div class="auction-header">
 	                    			<div>
 	                        			<p class="auction-detail">Auction #<span th:text="${auction.id}">1</span></p>
+	                        			
+	                        			<p class="item-detail-secondary" th:text="'Base price: ' + ${auction.basePrice} + €">€123</p>
 	
 	                        			<p class="auction-detail auction-detail-secondary">Current Highest Bid:</p>
 	
@@ -80,8 +82,9 @@
 	                           				</svg>
 	                            			<p>No offers yet...</p>
 	                        			</div>
+	                        			
 	                    			</div>
-	
+	                    				
 	                    			<div>
 	                        			<div class="closed-status-container">
 	                            			<div th:if="${auction.isSold}" class="closed-status closed-status-closed">
@@ -170,6 +173,7 @@
 	
 											                 			
 	                            			<p class="item-detail" th:text="${item.itemName}">Example Item Name</p>
+											<p class="item-detail-secondary" th:text="${item.price} + €">€123</p>
 	                            			<p class="item-detail-tertiary">Item #<span th:text="${item.id}">1</span></p>
 	                        			</div>
 	                   				</li>
@@ -309,6 +313,7 @@
 		                                         class="item-image" />
 		
 		                                    <p class="item-detail" th:text="${item.itemName}">Example Item Name</p>
+											<p class="item-detail-secondary" th:text="${item.price} + €">€123</p>
 		                                    <p class="item-detail-tertiary">Item #<span th:text="${item.id}">1</span></p>
 		                                </div>
 		                            </li>
@@ -429,7 +434,7 @@
 					<p th:if="${auctionError}" th:text="${auctionError}" class="error"/>
 				
 					<form method="post" th:action="@{/CreateAuction}">
-						<div class="form-columns">
+						<div class="form-columns-packed">
 							<!-- LEFT HALF: Minimum Increment -->
 							<div class="form-column">
 							    <!-- Minimum Increment -->
@@ -477,7 +482,7 @@
 								
 								        
 							            <p class="item-detail" th:text="${item.itemName}">Item Name</p>
-							            <p class="item-detail-secondary" th:text="'€' + ${item.price}">€123</p>
+							            <p class="item-detail-secondary" th:text="${item.price} + €">€123</p>
 							            <p class="item-detail-tertiary">Item #<span th:text="${item.id}">1</span></p>
 							        </div>
 							    </label>
