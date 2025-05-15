@@ -118,6 +118,7 @@ public class AuctionDAO {
 					+ "VALUES (?, ?, ?, ?)";
 			
 			PreparedStatement statement = null;
+			ResultSet generatedKeys = null;
 			
 			try {
 				// Compiles the Statement
@@ -131,8 +132,10 @@ public class AuctionDAO {
 				// Runs the Statement
 				statement.executeUpdate();
 				
-				// The Statement returns the set of ID(s) assigned to the inserted Item(s)
-				try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+				// The Statement returns the set of ID(s) assigned to the inserted Auction(s)
+				try {
+					generatedKeys = statement.getGeneratedKeys();
+					
 				    if (generatedKeys.next()) {
 				    	// The ID that was assigned to the Auction
 				        auctionId = generatedKeys.getInt(1);
@@ -140,7 +143,13 @@ public class AuctionDAO {
 				    	// Error
 				        throw new SQLException("Creating Auction failed, no ID obtained.");
 				    }
+				} finally {
+					// Closes the ResultSet
+					if (generatedKeys != null) {
+						generatedKeys.close();
+					}
 				}
+				
 			} finally {
 				// Closes the PreparedStatement
 				if (statement != null) {
