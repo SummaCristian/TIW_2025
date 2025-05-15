@@ -58,6 +58,41 @@
 			                    </svg>
 			                     <p>No offers yet...</p>
 			                 </div>
+			                 
+			                 
+			                 <!-- Buyer User's data -->
+			                 <div class="auction-header" th:if="${auction.isSold}">
+				                 <div class="text-group">
+				                 	<p class="auction-detail auction-detail-secondary">Bought by</p>
+			                 	
+				                 	<div class="title-with-image">
+				                 		<svg class="icon" viewBox="0 0 24 24">
+											<circle cx="12" cy="12" r="10"/>
+											<circle cx="12" cy="10" r="3"/>
+											<path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/>
+										</svg>
+									
+										<p th:text="${auction.buyerUsername}" class="auction-detail">Buyer Username</p>
+									</div>
+									<p th:text="${auction.buyerAddress}" class="auction-detail-secondary">Buyer Address</p>
+							 	</div>
+				             </div>
+				             
+				             <!-- Other Auction data -->
+				             <div class="auction-header">
+				             	<div>
+					             	<p class="auction-detail auction-detail-secondary">Base price: <span th:text="${auction.basePrice}"></span>€</p>
+	                                
+	                                <p class="auction-detail auction-detail-secondary">Minimum increment: <span th:text="${auction.minIncrement}"></span>€</p>
+	                                
+	                                <p class="auction-detail auction-detail-secondary">
+	                                	Sold by
+	                                	<span th:if="${auction.sellerId != session.user.id}" th:text="': ' + ${auction.sellerUsername}">: Seller Username</span>
+	                                	<span th:unless="${auction.sellerId != session.user.id}"> you</span>
+                                	</p>
+	                            </div>
+				             </div>
+			                 
 			             </div>
 			
 			             <div>

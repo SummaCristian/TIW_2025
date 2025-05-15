@@ -83,6 +83,13 @@
 	                            			<p>No offers yet...</p>
 	                        			</div>
 	                        			
+	                        			<p class="auction-detail auction-detail-secondary">
+		                                	Sold by
+		                                	<span th:if="${auction.sellerId != session.user.id}" th:text="': ' + ${auction.sellerUsername}">: Seller Username</span>
+		                                	<span th:unless="${auction.sellerId != session.user.id}"> you</span>
+	                                	</p>
+		                       
+	                        			
 	                    			</div>
 	                    				
 	                    			<div>
@@ -224,7 +231,12 @@
 		                                
 		                                <p class="auction-detail auction-detail-secondary">Minimum increment: <span th:text="${auction.minIncrement}"></span>€</p>
 		                                
-		                                <p class="auction-detail auction-detail-secondary">Seller: <span th:text="${auction.sellerUsername}">Seller Username</span></p>
+		                                <p class="auction-detail auction-detail-secondary">
+		                                	Sold by
+		                                	<span th:if="${auction.sellerId != session.user.id}" th:text="': ' + ${auction.sellerUsername}">: Seller Username</span>
+		                                	<span th:unless="${auction.sellerId != session.user.id}"> you</span>
+	                                	</p>
+		                       
 		                            </div>
 		
 		                            <div>
