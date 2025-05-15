@@ -1,4 +1,4 @@
-package it.polimi.tiw.controllers.auth;
+package it.polimi.tiw.controllers.pageServlets;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
