@@ -248,6 +248,12 @@ ul:not(.item-list):not(.offer-list) > li {
   gap: 0.5rem;
 }
 
+.offer-list::after {
+  content: '';
+  display: block;
+  height: 8rem;
+}
+
 
 p {
     margin: 8px 0;
