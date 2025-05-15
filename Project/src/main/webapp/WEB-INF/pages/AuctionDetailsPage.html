@@ -91,6 +91,18 @@
 			                         </svg>
 			                         <p th:text="${auction.remainingTime}">1d, 2h, 35min</p>
 			                     </div>
+			                     
+			                    <p class="auction-detail auction-detail-secondary"
+								   th:if="${!auction.isSold and auction.remainingTime != 'Closed'}">
+								    Open until:
+								</p>
+								
+								<p class="auction-detail auction-detail-secondary"
+								   th:if="${!auction.isSold and auction.remainingTime != 'Closed'}"
+								   th:text="${#temporals.format(auction.closingDate, 'dd MMM yyyy - HH:mm')}">
+								</p>
+
+			                     
 			                 </div>
 			             </div>
 			         </div>
