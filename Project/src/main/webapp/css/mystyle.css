@@ -648,6 +648,22 @@ hr {
     box-shadow: 0 6px 12px rgba(220, 38, 38, 0.25);
 }
 
+button.button-primary.destructive.disabled-button {
+    background-color: #ddd !important;
+    color: #888 !important;
+    cursor: not-allowed;
+    box-shadow: none !important;
+    pointer-events: none;
+}
+
+button.button-primary.destructive.disabled-button svg {
+    stroke: #888 !important;
+}
+
+button.button-primary.destructive.disabled-button p {
+    color: #888 !important;
+}
+
 .button-primary p {
 	color: inherit;
 	margin: 0;
