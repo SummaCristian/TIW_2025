@@ -10,7 +10,7 @@ CREATE TABLE Users (
         Psw VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(Psw)) > 0),
         -- Anagraphics
         FirstName VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(FirstName)) > 0),
-        Surname VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(Surname)) > 0),
+        LastName VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(LastName)) > 0),
         -- User Address, used for shipping of Auctioned Items
         Address VARCHAR(255) NOT NULL CHECK (LENGTH(TRIM(Address)) > 0)
 );
@@ -31,9 +31,10 @@ CREATE TABLE Auctions (
     BasePrice INT NOT NULL CHECK (BasePrice > 0),
     -- Minimum Allowed Increment for Offers
     MinIncrement INT NOT NULL CHECK (MinIncrement > 0),
-    -- Current Highest Offer
-    -- NULL if no Offers have been made yet
-    HighestBid INT CHECK (HighestBid IS NULL OR HighestBid >= 0),
+	-- The ID of the current Highest Offer for this Auction
+	-- NULL if no Offers have been made yet
+	HighestBidId INT,
+    -- It will be added at the end of the SCRIPT via an ALTER TABLE
     -- Ending Date for the Auction
     ClosingDate DATETIME NOT NULL,
     -- The ID of the User who created the Auction
@@ -52,6 +53,30 @@ CREATE TABLE Auctions (
 	FOREIGN KEY (SellerId) REFERENCES Users(Id)
 		-- Users with Auctions can't delete their profile
 		ON DELETE RESTRICT
+        ON UPDATE CASCADE
+	-- FOREIGN KEY (HighestBidId) REFERENCES Offers(Id)
+		-- In case the Offer is deleted, the Auction's reference is set to NULL
+		-- ON DELETE SET NULL
+		-- ON UPDATE CASCADE
+);
+
+-- Stores the Offers made by the Users inside Auctions
+CREATE TABLE Offers (
+    Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    -- The ID of the User who made the Offer
+    UserId INT NOT NULL,
+    -- The ID of the Auction where the Offered has been made
+    AuctionId INT NOT NULL,
+    -- The Price offered by the User
+    OfferedPrice INT NOT NULL CHECK (OfferedPrice > 0),
+    -- The Date and Time the Offer has been made
+    OfferDate DATETIME NOT NULL,
+    -- Foreign Keys
+    FOREIGN KEY (UserId) REFERENCES Users(Id)
+		ON DELETE CASCADE
+        ON UPDATE CASCADE,
+	FOREIGN KEY (AuctionId) REFERENCES Auctions(Id)
+		ON DELETE CASCADE
         ON UPDATE CASCADE
 );
 
@@ -94,25 +119,12 @@ CREATE TABLE Items (
         ON UPDATE CASCADE
 );
 
--- Stores the Offers made by the Users inside Auctions
-CREATE TABLE Offers (
-    Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    -- The ID of the User who made the Offer
-    UserId INT NOT NULL,
-    -- The ID of the Auction where the Offered has been made
-    AuctionId INT NOT NULL,
-    -- The Price offered by the User
-    OfferedPrice INT NOT NULL CHECK (OfferedPrice > 0),
-    -- The Date and Time the Offer has been made
-    OfferDate DATETIME NOT NULL,
-    -- Foreign Keys
-    FOREIGN KEY (UserId) REFERENCES Users(Id)
-		ON DELETE CASCADE
-        ON UPDATE CASCADE,
-	FOREIGN KEY (AuctionId) REFERENCES Auctions(Id)
-		ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
+-- Add Auctions.HighestBid
+ALTER TABLE Auctions
+	ADD CONSTRAINT fk_highest_bid
+	FOREIGN KEY (HighestBidId) REFERENCES Offers(Id)
+		ON DELETE SET NULL
+		ON UPDATE CASCADE;
 
 -- Indexes for performance
 CREATE INDEX idx_offers_auction ON Offers(AuctionId);

@@ -50,7 +50,7 @@ public class AuctionDAO {
             results.getInt("Id"),
             results.getInt("BasePrice"),
             results.getInt("MinIncrement"),
-            results.getObject("HighestBid") != null ? results.getInt("HighestBid") : null,
+            results.getObject("HighestBidId") != null ? results.getInt("HighestBidId") : null,
             closingDate,
             results.getInt("SellerId"),
             results.getBoolean("IsSold"),
@@ -177,6 +177,17 @@ public class AuctionDAO {
 		
 		// Returns the ID assigned to the Auction    	
     	return auctionId;
+    }
+    
+    /*
+     * Updates the Auction.HighestBid to the Auction whose ID is passed as parameter.
+     * DOES NOT TOUCH AUTO-COMMIT.
+     * DOES NOT COMMIT.
+     * DOES NOT ROLLBACK.
+     * These things MUST be handled by the caller.
+     */
+    public void updateAuctionsHighestBid(int AuctionId, int offer) {
+    	
     }
     
     /*

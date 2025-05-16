@@ -82,6 +82,8 @@ public class SellPageServlet extends HttpServlet {
 			
 		} catch (SQLException e) {
 			// Leave openAuctions to null, letting Thymeleaf handle the error
+			
+			e.printStackTrace();
 		}
     	
     	request.setAttribute("openAuctions", openAuctions);
