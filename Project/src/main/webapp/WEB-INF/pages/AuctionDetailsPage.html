@@ -251,7 +251,7 @@
 									<div class="offer-details-text-container">
 										<p th:text="${offer.username}" class="offer-username">Username</p>
 										
-										<p th:text="'#' + ${offer.id} + ' • ' + ${#dates.format(offer.offerDate, 'dd MMM HH:mm')}" class="offer-details">#1 • 01/01/2025 08:00</p>
+										<p th:text="'#' + ${offer.id} + ' • ' + ${#temporals.format(offer.offerDate, 'dd MMM HH:mm')}" class="offer-details">
 									</div>
 								</div>
 								
@@ -263,7 +263,7 @@
 					                        <path d="M12 18V6"/>
 					                    </svg>
 					                    
-					                    <p th:text="${auction.highestBid + '€'}">500€</p>
+					                    <p th:text="${offer.offeredPrice} + '€'">500€</p>
 					           		</div>
 				           		</div>
 							</div>
@@ -279,9 +279,12 @@
 				
 				<div class="offer-overlay">
 					<div>
+						<!-- Error message -->
+						<p th:if="${offerError}" th:text="${offerError}" class="error"/>
+					
 						<p class="auction-detail-secondary" th:text="'Min Increment: ' + ${auction.minIncrement} + '€'">Min Increment: 10€</p>					
 						
-					  	<form action="/SubmitOffer" method="post" class="offer-form">
+					  	<form action="MakeOffer" method="post" class="offer-form">
 						  	<input type="hidden" name="userId" th:value="${session.user.id}" />
 						  	<input type="hidden" name="auctionId" th:value="${auction.id}" />
 						

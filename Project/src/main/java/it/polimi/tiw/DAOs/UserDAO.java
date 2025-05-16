@@ -24,7 +24,7 @@ public class UserDAO {
            	results.getInt("Id"),
             results.getString("Username"),
             results.getString("FirstName"),
-            results.getString("Surname"),
+            results.getString("LastName"),
             results.getString("Address")
         );
     	
@@ -162,6 +162,55 @@ public class UserDAO {
     }
     
     /*
+     * Returns a single User based on the ID passed as parameter.
+     * Throws UserNotFoundException if the ID is not associated to any User.
+     */
+    public User getUserById(int userId) throws UserNotFoundException, SQLException {
+    	User user = null;
+    	
+    	// Prepares the Query Statement
+    	String query = "SELECT * FROM Users WHERE Id = ?";
+    	
+    	PreparedStatement statement = null;
+    	ResultSet results = null;
+    	
+    	try {
+    		// Compiles the Query
+    		statement = conn.prepareStatement(query);
+    		// Sets the Query variable
+    		statement.setInt(1, userId);
+    		
+    		try {
+    			// Runs the Query
+    			results = statement.executeQuery();
+    			
+    			if (results.next()) {
+    				// Found the User
+    				user = buildUser(results);
+    			} else {
+    				// User does not exist
+    				throw new UserNotFoundException();
+    			}
+    			
+    		} finally {
+    			// Closes the ResultSet
+    			if (results != null) {
+    				results.close();
+    			}
+    		}
+    		
+    	} finally {
+    		// Closes the PreparedStatement
+    		if (statement != null) {
+    			statement.close();
+    		}
+    	}
+    	
+    	// Returns the User Bean
+    	return user;
+    }
+    
+    /*
      * Inserts the User passed as parameter inside the Database.
      * Since User Beans can't contain the actual password, it must be passed as parameter too.
      * Passwords are hashed inside this method, NEEDS to be passed in clear.
@@ -178,7 +227,7 @@ public class UserDAO {
     		conn.setAutoCommit(false);
     		
     		// Prepares the Statement
-        	String query = "INSERT INTO Users (Username, Psw, FirstName, Surname, Address) VALUES (?, ?, ?, ?, ?)";
+        	String query = "INSERT INTO Users (Username, Psw, FirstName, LastName, Address) VALUES (?, ?, ?, ?, ?)";
         	
         	PreparedStatement statement = null;
 

@@ -1,6 +1,6 @@
 package it.polimi.tiw.beans;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /*
  * This is a Java Bean corresponding to the Database's Offers table.
@@ -12,7 +12,7 @@ public class Offer {
     private int userId;
     private int auctionId;
     private int offeredPrice;
-    private Timestamp offerDate;
+    private LocalDateTime offerDate;
     
     private String username;
     
@@ -28,7 +28,7 @@ public class Offer {
     	String username,
     	int auctionId,
     	int offeredPrice,
-    	Timestamp offerDate
+    	LocalDateTime offerDate
     ) {
     	this.id = id;
     	this.userId = userId;
@@ -73,11 +73,11 @@ public class Offer {
         this.offeredPrice = offeredPrice;
     }
 
-    public Timestamp getOfferDate() {
+    public LocalDateTime getOfferDate() {
         return offerDate;
     }
 
-    public void setOfferDate(Timestamp offerDate) {
+    public void setOfferDate(LocalDateTime offerDate) {
         this.offerDate = offerDate;
     }
 

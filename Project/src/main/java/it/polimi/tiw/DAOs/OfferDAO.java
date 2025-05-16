@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,16 +28,104 @@ public class OfferDAO {
 	 * Builds the Bean from the data retrieved from a Query's ResultSet
 	 */
 	private Offer buildOffer(ResultSet results) throws SQLException {
+		// Parses the OfferDate
+    	Timestamp timestamp = results.getTimestamp("OfferDate");
+		LocalDateTime offerDate = null;
+
+		if (timestamp != null) {
+		    offerDate = timestamp.toLocalDateTime();
+		}
+		
 		Offer offer = new Offer(
 			results.getInt("Id"),
 			results.getInt("UserId"),
 			results.getString("Username"),
 			results.getInt("AuctionId"),
 			results.getInt("OfferedPrice"),
-			results.getTimestamp("OfferDate")
+			offerDate
 		);
 		
 		return offer;
+	}
+	
+	/*
+	 * Inserts the Offer passsed as parametere into the Database.
+	 * Returns the Offer's ID, assigned by the DB.
+	 * Once the Offer is created, it also UPDATES the Auction's Current Highest Bid to this one.
+	 */
+	public int insert(Offer offer) throws SQLException {
+		// The ID assigned by the DB
+		int offerId = 0;
+		
+		// Stores the old value for the AUTO COMMIT feature
+		boolean oldAutoCommit = conn.getAutoCommit();
+		
+		try {
+			// Disables the AUTO COMMIT
+			conn.setAutoCommit(false);
+			
+			// Prepares the Statement
+			String query = "INSERT "
+					+ "INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) "
+					+ "VALUES (?, ?, ?, ?)";
+			
+			PreparedStatement statement = null;
+			ResultSet generatedKeys = null;
+			
+			try {
+				// Compiles the Statement
+				statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+				// Sets the Statement variables
+				statement.setInt(1, offer.getUserId());
+				statement.setInt(2, offer.getAuctionId());
+				statement.setInt(3, offer.getOfferedPrice());
+				statement.setTimestamp(4, Timestamp.valueOf(offer.getOfferDate()));
+				
+				// Runs the Statement
+				statement.executeUpdate();
+				
+				// The Statement returns the set of ID(s) assigned to the inserted Offer(s)
+				try {
+					generatedKeys = statement.getGeneratedKeys();
+					
+					if (generatedKeys.next()) {
+						// The ID that was assigned to the Offer
+						offerId = generatedKeys.getInt(1);
+					} else {
+						// Error
+						throw new SQLException("Creating Offer failed, no ID obtained.");
+					}
+				} finally {
+					// Closes the ResultSet
+					if (generatedKeys != null) {
+						generatedKeys.close();
+					}
+				}
+				
+			} finally {
+				// CLoses the PreparedStatement
+				if (statement != null) {
+					statement.close();
+				}
+			}
+			
+			// Updates the Auction's Current Highest Bid to the value of this Offer
+			
+			
+			// Manual COMMIT
+			conn.commit();
+			
+		} catch (SQLException e) {
+			// If something goes wrong it does a ROLLBACK
+			conn.rollback();
+			throw e;
+		} finally {
+			// After finishing the INSERT; it RESETS the AUTO COMMIT to how it was before
+			conn.setAutoCommit(oldAutoCommit);
+		}
+		
+		// Returns the ID assigned to the Offer
+		return offerId;
 	}
 	
 	/*
