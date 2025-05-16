@@ -33,7 +33,7 @@ INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, Auction
     
 -- Auction 3 - User 2
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
-	VALUES (250, 10, NULL, '2025-09-01 08:00:00', 2, FALSE, NULL, NULL);
+	VALUES (280, 10, NULL, '2025-09-01 08:00:00', 2, FALSE, NULL, NULL);
     
 INSERT INTO Images (FileName, FilePath) VALUES ('item_4.jpg', 'images/uploaded_images/item_4.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
