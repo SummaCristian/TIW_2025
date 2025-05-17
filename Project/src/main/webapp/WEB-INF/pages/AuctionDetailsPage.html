@@ -175,7 +175,7 @@
 								<img th:if="${item.image != null}"
 					     			th:src="@{/{file}(file=${item.image.filePath})}"
 					     			alt="Item Image"
-					     			class="item-image" />
+					     			class="item-image-large" />
 			
 								<!-- If image missing -->
 								<img th:unless="${item.image != null}"
