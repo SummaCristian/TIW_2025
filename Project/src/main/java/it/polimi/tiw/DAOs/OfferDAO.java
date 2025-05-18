@@ -110,8 +110,11 @@ public class OfferDAO {
 				}
 			}
 			
-			// Updates the Auction's Current Highest Bid to the value of this Offer
+			// Updates the Auction's Current Highest Bid to the ID of this Offer
+			AuctionDAO auctionDao = new AuctionDAO(conn);
+			auctionDao.updateAuctionsHighestBid(offer.getAuctionId(), offerId);
 			
+			System.out.println("Updated");
 			
 			// Manual COMMIT
 			conn.commit();

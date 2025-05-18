@@ -205,8 +205,28 @@ public class AuctionDAO {
      * DOES NOT ROLLBACK.
      * These things MUST be handled by the caller.
      */
-    public void updateAuctionsHighestBid(int AuctionId, int offer) {
+    public void updateAuctionsHighestBid(int auctionId, int offerId) throws SQLException {
+    	// Prepares the Statement
+    	String query = "UPDATE Auctions SET HighestBidId = ? WHERE Id = ?";
     	
+    	PreparedStatement statement = null;
+    	
+    	try {
+    		// Compiles the Statement
+    		statement = conn.prepareStatement(query);
+    		// Sets the Statement variables
+    		statement.setInt(1, offerId);
+    		statement.setInt(2, auctionId);
+    		
+    		// Runs the Statement
+    		statement.execute();
+    		
+    	} finally {
+    		// Closes the PreparedStatement
+    		if (statement != null) {
+    			statement.close();
+    		}
+    	}
     }
     
     /*
