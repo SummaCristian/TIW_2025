@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.tiw.beans.Offer;
+import it.polimi.tiw.exceptions.NoSuchOfferException;
 
 /*
  * This class acts as a DAO (Data Access Object) for the Offer Table in the DB.
@@ -126,6 +127,60 @@ public class OfferDAO {
 		
 		// Returns the ID assigned to the Offer
 		return offerId;
+	}
+	
+	/*
+	 * Returns a single Offer Bean based on the ID passed as parameter.
+	 * Throws NoSuchOfferException if there is no Offer with the specified ID.
+	 */
+	public Offer getOfferById(int offerId) throws NoSuchOfferException, SQLException {
+		Offer offer = null;
+		
+		// Prepares the Query Statement
+		String query = "SELECT Offers.*, "
+				+ "Users.Username AS Username "
+				+ "FROM Offers "
+				+ "JOIN Users ON Offers.UserId = Users.Id "
+				+ "WHERE Offers.Id = ?";
+		
+		PreparedStatement statement = null;
+		ResultSet results = null;
+		
+		try {
+			// Compiles the Query
+			statement = conn.prepareStatement(query);
+			// Sets the Query variable
+			statement.setInt(1, offerId);
+			
+			try {
+				// Runs the Quert
+				results = statement.executeQuery();
+				
+				if (results.next()) {
+					// Found the Offer
+					offer = buildOffer(results);
+					
+				} else {
+					// Offer does not exist
+					throw new NoSuchOfferException();
+				}
+				
+			} finally {
+				// Closes the ResultSet
+				if (results != null) {
+					results.close();
+				}
+			}
+			
+		} finally {
+			// Closes the PreparedStatement
+			if (statement != null) {
+				statement.close();
+			}
+		}
+		
+		// Returns the Offer Bean
+		return offer;
 	}
 	
 	/*

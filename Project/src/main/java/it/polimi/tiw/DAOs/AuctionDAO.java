@@ -15,6 +15,7 @@ import it.polimi.tiw.beans.Item;
 import it.polimi.tiw.beans.Offer;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.exceptions.NoSuchAuctionException;
+import it.polimi.tiw.exceptions.NoSuchOfferException;
 
 /*
  * This class acts as a DAO (Data Access Object) for the Auctions Table in the DB.
@@ -44,13 +45,31 @@ public class AuctionDAO {
 		if (timestamp != null) {
 		    closingDate = timestamp.toLocalDateTime();
 		}
+		
+		// Retrieves the Offer with the Highest Bid
+		Offer highestOffer = null;
+		Integer highestBidId = results.getObject("HighestBidId") != null ? results.getInt("HighestBidId") : null;		
+		
+		if (highestBidId != null) {
+			// There is one
+			OfferDAO offerDao = new OfferDAO(conn);
+			try {
+				highestOffer = offerDao.getOfferById(highestBidId);
+			} catch (NoSuchOfferException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
     	
 		// Creates the Bean
     	Auction auction = new Auction(
             results.getInt("Id"),
             results.getInt("BasePrice"),
             results.getInt("MinIncrement"),
-            results.getObject("HighestBidId") != null ? results.getInt("HighestBidId") : null,
+            highestOffer,
             closingDate,
             results.getInt("SellerId"),
             results.getBoolean("IsSold"),

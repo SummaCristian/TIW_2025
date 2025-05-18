@@ -129,7 +129,7 @@ public class MakeOfferServlet extends HttpServlet {
         		throw new LessThanBasePriceException();
         	}
         	
-        	if (auction.getHighestBid() != null && offerPrice < auction.getHighestBid() + auction.getMinIncrement()) {
+        	if (auction.getHighestBid() != null && offerPrice < auction.getHighestBid().getOfferedPrice() + auction.getMinIncrement()) {
         		// There already is at least 1 Offer, but
     			// the Offer is less than the minimum allowed increment for this Auction
         		throw new LessThanMinIncrementException();

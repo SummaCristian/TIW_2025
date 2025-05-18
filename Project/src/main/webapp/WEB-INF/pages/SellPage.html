@@ -71,7 +71,7 @@
 	                                			<path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
 	                                			<path d="M12 18V6"/>
 	                           				</svg>
-	                           				<p th:text="${auction.highestBid + '€'}">500€</p>
+	                           				<p th:text="${auction.highestBid.offeredPrice + '€'}">500€</p>
 	                        			</div>
 	
 	                        			<div th:if="${auction.highestBid == null}" class="offer-pill offer-pill-no-offers">

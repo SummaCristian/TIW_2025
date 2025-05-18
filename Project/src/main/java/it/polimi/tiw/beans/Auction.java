@@ -14,7 +14,7 @@ public class Auction {
     private int id;
     private int basePrice;
     private int minIncrement;
-    private Integer highestBid;    // Nullable
+    private Offer highestBid;    // Nullable
     private LocalDateTime closingDate;
     private int sellerId;
     private boolean isSold;
@@ -47,7 +47,7 @@ public class Auction {
     	int id,
     	int basePrice,
     	int minIncrement,
-    	Integer highestBid,
+    	Offer highestBid,
     	LocalDateTime closingDate,
     	int sellerId,
     	boolean isSold,
@@ -136,11 +136,11 @@ public class Auction {
         this.minIncrement = minIncrement;
     }
 
-    public Integer getHighestBid() {
+    public Offer getHighestBid() {
         return highestBid;
     }
 
-    public void setHighestBid(Integer highestBid) {
+    public void setHighestBid(Offer highestBid) {
         this.highestBid = highestBid;
     }
 
