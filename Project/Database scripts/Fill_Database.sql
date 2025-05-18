@@ -79,6 +79,13 @@ INSERT INTO Images (FileName, FilePath) VALUES ('item_2.jpg', 'images/uploaded_i
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Vintage British Overcoat', 'Wool trench coat, London-made, early 60s style.', 150, 2, 1, 1);
     
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (15, 1, 340, '2025-05-18 09:02:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (12, 1, 350, '2025-05-18 09:05:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (11, 1, 360, '2025-05-18 09:14:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (13, 1, 370, '2025-05-18 09:16:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (8, 1, 380, '2025-05-18 09:22:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 1;
+
 -- Auction 2 - User 2
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
 	VALUES (90, 10, NULL, '2025-08-01 08:00:00', 1, FALSE, NULL, NULL);
@@ -86,7 +93,12 @@ INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, Seller
 INSERT INTO Images (FileName, FilePath) VALUES ('item_3.jpg', 'images/uploaded_images/item_3.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Recorder (Woodwind Instrument)', 'Vintage soprano recorder in wood, 1960s educational model.', 90, 3, 1, 2);
-    
+
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (5, 2, 90, '2025-05-18 08:34:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (10, 2, 100, '2025-05-18 08:44:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (5, 2, 111, '2025-05-18 08:45:21');
+UPDATE Auctions SET HighestBidId = 5 WHERE Id = 2;
+
 -- Auction 3 - User 2
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
 	VALUES (60, 10, NULL, '2025-09-01 08:00:00', 2, FALSE, NULL, NULL);
@@ -94,6 +106,12 @@ INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, Seller
 INSERT INTO Images (FileName, FilePath) VALUES ('item_4.jpg', 'images/uploaded_images/item_4.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('The War Games Script Replica', 'Fan-made bound script copy from classic Doctor Who serial.', 60, 4, 2, 3);
+
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (1, 3, 70, '2025-05-18 09:02:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (11, 3, 80, '2025-05-18 09:08:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (13, 3, 90, '2025-05-18 09:13:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (1, 3, 100, '2025-05-18 09:17:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 3;
 
 -- Auction 4 - User 3
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
@@ -110,7 +128,13 @@ INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, Auction
 INSERT INTO Images (FileName, FilePath) VALUES ('item_7.jpg', 'images/uploaded_images/item_7.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('UNIT Pass Replica', 'Fictional military pass with retro lanyard', 40, 7, 3, 4);
-    
+
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (10, 4, 200, '2025-05-18 09:00:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (5, 4, 210, '2025-05-18 09:06:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (8, 4, 220, '2025-05-18 09:10:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (9, 4, 230, '2025-05-18 09:15:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 4;
+
 -- Auction 5 - User 4
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
 	VALUES (150, 10, NULL, '2025-08-01 08:00:00', 4, FALSE, NULL, NULL);
@@ -123,6 +147,10 @@ INSERT INTO Images (FileName, FilePath) VALUES ('item_9.jpg', 'images/uploaded_i
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('BBC VHS Box Set', 'Doctor Who Season 12 original BBC VHS tapes.', 70, 9, 4, 5);
 
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (6, 5, 150, '2025-05-18 09:00:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (7, 5, 160, '2025-05-18 09:07:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 5;
+
 -- Auction 6 - User 4
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
 	VALUES (45, 10, NULL, '2025-08-01 08:00:00', 4, FALSE, NULL, NULL);
@@ -130,7 +158,9 @@ INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, Seller
 INSERT INTO Images (FileName, FilePath) VALUES ('item_10.jpg', 'images/uploaded_images/item_10.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Brown Felt Fedora', 'Vitnage hat in a great condition.', 45, 10, 4, 6);
-    
+
+-- No offers
+
 -- Auction 7 - User 5
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
 	VALUES (250, 10, NULL, '2025-08-01 08:00:00', 5, FALSE, NULL, NULL);
@@ -143,6 +173,10 @@ INSERT INTO Images (FileName, FilePath) VALUES ('item_12.jpg', 'images/uploaded_
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Edwardian Coat (Replica)', 'Off-white coat with red piping, cosplay-grade.', 120, 12, 5, 7);
 
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (2, 7, 250, '2025-05-18 09:04:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (8, 7, 260, '2025-05-18 09:09:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 7;
+
 -- Auction 8 - User 5
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
 	VALUES (40, 10, NULL, '2025-08-01 08:00:00', 5, FALSE, NULL, NULL);
@@ -151,9 +185,18 @@ INSERT INTO Images (FileName, FilePath) VALUES ('item_13.jpg', 'images/uploaded_
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Soundtrack Cassette', 'Official DW 80s soundtrack, rare format.', 40, 13, 5, 8);
 
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (9, 8, 40, '2025-05-18 09:01:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (12, 8, 50, '2025-05-18 09:03:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (14, 8, 60, '2025-05-18 09:08:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 8;
+
 -- Auciton 9 - User 6
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
 	VALUES (150, 10, NULL, '2025-08-01 08:00:00', 6, FALSE, NULL, NULL);
+
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (10, 9, 150, '2025-05-18 09:00:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (13, 9, 160, '2025-05-18 09:10:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 9;
     
 INSERT INTO Images (FileName, FilePath) VALUES ('item_14.jpg', 'images/uploaded_images/item_14.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
@@ -171,6 +214,11 @@ INSERT INTO Images (FileName, FilePath) VALUES ('item_16.jpg', 'images/uploaded_
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('ZX Spectrum Console', 'Vintage 8-bit home computer, UK model.', 180, 16, 6, 10);
 
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (1, 10, 250, '2025-05-18 09:03:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (7, 10, 260, '2025-05-18 09:05:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (11, 10, 270, '2025-05-18 09:09:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 10;
+
 -- Auction 11 - User 7
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
 	VALUES (205, 10, NULL, '2025-08-01 08:00:00', 7, FALSE, NULL, NULL);
@@ -186,6 +234,10 @@ INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, Auction
 INSERT INTO Images (FileName, FilePath) VALUES ('item_19.jpg', 'images/uploaded_images/item_19.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Question Mark Vest', 'Fan-made, accurate to screen design.', 65, 19, 7, 11);
+
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (9, 11, 205, '2025-05-18 09:01:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (6, 11, 215, '2025-05-18 09:18:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 11;
 
 -- Auction 12 - User 8
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
@@ -203,6 +255,11 @@ INSERT INTO Images (FileName, FilePath) VALUES ('item_22.jpg', 'images/uploaded_
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Victorian Overcoat', 'Dark green overcoat, cosplay quality.', 140, 22, 8, 12);
 
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (14, 12, 370, '2025-05-18 09:02:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (11, 12, 380, '2025-05-18 09:19:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (6, 12, 390, '2025-05-18 09:34:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 12;
+
 -- Auction 13 - User 9
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
 	VALUES (245, 10, NULL, '2025-08-01 08:00:00', 9, FALSE, NULL, NULL);
@@ -218,6 +275,10 @@ INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, Auction
 INSERT INTO Images (FileName, FilePath) VALUES ('item_25.jpg', 'images/uploaded_images/item_25.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Sony CD Walkman', 'Portable CD player, includes earbuds.', 45, 25, 9, 13);
+
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (8, 13, 245, '2025-05-18 09:03:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (7, 13, 255, '2025-05-18 09:21:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 13;
 
 -- Auction 14 - User 10
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
@@ -247,6 +308,11 @@ INSERT INTO Images (FileName, FilePath) VALUES ('item_31.jpg', 'images/uploaded_
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Tardis Diary (Replica)', 'Replica of the Doctor\'s and River Song\'s travel diary.', 50, 31, 10, 14);
 
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (2, 14, 395, '2025-05-18 09:05:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (9, 14, 425, '2025-05-18 09:24:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (13, 14, 455, '2025-05-18 09:37:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 14;
+
 -- Auction 15 - User 11
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
 	VALUES (115, 10, NULL, '2025-08-01 08:00:00', 11, FALSE, NULL, NULL);
@@ -263,6 +329,11 @@ INSERT INTO Images (FileName, FilePath) VALUES ('item_34.jpg', 'images/uploaded_
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES (' Fez (Replica)', 'Red felt fez hat, screen-accurate replica inspired by \'The Big Bang\' and \'The Impossible Astronaut\'.', 30, 34, 11, 15);
 
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (2, 15, 115, '2025-05-18 09:06:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (14, 15, 125, '2025-05-18 09:26:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (3, 15, 135, '2025-05-18 09:42:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 15;
+
 -- Auction 16 - User 12
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
 	VALUES (270, 10, NULL, '2025-08-01 08:00:00', 12, FALSE, NULL, NULL);
@@ -275,6 +346,10 @@ INSERT INTO Images (FileName, FilePath) VALUES ('item_36.jpg', 'images/uploaded_
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Mini Electric Guitar', 'Short-scale black guitar, 80s model, with strap.', 110, 36, 12, 16);
 
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (3, 16, 270, '2025-05-18 09:07:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (5, 16, 280, '2025-05-18 09:25:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 16;
+
 -- Auction 17 - User 13
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
 	VALUES (115, 10, NULL, '2025-08-01 08:00:00', 13, FALSE, NULL, NULL);
@@ -286,6 +361,10 @@ INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, Auction
 INSERT INTO Images (FileName, FilePath) VALUES ('item_38.jpg', 'images/uploaded_images/item_38.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Ear Cuff Jewelry', 'Costume jewelry in sci-fi style.', 25, 38, 13, 17);
+
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (6, 17, 115, '2025-05-18 09:08:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (1, 17, 125, '2025-05-18 09:27:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 17;
 
 -- Auction 18 - User 14
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
@@ -303,6 +382,11 @@ INSERT INTO Images (FileName, FilePath) VALUES ('item_41.jpg', 'images/uploaded_
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Sonic Screwdriver (replica)', 'Replica of 14th\'s Sonic Screwdriver, from the 60th Anniversary Specials', 50, 41, 14, 18);
 
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (6, 18, 200, '2025-05-18 09:10:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (12, 18, 210, '2025-05-18 09:29:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (1, 18, 220, '2025-05-18 09:46:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 18;
+
 -- Auciton 19 - User 15
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
 	VALUES (240, 10, NULL, '2025-08-01 08:00:00', 15, FALSE, NULL, NULL);
@@ -318,6 +402,10 @@ INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, Auction
 INSERT INTO Images (FileName, FilePath) VALUES ('item_44.jpg', 'images/uploaded_images/item_44.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Jukebox', 'Replica of the Jukebox inside 15th\'s TARDIS', 100, 44, 15, 19);
+
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (2, 19, 240, '2025-05-18 09:12:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (10, 19, 250, '2025-05-18 09:28:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 19;
 
 -- Auciton 20 - User 16 (Test)
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
