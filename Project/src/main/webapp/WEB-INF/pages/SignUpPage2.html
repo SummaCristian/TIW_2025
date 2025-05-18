@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Login Page</title>
+<title>Sign Up</title>
 <link rel="stylesheet" type="text/css" media="all"
 	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
 </head>
@@ -11,37 +11,33 @@
 
 	<h1>Welcome!</h1>
 
-	<div  class="formdiv fade-scale-in">
-		<h1>Sign up</h1>
+	<div class="formcard-mini fade-scale-in">
+		<h1 class="section-title">Sign up</h1>
 
-        <!-- Error message -->
-		<p th:if="${error}" th:text="${error}" style="color: red;"/>
+		<!-- Error message -->
+		<p th:if="${error}" th:text="${error}" class="error"></p>
 
 		<form th:action="@{/SignUpServlet}" method="POST">
-			<fieldset>
-                <!-- Hidden input, it specifies to the Servlet that we have already checked the credentials -->
-				<input type="hidden" name="phase" value="2">
+			<!-- Hidden phase and previous step inputs -->
+			<input type="hidden" name="phase" value="2">
+			<input type="hidden" name="username" th:value="${username}">
+			<input type="hidden" name="password1" th:value="${password1}">
+			<input type="hidden" name="password2" th:value="${password2}">
 
-                <!-- Previous inputs -->
-                <input type="hidden" name="username" th:value="${username}">
-                <input type="hidden" name="password1" th:value="${password1}">
-                <input type="hidden" name="password2" th:value="${password2}">
+			<label for="firstName">First Name:</label>
+			<input id="firstName" type="text" name="firstName" required />
 
-                
-				<p>
-					First Name: <input type="text" name="firstName" required />
-				</p>
-				<p>
-					Last Name: <input type="text" name="lastName" required />
-				</p>
-				<p>
-					Address: <input type="text" name="address" required />
-				</p>
-				<button type="submit" name="Sign up">Sign up</button>
-			</fieldset>
+			<label for="lastName">Last Name:</label>
+			<input id="lastName" type="text" name="lastName" required />
+
+			<label for="address">Address:</label>
+			<input id="address" type="text" name="address" required />
+
+			<button type="submit" name="Sign up" class="button-primary">Sign up</button>
 		</form>
 
-		<a th:href="@{/login}">Go back</a>
+		<a th:href="@{/login}" class="button-secondary">Go back</a>
 	</div>
+
 </body>
 </html>

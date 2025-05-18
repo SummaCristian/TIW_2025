@@ -11,25 +11,22 @@
 
 	<h1>Welcome!</h1>
 
-	<div  class="formdiv fade-scale-in">
-		<h1>Login</h1>
+	<div  class="formcard-mini">
+		<h1 class="section-title">Login</h1>
 		
-		<!-- Error message -->
-		<p th:if="${error}" th:text="${error}" class="error"/>
+		<p th:text="${error}" class="error"/>
 
 		<form th:action="@{/LoginServlet}" method="POST">
-			<fieldset>
-				<p>
-					Username: <input type="text" name="username" required />
-				</p>
-				<p>
-					Password: <input type="password" name="password" required />
-				</p>
-				<button type="submit" name="Login">Login</button>
-			</fieldset>
+			<label for="username">Username:</label>
+			<input id="username" type="text" name="username" required />
+			
+			<label for="password">Password:</label>
+			<input id="password" type="password" name="password" required />
+		
+			<button type="submit" name="Login" class="button-primary">Login</button>
 		</form>
 
-		<a th:href="@{/signup}">Sign up</a>
+		<a th:href="@{/signup}" class="button-secondary">Sign up</a>
 	</div>
 </body>
 </html>

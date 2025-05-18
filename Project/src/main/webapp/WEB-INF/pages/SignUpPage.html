@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Login Page</title>
+<title>Sign Up</title>
 <link rel="stylesheet" type="text/css" media="all"
 	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
 </head>
@@ -11,31 +11,30 @@
 
 	<h1>Welcome!</h1>
 
-	<div  class="formdiv fade-scale-in">
-		<h1>Sign up</h1>
+	<div class="formcard-mini fade-scale-in">
+		<h1 class="section-title">Sign up</h1>
 
 		<!-- Error message -->
-		<p th:if="${error}" th:text="${error}" style="color: red;"/>
+		<p th:if="${error}" th:text="${error}" class="error"></p>
 
 		<form th:action="@{/SignUpServlet}" method="POST">
-			<fieldset>
-				<!-- Hidden input, it specifies to the Servlet that we are stil checking the credentials -->
-				<input type="hidden" name="phase" value="1">
+			<!-- Hidden input for phase tracking -->
+			<input type="hidden" name="phase" value="1">
 
-				<p>
-					Username: <input type="text" name="username" required />
-				</p>
-				<p>
-					Password: <input type="password" name="password1" required />
-				</p>
-				<p>
-					Confirm password: <input type="password" name="password2" required />
-				</p>
-				<button type="submit" name="Sign up">Sign up</button>
-			</fieldset>
+			<label for="username">Username:</label>
+			<input id="username" type="text" name="username" required />
+
+			<label for="password1">Password:</label>
+			<input id="password1" type="password" name="password1" required />
+
+			<label for="password2">Confirm password:</label>
+			<input id="password2" type="password" name="password2" required />
+
+			<button type="submit" name="Sign up" class="button-primary">Sign up</button>
 		</form>
 
-		<a th:href="@{/login}">Go back</a>
+		<a th:href="@{/login}" class="button-secondary">Go back</a>
 	</div>
+
 </body>
 </html>
