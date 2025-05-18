@@ -167,30 +167,32 @@
 						</div>
 					</div>
 					
-					<ul class="item-list">
-					 	<li th:each="item : ${auction.items}" class="item-container">
-					 		<!--  Image  -->
-							<div class="text-group">
-								<!-- If image exists -->
-								<img th:if="${item.image != null}"
-					     			th:src="@{/{file}(file=${item.image.filePath})}"
-					     			alt="Item Image"
-					     			class="item-image-large" />
-			
-								<!-- If image missing -->
-								<img th:unless="${item.image != null}"
-								th:src="@{/images/placeholder.svg}"
-								alt="No Image Available"
-								class="item-image" />
-			
-											                 			
-								<p class="item-detail" th:text="${item.itemName}">Example Item Name</p>
-								<p class="item-detail-tertiary" th:text="${item.itemDescription}">Example Item Description</p>
-								<p class="item-detail-secondary" th:text="${item.price} + €">€123</p>
-								<p class="item-detail-tertiary">Item #<span th:text="${item.id}">1</span></p>
-							</div>
-						</li>
-					</ul>
+					<div class="item-scrollview">
+						<ul class="item-list-large">
+						 	<li th:each="item : ${auction.items}" class="item-container-large">
+						 		<!--  Image  -->
+								<div class="text-group">
+									<!-- If image exists -->
+									<img th:if="${item.image != null}"
+						     			th:src="@{/{file}(file=${item.image.filePath})}"
+						     			alt="Item Image"
+						     			class="item-image-large" />
+				
+									<!-- If image missing -->
+									<img th:unless="${item.image != null}"
+									th:src="@{/images/placeholder.svg}"
+									alt="No Image Available"
+									class="item-image-large" />
+				
+												                 			
+									<p class="item-detail" th:text="${item.itemName}">Example Item Name</p>
+									<p class="item-detail-tertiary" th:text="${item.itemDescription}">Example Item Description</p>
+									<p class="item-detail-secondary" th:text="${item.price} + €">€123</p>
+									<p class="item-detail-tertiary">Item #<span th:text="${item.id}">1</span></p>
+								</div>
+							</li>
+						</ul>
+					</div>
 				
 				</div>
 				
