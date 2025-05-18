@@ -137,7 +137,7 @@ public class OfferDAO {
 		
 		// Creates the Query
 		String query = "SELECT Offers.*, "
-				+ "Users.FirstName AS Username "
+				+ "Users.UserName AS Username "
 				+ "FROM Offers "
 				+ "JOIN Users ON Offers.UserId = Users.Id "
 				+ "WHERE Offers.AuctionId = ? "
