@@ -97,7 +97,7 @@ INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, Auction
 INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (5, 2, 90, '2025-05-18 08:34:00');
 INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (10, 2, 100, '2025-05-18 08:44:00');
 INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (5, 2, 111, '2025-05-18 08:45:21');
-UPDATE Auctions SET HighestBidId = 5 WHERE Id = 2;
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 2;
 
 -- Auction 3 - User 2
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
