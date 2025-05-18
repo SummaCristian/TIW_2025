@@ -442,3 +442,157 @@ INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, Auction
 INSERT INTO Images (FileName, FilePath) VALUES ('item_50.jpg', 'images/uploaded_images/item_50.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Apple iPod Classic (5th Gen, 80GB)', 'Working iPod Classic with original charger and cable, minor scratches.', 120, 50, 16, 22);
+    
+-- ITEMS NOT IN AUCTIONS
+
+-- User 1
+INSERT INTO Images (FileName, FilePath) VALUES ('item_51.jpg', 'images/uploaded_images/item_51.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Vintage Monocle in Case', 'Classic optical monocle with brass rim, early 20th century', 90, 51, 1, NULL);
+    
+INSERT INTO Images (FileName, FilePath) VALUES ('item_52.jpg', 'images/uploaded_images/item_52.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Eton Collar Shirt', 'Formal white shirt with removable collar, Edwardian style.', 70, 52, 1, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_53.jpg', 'images/uploaded_images/item_53.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Pocket Compass', 'Small working compass in brass casing, worn leather pouch.', 25, 53, 1, NULL);
+
+-- User 2
+INSERT INTO Images (FileName, FilePath) VALUES ('item_54.jpg', 'images/uploaded_images/item_54.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Bowler Hat (Vintage)', 'British black bowler hat, 60s era, worn but stylish.', 50, 54, 2, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_55.jpg', 'images/uploaded_images/item_55.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Tele-Snap print set', 'Fan-printed photo stills from lost episodes', 25, 55, 2, NULL);
+
+-- User 3
+INSERT INTO Images (FileName, FilePath) VALUES ('item_56.jpg', 'images/uploaded_images/item_56.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Frilled Dress Shirt', '70s frilled shirt, cosplay replica', 65, 56, 3, NULL);
+    
+INSERT INTO Images (FileName, FilePath) VALUES ('item_57.jpg', 'images/uploaded_images/item_57.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('TARDIS Console Panel prop', 'Replica of one panel with faux switches and lights.', 150, 57, 3, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_58.jpg', 'images/uploaded_images/item_58.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('UNIT Patch Set', 'Sew-on patches modeled after UNIT uniforms.', 20, 58, 3, NULL);
+
+-- User 4
+INSERT INTO Images (FileName, FilePath) VALUES ('item_59.jpg', 'images/uploaded_images/item_59.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Jelly Babies in Collectible Tin', 'Decorative Tin with Jelly Babies replica', 30, 59, 4, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_60.jpg', 'images/uploaded_images/item_60.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('K9 Figurine', 'Small metal model of K9, 4th Doctor\'s robot-dog companion', 25, 60, 4, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_61.jpg', 'images/uploaded_images/item_61.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Time Capsule Clock', 'Analog clock, styles after Doctor Who\'s iconic time travel graphics.', 55, 61, 4, NULL);
+
+-- User 5
+INSERT INTO Images (FileName, FilePath) VALUES ('item_62.jpg', 'images/uploaded_images/item_62.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Stick of Celery (Resin Replica)', 'Lifelike prop stick of celery, cosplay safe.', 15, 62, 5, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_63.jpg', 'images/uploaded_images/item_63.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Panama Waistcoat (Replica)', 'Light cotton vest with simple trim, fan-made.', 55, 63, 5, NULL);
+
+-- User 6
+INSERT INTO Images (FileName, FilePath) VALUES ('item_64.jpg', 'images/uploaded_images/item_64.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Checkered Vest', 'Patchwork vest with bold color blocks', 60, 64, 6, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_65.jpg', 'images/uploaded_images/item_65.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Colorful Umbrella', 'Umbrella with multicolor segments, curved handle.', 35, 65, 6, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_66.jpg', 'images/uploaded_images/item_66.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Sixth Doctor Action Figure', '5-inch collectible by Character Options.', 25, 66, 6, NULL);
+
+-- User 7
+INSERT INTO Images (FileName, FilePath) VALUES ('item_67.jpg', 'images/uploaded_images/item_67.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Question Mark Umbrella', 'Prop umbrella with red question mark handle.', 60, 67, 7, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_68.jpg', 'images/uploaded_images/item_68.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Plaid Scarf', 'Muted-color plaid scarf, screen-accurate style.', 25, 68, 7, NULL);
+
+-- User 8
+INSERT INTO Images (FileName, FilePath) VALUES ('item_69.jpg', 'images/uploaded_images/item_69.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Old Pocket Flask', 'Metal hip flask with initials engraving.', 40, 69, 8, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_70.jpg', 'images/uploaded_images/item_70.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Steampunk Goggles', 'Leather strap, brass frame cosplay goggles.', 45, 70, 8, NULL);
+
+-- User 9
+INSERT INTO Images (FileName, FilePath) VALUES ('item_71.jpg', 'images/uploaded_images/item_71.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('TARDIS Keychain', 'Keychain with TARDIS pendant.', 15, 71, 9, NULL);
+
+-- User 10
+INSERT INTO Images (FileName, FilePath) VALUES ('item_72.jpg', 'images/uploaded_images/item_72.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('3D Glasses (Paper replica)', 'Blue and Red lens paper glasses, fan replica', 10, 72, 10, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_73.jpg', 'images/uploaded_images/item_73.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Psychic Paper Card Holder', 'Psychic Paper Replica with Card Holder', 35, 73, 10, NULL);
+
+-- User 11
+INSERT INTO Images (FileName, FilePath) VALUES ('item_74.jpg', 'images/uploaded_images/item_74.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Red Suspenders', 'Red elastic suspenders, metal clips.', 15, 74, 11, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_75.jpg', 'images/uploaded_images/item_75.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Stetson', 'Brown Stetson replica, for cosplay use.', 25, 75, 11, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_76.jpg', 'images/uploaded_images/item_76.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Series 6 Blu-Ray Box Set', 'Doctor Who Series 6 in HD, Part 1', 50, 76, 11, NULL);
+
+-- User 12
+INSERT INTO Images (FileName, FilePath) VALUES ('item_77.jpg', 'images/uploaded_images/item_77.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Sonic Sunglasses (Replica)', 'Black Ray-Ban-style sunglasses, replica', 40, 77, 12, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_78.jpg', 'images/uploaded_images/item_78.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('DW Poster', '12th Doctor\'s Poster', 30, 78, 12, NULL);
+
+-- User 13
+INSERT INTO Images (FileName, FilePath) VALUES ('item_79.jpg', 'images/uploaded_images/item_79.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('Rainbox T-Shirt', 'Black T-Shirt with rainbow, size M, unisex', 25, 79, 13, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_80.jpg', 'images/uploaded_images/item_80.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('13th Doctor LEGO Minifigure', 'Custom LEGO Mini-figure of 13th Doctor.', 65, 80, 13, NULL);
+
+-- User 14
+INSERT INTO Images (FileName, FilePath) VALUES ('item_81.jpg', 'images/uploaded_images/item_81.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('14th Doctor Poster', 'Official Poster for the 60th Anniversary Specials, featuring David Tennant\'s return as The Doctor.', 20, 81, 14, NULL);
+
+-- User 15
+INSERT INTO Images (FileName, FilePath) VALUES ('item_82.jpg', 'images/uploaded_images/item_82.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('DW Beanie', 'Doctor Who branded black beanie.', 20, 82, 15, NULL);
+
+-- User 16 (test)
+INSERT INTO Images (FileName, FilePath) VALUES ('item_83.jpg', 'images/uploaded_images/item_83.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('iPhone 3G', 'Used iPhone 3G, functioning but without original box and accessories.', 300, 83, 16, NULL);
+
+INSERT INTO Images (FileName, FilePath) VALUES ('item_84.jpg', 'images/uploaded_images/item_84.jpg');
+INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
+	VALUES ('iMac G3', 'Original iMac G3, late 1999 model, fully working, mint condition.', 420, 84, 16, NULL);
