@@ -114,8 +114,6 @@ public class OfferDAO {
 			AuctionDAO auctionDao = new AuctionDAO(conn);
 			auctionDao.updateAuctionsHighestBid(offer.getAuctionId(), offerId);
 			
-			System.out.println("Updated");
-			
 			// Manual COMMIT
 			conn.commit();
 			
