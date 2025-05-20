@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import it.polimi.tiw.beans.Auction;
 import it.polimi.tiw.beans.Item;
@@ -525,5 +527,104 @@ public class AuctionDAO {
     	
     	// Returns the List
     	return auctions;
+    }
+    
+    /*
+     * Performs a Search for all the Auctions that contain at least one Item in which NAME or DESCRIPTION
+     * there is a match for at least one of the keywords inside the array of Strings passed as parameter.
+     * Returns a List of Auctions that match this search criteria in at least one of their Items.
+     * Returns an EMPTY List if no Auction matches this criteria.
+     */
+    public List<Auction> getAuctionsForKeywords(String[] keywords, long loginTime) throws SQLException {
+    	// Creates the List, initially empty
+    	List<Auction> searchResults = new ArrayList<>();
+    	
+    	// Prepares the Query
+    	StringBuilder queryBuilder = new StringBuilder("""
+    		    SELECT DISTINCT Auctions.*, 
+    		           Seller.Username AS SellerUsername, 
+    		           Buyer.Username AS BuyerUsername, 
+    		           Buyer.Address AS BuyerAddress
+    		    FROM Auctions
+    		    JOIN Items ON Auctions.Id = Items.AuctionId
+    		    JOIN Users AS Seller ON Auctions.SellerId = Seller.Id
+    		    LEFT JOIN Users AS Buyer ON Auctions.BuyerId = Buyer.Id
+    		    WHERE
+    		""");
+    	
+    	// Add PLACEHOLDERS (?) dynamically for each String inside the keywords array
+    	String whereClause = IntStream.range(0, keywords.length)
+    								// Looks into both NAME and Description for each Item
+    		    					.mapToObj(i -> "(Items.ItemName LIKE ? OR Items.ItemDescription LIKE ?)")
+    		    					// Using OR condition => Item is found if the Keyword si contained 
+    		    					// in either NAME or DESCRIPTION, not necessarily BOTH
+    		    					.collect(Collectors.joining(" OR "));
+    	
+    	// Add the WHERE Clause to the rest of the Query
+    	queryBuilder.append(whereClause);
+    	
+    	PreparedStatement statement = null;
+    	ResultSet results = null;
+    	
+    	try {
+    		// Compiles the Query
+    		statement = conn.prepareStatement(queryBuilder.toString());
+    		// Sets the Query variables
+    		int index = 1;
+    		for (String keyword : keywords) {
+    			// Each ROW corresponds to ONE KEYWORD.
+    			// KEYWORD is checked agains Items.Name and Items.Description, with an OR condition
+    		    String likeValue = "%" + keyword + "%";
+    		    statement.setString(index++, likeValue); // ItemName
+    		    statement.setString(index++, likeValue); // ItemDescription
+    		}
+    		
+    		try {
+    			// Exeutes the Query
+    			results = statement.executeQuery();
+    			
+    			ItemDAO itemDao = new ItemDAO(conn);
+    			OfferDAO offerDao = new OfferDAO(conn);
+    			
+    			while (results.next()) {
+    				// Queries the Items inside the Auction
+    				List<Item> itemsInAuction = itemDao.getItemsInAuction(results.getInt("Id"));
+    				
+    				// Queries the Offers inside the Auction
+    				List<Offer> offersInAuction = offerDao.getOffersForAuction(results.getInt("Id"));
+    				
+    				// Calculates the Remaining Time
+    				long closingTime = results.getDate("ClosingDate").getTime();
+
+    				long diffMillis = closingTime - loginTime;
+
+    				String formattedRemainingTime = formatRemainingTime(diffMillis);
+
+    				
+    				// Builds the Bean object
+    	            Auction auction = buildAuction(results, itemsInAuction, offersInAuction, formattedRemainingTime);
+    				
+    	            // Adds the Bean into the List
+    	            searchResults.add(auction);
+    	            
+    	        }
+    			
+    		} finally {
+    			// Closes the ResultSet
+    			if (results != null) {
+    				results.close();
+    			}
+    		}
+
+    		
+    	} finally {
+    		// Closes the PreparedStatement
+    		if (statement != null) {
+    			statement.close();
+    		}
+    	}
+    	
+    	// Returns the List (empty or filled with elements)
+    	return searchResults;
     }
 }

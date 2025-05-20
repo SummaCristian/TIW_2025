@@ -74,7 +74,7 @@
 				
 				<div th:if="${searchResults!= null and !searchResults.isEmpty()}">
 	    			<ul>
-	        			<li th:each="auction : ${wonAuctions}">
+	        			<li th:each="auction : ${searchResults}">
 	            			<div>
 	                			<div class="auction-header">
 	                    			<div>
@@ -213,7 +213,7 @@
 	    			</ul>
 				</div>
 	
-				<div th:unless="${openAuctions != null and !openAuctions.isEmpty()}">
+				<div th:unless="${searchResults != null and !searchResults.isEmpty()}">
 	    			<p class="no-element-in-list">No results</p>
 				</div>
 			</div>
@@ -378,7 +378,7 @@
 	    			</ul>
 				</div>
 	
-				<div th:unless="${openAuctions != null and !openAuctions.isEmpty()}">
+				<div th:unless="${wonAuctions != null and !wonAuctions.isEmpty()}">
 	    			<p class="no-element-in-list">No won auctions available</p>
 				</div>
 			</div>

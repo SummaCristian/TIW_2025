@@ -78,6 +78,27 @@ public class BuyPageServlet extends HttpServlet {
     	String query = request.getParameter("query");
     	request.setAttribute("query", query);
     	
+    	// The Results for the User's Query
+    	List<Auction> searchResults = null;
+    	
+    	if (query != null && !query.trim().isBlank()) {
+    		try {
+    			// Splits the Query string into an array of Strings, one for each word inside the query.
+    			// Words are individual character groups separated by spaces.
+    			String[] keywords = query.trim().split("\\s+");
+    			
+    			// Performs the Search
+    			searchResults = auctionDao.getAuctionsForKeywords(keywords, loginTime); // always returns a List, empty if there are NO results
+    	    	
+    		} catch (SQLException e) {
+    	        e.printStackTrace();
+    	    }
+    	}
+    	
+    	// If empty, Thymeleaf will adapt the layout with a message.
+    	// If null, Thymeleaf will not show the section entirely.
+    	request.setAttribute("searchResults", searchResults);
+    	
     	
     	
     	// Won Auctions
