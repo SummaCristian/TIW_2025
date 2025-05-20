@@ -121,7 +121,6 @@ public class SellPageServlet extends HttpServlet {
 
     	request.setAttribute("defaultClosingDate", tomorrowAt3PM);
     	
-    	
     	// Render the page
     	IWebExchange webExchange = application.buildExchange(request, response);
         WebContext context = new WebContext(webExchange, Locale.getDefault());

@@ -81,6 +81,23 @@ public class AuctionDetailsPageServlet extends HttpServlet {
                 // Adds the Auction to the request
             	request.setAttribute("auction", auction);
             	
+            	// Infer the origin page from the Referer header
+            	String referer = request.getHeader("Referer");
+            	String goBackTo = "HOME"; // Default fallback
+
+            	if (referer != null) {
+            	    if (referer.contains("/buy")) {
+            	        goBackTo = "BUY";
+            	    } else if (referer.contains("/sell")) {
+            	        goBackTo = "SELL";
+            	    } else if (referer.contains("/home")) {
+            	        goBackTo = "HOME";
+            	    }
+            	}
+
+            	// Inject it as a request attribute
+            	request.setAttribute("goBackTo", goBackTo);
+            	
             	// Render the page
             	IWebExchange webExchange = application.buildExchange(request, response);
                 WebContext context = new WebContext(webExchange, Locale.getDefault());

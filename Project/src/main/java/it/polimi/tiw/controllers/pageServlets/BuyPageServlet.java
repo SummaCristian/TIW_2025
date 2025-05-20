@@ -99,8 +99,6 @@ public class BuyPageServlet extends HttpServlet {
     	// If null, Thymeleaf will not show the section entirely.
     	request.setAttribute("searchResults", searchResults);
     	
-    	
-    	
     	// Won Auctions
     	List<Auction> wonAuctions = null;
     	

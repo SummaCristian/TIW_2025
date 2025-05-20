@@ -13,13 +13,33 @@
 			<div class="formcard-wide fade-scale-in">
 				<!--  Top buttons  -->
 				<div class=top-buttons>
-					<!-- HomePage link-->
-					<a th:href="@{/sell}" class="button-link">
+					<!-- go back link-->
+					
+					<!-- If User came from SellPage -->
+					<a th:if="${goBackTo == 'SELL'}" th:href="@{/sell}" class="button-link">
 						<svg class="icon" viewBox="0 0 24 24">
 							<path d="m15 18-6-6 6-6" />
 						</svg>
 						
 						<span>Sell</span>
+					</a>
+					
+					<!-- If User came from BuyPage -->
+					<a th:if="${goBackTo == 'BUY'}" th:href="@{/buy}" class="button-link">
+						<svg class="icon" viewBox="0 0 24 24">
+							<path d="m15 18-6-6 6-6" />
+						</svg>
+						
+						<span>Buy</span>
+					</a>
+					
+					<!-- If User didn't come from either SellPage or BuyPage -->
+					<a th:if="${goBackTo == 'HOME'}" th:href="@{/home}" class="button-link">
+						<svg class="icon" viewBox="0 0 24 24">
+							<path d="m15 18-6-6 6-6" />
+						</svg>
+						
+						<span>Home</span>
 					</a>
 					
 					<a th:href="@{/logout}" class="button-link button-link-destructive">
