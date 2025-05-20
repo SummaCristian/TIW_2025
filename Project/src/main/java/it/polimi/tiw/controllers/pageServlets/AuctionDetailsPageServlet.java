@@ -84,10 +84,13 @@ public class AuctionDetailsPageServlet extends HttpServlet {
             	// Infer the origin page from the Referer header
             	String referer = request.getHeader("Referer");
             	String goBackTo = "HOME"; // Default fallback
+            	String goBackHref = "";
 
             	if (referer != null) {
             	    if (referer.contains("/buy")) {
             	        goBackTo = "BUY";
+            	        // Also save the actual URL, because it may contain the query parameter
+            	        goBackHref = referer;
             	    } else if (referer.contains("/sell")) {
             	        goBackTo = "SELL";
             	    } else if (referer.contains("/home")) {
@@ -97,6 +100,7 @@ public class AuctionDetailsPageServlet extends HttpServlet {
 
             	// Inject it as a request attribute
             	request.setAttribute("goBackTo", goBackTo);
+            	request.setAttribute("goBackHref", goBackHref);
             	
             	// Render the page
             	IWebExchange webExchange = application.buildExchange(request, response);
