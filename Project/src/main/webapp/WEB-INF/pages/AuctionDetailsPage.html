@@ -299,7 +299,7 @@
 				</div>
 				
 				
-				<div th:if="${session.user.id != auction.sellerId}" class="offer-overlay">
+				<div th:if="${session.user.id != auction.sellerId && !auction.isSold}" class="offer-overlay">
 					<div>
 						<!-- Error message -->
 						<p th:if="${offerError}" th:text="${offerError}" class="error"/>
