@@ -187,6 +187,7 @@ form label {
   letter-spacing: 0.03em;
   margin: 0;
   line-height: 1.1;
+  margin-left: 0.5rem;
 }
 
 form label + input,
