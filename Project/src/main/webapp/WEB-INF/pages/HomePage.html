@@ -1,36 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Home</title>
-<link rel="stylesheet" type="text/css" media="all"
-	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../css/mystyle.css" th:href="@{/css/mystyle.css}" />
 </head>
 
 <body>
+    <!-- Welcome Banner -->
+    <header class="page-header">
+        <h1>Welcome, <span th:text="${session.user.username}">Username</span>!</h1>
+    </header>
 
-    <h1>Welcome, <span th:text="${session.user.username}">Username</span>!</h1>
+    <!-- Main content card -->
+    <div class="formdiv fade-scale-in">
+        <h1>Home</h1>
 
-	<div  class="formdiv fade-scale-in">
-		<h1>Home</h1>
+        <!-- Error message -->
+        <p th:if="${error}" th:text="${error}" class="error"></p>
 
-		<!-- Error message -->
-		<p th:if="${error}" th:text="${error}" style="color: red;"/>
+        <!-- Horizontal centered navigation for Sell and Buy -->
+        <div class="button-row-centered">
+            <a th:href="@{/sell}" class="button-primary">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M12 2v20M5 12h14"/>
+                </svg>
+                <span>Sell</span>
+            </a>
 
-		
-        <!-- Content -->
-		<!-- Sell Page -->
-        <a th:href="@{/sell}">Sell</a>
+            <a th:href="@{/buy}" class="button-primary">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M3 12h18M3 6h18M3 18h18"/>
+                </svg>
+                <span>Buy</span>
+            </a>
+        </div>
 
-        <br>
-
-        <!-- Buy Page -->
-         <a th:href="@{/buy}">Buy</a>
-         
-         <br>
-         
-         <!-- SignOut link-->
-         <a th:href="@{/logout}">Logout</a>
-	</div>
+        <!-- Logout button aligned left -->
+        <div class="button-row-logout">
+            <a th:href="@{/logout}" class="button-link button-link-destructive">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16 17 21 12 16 7"/>
+                    <line x1="21" x2="9" y1="12" y2="12"/>
+                </svg>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
 </body>
 </html>
