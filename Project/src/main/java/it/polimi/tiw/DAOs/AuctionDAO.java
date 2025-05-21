@@ -201,6 +201,47 @@ public class AuctionDAO {
     }
     
     /*
+     * Updates the Auctions.IsSold status flag to the Auction whose ID is passed as parameter.
+     * Sets isSold to TRUE.
+     * Sets the UserId inside the Auctions.HighestBid to the Auctions.BuyerId, if there is any.
+     */
+    public void markAuctionAsClosed(Auction auction) throws SQLException {
+    	// Prepares the Statement
+    	String query = "UPDATE Auctions "
+    			+ "SET IsSold = TRUE, "
+    			+ "BuyerId = ?, "
+    			+ "FinalPrice = ? "
+    			+ "WHERE Id = ?";
+    	
+    	PreparedStatement statement = null;
+    	
+    	try {
+    		// Compiles the Statement
+    		statement = conn.prepareStatement(query);
+    		// Sets the Statement variables
+    		if (auction.getHighestBid() != null) {
+    			// There is an HighestBid, put its data into those Fields
+    		    statement.setInt(1, auction.getHighestBid().getUserId());			// BuyerID
+    		    statement.setInt(2, auction.getHighestBid().getOfferedPrice());		// FinalPrice
+    		} else {
+    			// There is no Offer to this Auction, put NULL into those Fields (they are NULLABLE)
+    		    statement.setNull(1, java.sql.Types.INTEGER);
+    		    statement.setNull(2, java.sql.Types.INTEGER);
+    		}
+    		statement.setInt(3, auction.getId());	// AuctionID
+    		
+    		// Runs the Statement
+    		statement.execute();
+    		
+    	} finally {
+    		// Closes the PreparedStatement
+    		if (statement != null) {
+    			statement.close();
+    		}
+    	}
+    }
+    
+    /*
      * Updates the Auction.HighestBid to the Auction whose ID is passed as parameter.
      * DOES NOT TOUCH AUTO-COMMIT.
      * DOES NOT COMMIT.
