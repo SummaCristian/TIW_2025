@@ -11,6 +11,7 @@ participant MakeOfferServlet
 
 participant OfferDAO #orange
 participant AuctionDAO #orange
+participant UserDAO #orange
 
 database DB #green
 
@@ -24,6 +25,17 @@ AuctionDetailsPage.html-->User: rendered page
 
 # User inputs the Offer and submits
 User->MakeOfferServlet: form submit (offer)
+
+# Gathering data for checks
+MakeOfferServlet->UserDAO: getUserById(userId)
+UserDAO-->MakeOfferServlet: returns user
+
+MakeOfferServlet->AuctionDAO: getAuctionById(auctionId)
+note over AuctionDAO #yellow: Gathering Auction, User and Items data
+AuctionDAO-->MakeOfferServlet: returns auction
+
+# Check
+note over MakeOfferServlet #yellow: Checks data
 
 alt Something wrong with the data
 # Error, return to the same page with the error message
