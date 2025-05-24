@@ -1,0 +1,56 @@
+title Making an Offer
+
+actor User
+
+participantgroup #lightgreen Auction Details Page
+participant AuctionDetailsPageServlet
+participant AuctionDetailsPage.html #aqua
+end
+
+participant MakeOfferServlet
+
+participant OfferDAO #orange
+participant AuctionDAO #orange
+
+database DB #green
+
+# Start
+
+# Access to page
+User->AuctionDetailsPageServlet:
+note over AuctionDetailsPageServlet #yellow : Retrieving Data
+AuctionDetailsPageServlet->AuctionDetailsPage.html: process()
+AuctionDetailsPage.html-->User: rendered page
+
+# User inputs the Offer and submits
+User->MakeOfferServlet: form submit (offer)
+
+alt Something wrong with the data
+# Error, return to the same page with the error message
+MakeOfferServlet->AuctionDetailsPageServlet: forward() [with error]
+note over AuctionDetailsPageServlet #yellow: Retrieving data
+AuctionDetailsPageServlet->AuctionDetailsPage.html: process() [with error]
+AuctionDetailsPage.html-->User: rendered page [with error]
+
+else Ok
+# Checks passed, everything ok
+
+# Add the Offer to the Database
+MakeOfferServlet->OfferDAO: insert(offer)
+OfferDAO->DB: INSERT
+DB-->>OfferDAO: ID
+
+# Updates the Auction's Highest Bid
+OfferDAO->AuctionDAO: updateAuctionsHighestBid(auctionId, offerId)
+AuctionDAO->DB: UPDATE
+DB-->>AuctionDAO:
+AuctionDAO-->OfferDAO:
+
+# End, return the User to the same page
+OfferDAO-->MakeOfferServlet:
+MakeOfferServlet->AuctionDetailsPageServlet: redirect()
+note over AuctionDetailsPageServlet #yellow: Retrieving data
+AuctionDetailsPageServlet->AuctionDetailsPage.html: process()
+AuctionDetailsPage.html-->User: rendered page [updated]
+
+end
