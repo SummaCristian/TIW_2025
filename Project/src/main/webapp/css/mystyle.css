@@ -888,6 +888,7 @@ button.button-primary.destructive.disabled-button p {
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 	display: flex;
 	gap: 0.5rem;
+	justify-content: center;
 	z-index: 10;
 	box-sizing: border-box;
 	border-radius: 1rem;

@@ -15,7 +15,6 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 
@@ -65,7 +64,6 @@ public class BuyPageServlet extends HttpServlet {
     private void loadPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
     	// Retrieve all the necessary data
     	AuctionDAO auctionDao = new AuctionDAO(connection);
-    	ItemDAO itemDao = new ItemDAO(connection);
     	User user = (User) request.getSession().getAttribute("user");
     	
     	// Writes the User in the Request too
