@@ -1,0 +1,57 @@
+title Closing an Auction
+
+actor User
+
+participantgroup #lightgreen Auction Details Page
+participant AuctionDetailsPageServlet
+participant AuctionDetailsPage.html #aqua
+end
+
+participant CloseAuctionServlet
+
+participant AuctionDAO #orange
+participant UserDAO #orange
+
+database DB #green
+
+# Start
+
+# Access to page
+User->AuctionDetailsPageServlet:
+note over AuctionDetailsPageServlet #yellow : Retrieving Data
+AuctionDetailsPageServlet->AuctionDetailsPage.html: process()
+AuctionDetailsPage.html-->User: rendered page
+
+# User inputs the Offer and submits
+User->CloseAuctionServlet: clicks button "Close Auction"
+
+# Gather data for checks
+CloseAuctionServlet->UserDAO: getUserById(userId)
+UserDAO-->CloseAuctionServlet: returns user
+
+CloseAuctionServlet->AuctionDAO: getAuctionById(auctionId)
+note over AuctionDAO #yellow: Retrieving Auction, Users and Items data
+AuctionDAO-->CloseAuctionServlet: returns auction
+
+# Check
+note over CloseAuctionServlet #yellow: Checks data
+
+alt Something wrong with the data
+# Something in the data was wrong, returning to the same page, with an error message
+CloseAuctionServlet->AuctionDetailsPageServlet: forward() [with error]
+AuctionDetailsPageServlet->AuctionDetailsPage.html: process() [with error]
+AuctionDetailsPage.html-->User: rendered page [with error]
+
+else Ok
+# Checks passed
+CloseAuctionServlet->AuctionDAO: markAuctionAsClosed(auctionId)
+AuctionDAO->DB: UPDATE
+DB-->>AuctionDAO:
+AuctionDAO-->CloseAuctionServlet:
+
+# Redirects back to the same page, now updated
+CloseAuctionServlet->AuctionDetailsPageServlet: redirect()
+AuctionDetailsPageServlet->AuctionDetailsPage.html: process() [updated]
+AuctionDetailsPage.html-->User: rendered page [updated]
+
+end
