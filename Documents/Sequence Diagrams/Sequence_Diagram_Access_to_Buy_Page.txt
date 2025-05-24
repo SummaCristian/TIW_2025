@@ -1,0 +1,69 @@
+title Access to Buy Page
+
+actor User
+
+participantgroup #lightgreen Home
+participant HomeServlet
+participant HomePage.html #aqua
+end
+
+participantgroup #lightgreen Sell
+participant BuyPageServlet
+participant BuyPage.html
+end
+
+participant AuctionDAO #orange
+participant ItemDAO #orange
+participant OfferDAO #orange
+
+database DB #green
+
+User-->HomeServlet:
+HomeServlet->HomePage.html: process()
+HomePage.html-->User: Rendered page
+
+User-->HomePage.html: Clicks on "Buy" link
+HomePage.html->BuyPageServlet: forward()
+
+# Accessing data
+
+# Search results - optional
+opt If there is a 'query' parameter
+BuyPageServlet->AuctionDAO: getAuctionsForKeywords(keywords)
+AuctionDAO->>DB: QUERY
+DB-->>AuctionDAO:
+
+AuctionDAO->ItemDAO: getItemsInAuction(auctionId)
+ItemDAO->>DB: QUERY
+DB-->>ItemDAO:
+ItemDAO-->AuctionDAO: return
+
+AuctionDAO->OfferDAO: getOffersForAuction(auctionId)
+OfferDAO->>DB: QUERY
+DB-->>OfferDAO:
+OfferDAO-->AuctionDAO:
+
+AuctionDAO-->BuyPageServlet: return searchResults
+end
+
+# Won Auctions
+BuyPageServlet->AuctionDAO: getAuctionsWonBy(user)
+AuctionDAO->>DB: QUERY
+DB-->>AuctionDAO:
+
+AuctionDAO->ItemDAO: getItemsInAuction(auctionId)
+ItemDAO->>DB: QUERY
+DB-->>ItemDAO:
+ItemDAO-->AuctionDAO: return
+
+AuctionDAO->OfferDAO: getOffersForAuction(auctionId)
+OfferDAO->>DB: QUERY
+DB-->>OfferDAO:
+OfferDAO-->AuctionDAO:
+
+AuctionDAO-->BuyPageServlet: return wonAuctions
+
+# Processing the page
+BuyPageServlet->BuyPage.html: process()
+
+BuyPage.html-->User: Rendered page
