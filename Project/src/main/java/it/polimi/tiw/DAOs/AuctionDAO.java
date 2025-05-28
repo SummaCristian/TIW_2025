@@ -601,8 +601,15 @@ public class AuctionDAO {
     		    					// in either NAME or DESCRIPTION, not necessarily BOTH
     		    					.collect(Collectors.joining(" OR "));
     	
-    	// Add the WHERE Clause to the rest of the Query
+    	// Add the WHERE Clause with the Keywords filtering
     	queryBuilder.append(whereClause);
+    	
+    	// Add the WHERE Clause with the filtering for FUTURE DATES only
+    	queryBuilder.append(" AND Auctions.ClosingDate > ?");
+    	
+    	// Add the ORDER BY clause
+    	queryBuilder.append(" ORDER BY Auctions.ClosingDate ASC");
+
     	
     	PreparedStatement statement = null;
     	ResultSet results = null;
@@ -619,6 +626,9 @@ public class AuctionDAO {
     		    statement.setString(index++, likeValue); // ItemName
     		    statement.setString(index++, likeValue); // ItemDescription
     		}
+    		
+    		// ClosingDate filtering
+    		statement.setTimestamp(index, new java.sql.Timestamp(loginTime));
     		
     		try {
     			// Exeutes the Query

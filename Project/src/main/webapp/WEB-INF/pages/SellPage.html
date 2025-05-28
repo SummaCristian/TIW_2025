@@ -63,8 +63,9 @@
 	                        			
 	                        			<p class="item-detail-secondary" th:text="'Base price: ' + ${auction.basePrice} + €">€123</p>
 	
-	                        			<p class="auction-detail auction-detail-secondary">Current Highest Bid:</p>
-	
+										<p th:if="${auction.isSold}" class="auction-detail auction-detail-secondary">Final Price:</p>
+	                        			<p th:unless="${auction.isSold}" class="auction-detail auction-detail-secondary">Current Highest Bid:</p>	                        			
+		
 	                        			<div th:if="${auction.highestBid != null}" class="offer-pill">
 	                            			<svg class="icon" viewBox="0 0 24 24">
 	                                			<circle cx="12" cy="12" r="10"/>
