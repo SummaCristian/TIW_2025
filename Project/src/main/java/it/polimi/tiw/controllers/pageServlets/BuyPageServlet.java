@@ -86,7 +86,7 @@ public class BuyPageServlet extends HttpServlet {
     			String[] keywords = query.trim().split("\\s+");
     			
     			// Performs the Search
-    			searchResults = auctionDao.getAuctionsForKeywords(keywords, loginTime); // always returns a List, empty if there are NO results
+    			searchResults = auctionDao.getAuctionsForKeywords(keywords, user.getId(), loginTime); // always returns a List, empty if there are NO results
     	    	
     		} catch (SQLException e) {
     	        e.printStackTrace();

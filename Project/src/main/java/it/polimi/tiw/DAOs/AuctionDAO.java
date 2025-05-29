@@ -573,10 +573,12 @@ public class AuctionDAO {
     /*
      * Performs a Search for all the Auctions that contain at least one Item in which NAME or DESCRIPTION
      * there is a match for at least one of the keywords inside the array of Strings passed as parameter.
+     * EXCLUDES the Auctions belonging to the User making the query, whose ID is passed as parameter.
+     * ORDERS the results in Descending order by their CLosingDate.
      * Returns a List of Auctions that match this search criteria in at least one of their Items.
      * Returns an EMPTY List if no Auction matches this criteria.
      */
-    public List<Auction> getAuctionsForKeywords(String[] keywords, long loginTime) throws SQLException {
+    public List<Auction> getAuctionsForKeywords(String[] keywords, int userId, long loginTime) throws SQLException {
     	// Creates the List, initially empty
     	List<Auction> searchResults = new ArrayList<>();
     	
@@ -607,8 +609,11 @@ public class AuctionDAO {
     	// Add the WHERE Clause with the filtering for FUTURE DATES only
     	queryBuilder.append(" AND Auctions.ClosingDate > ?");
     	
-    	// Add the ORDER BY clause
-    	queryBuilder.append(" ORDER BY Auctions.ClosingDate ASC");
+    	// Add the Where CLause with the filtering for Auctions NOT created by the User
+    	queryBuilder.append(" AND Auctions.SellerId != ?");
+    	
+    	// Add the ORDER BY clause (Descending order)
+    	queryBuilder.append(" ORDER BY Auctions.ClosingDate DESC");
 
     	
     	PreparedStatement statement = null;
@@ -628,7 +633,9 @@ public class AuctionDAO {
     		}
     		
     		// ClosingDate filtering
-    		statement.setTimestamp(index, new java.sql.Timestamp(loginTime));
+    		statement.setTimestamp(index++, new java.sql.Timestamp(loginTime));
+    		// User filtering
+    		statement.setInt(index, userId);
     		
     		try {
     			// Exeutes the Query
