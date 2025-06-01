@@ -5,9 +5,19 @@
 function showForm(formIdToShow) {
   const forms = ['login-form', 'signup1-form', 'signup2-form'];
   forms.forEach(id => {
-    document.getElementById(id).style.display = (id === formIdToShow) ? 'block' : 'none';
+    const form = document.getElementById(id);
+    if (id === formIdToShow) {
+      // Reset animation
+      form.classList.remove('fade-scale-in');
+      void form.offsetWidth; // Force reflow
+      form.classList.add('fade-scale-in');
+      form.style.display = 'block';
+    } else {
+      form.style.display = 'none';
+    }
   });
 }
+
 
 function displayError(targetId, message) {
   document.getElementById(targetId).textContent = message;
@@ -24,13 +34,17 @@ function setupFormToggles() {
     showForm('signup1-form');
   });
 
-  // Go back to login from signup step 1
-  document.querySelectorAll('.show-login').forEach(button => {
-    button.addEventListener('click', (e) => {
+  // Show signup step 1 from login form
+    document.getElementById('show-login').addEventListener('click', (e) => {
       e.preventDefault();
       showForm('login-form');
     });
-  });
+	
+	// Show signup step 1 from login form
+	  document.getElementById('show-singup1-back').addEventListener('click', (e) => {
+	    e.preventDefault();
+	    showForm('signup1-form');
+	  });
 }
 
 // ==========================

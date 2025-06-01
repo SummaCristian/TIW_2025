@@ -16,6 +16,7 @@ public class LoginPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        // Retrieve the HTML file
         String filePath = getServletContext().getRealPath("/WEB-INF/pages/LoginPage.html");
 
         try (var reader = new java.io.BufferedReader(new java.io.FileReader(filePath));
