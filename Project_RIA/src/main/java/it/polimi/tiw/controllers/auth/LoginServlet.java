@@ -50,40 +50,41 @@ public class LoginServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Reads the credentials from the Request
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		
-		// Connects to the DB
-		try {
-			// Creates and intializes the DAO for Users
-			UserDAO userDAO = new UserDAO(connection);
-			// Tries to authenticate the User
-			User user = userDAO.checkCredentials(username, password);
-			
-			// Authentification successful
-			// Adds the User's info to the session
-			HttpSession session = request.getSession();
-			session.setAttribute("user", user);
-			// Login Time
-			session.setAttribute("loginTime", System.currentTimeMillis());
-			
-			// Redirect to HomePage
-			response.sendRedirect(request.getContextPath() + "/home");
-		} catch (MissingParametersException e) {
-			request.setAttribute("error", "Missing some parameters");
-			request.getRequestDispatcher("/login").forward(request, response);
-		} catch (UserNotFoundException e) {
-			request.setAttribute("error", "User not found");
-			request.getRequestDispatcher("/login").forward(request, response);
-		} catch (IncorrectPasswordException e) {
-			request.setAttribute("error", "Incorrect password");
-			request.getRequestDispatcher("/login").forward(request, response);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new ServletException("Database error", e);
-		}
+	    // Reads the credentials from the Request
+	    String username = request.getParameter("username");
+	    String password = request.getParameter("password");
+
+	    try {
+	        // Creates and initializes the DAO for Users
+	        UserDAO userDAO = new UserDAO(connection);
+	        // Tries to authenticate the User
+	        User user = userDAO.checkCredentials(username, password);
+
+	        // Authentification successful: set session info
+	        HttpSession session = request.getSession();
+	        session.setAttribute("user", user);
+	        session.setAttribute("loginTime", System.currentTimeMillis());
+
+	        // Respond with success (HTTP 200)
+	        response.setStatus(HttpServletResponse.SC_OK);
+	        response.getWriter().write("Login successful");
+
+	    } catch (MissingParametersException e) {
+	        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	        response.getWriter().write("Missing parameters");
+	    } catch (UserNotFoundException e) {
+	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	        response.getWriter().write("User not found");
+	    } catch (IncorrectPasswordException e) {
+	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	        response.getWriter().write("Incorrect password");
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	        response.getWriter().write("Database error");
+	    }
 	}
 	
 	/*
