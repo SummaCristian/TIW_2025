@@ -3,6 +3,9 @@
 // ==========================
 
 function showForm(formIdToShow) {
+	// Clean all the Error Texts in the forms
+	cleanErrorTexts();
+	
 	const forms = ['login-form', 'signup1-form', 'signup2-form'];
 	forms.forEach(id => {
 		const form = document.getElementById(id);
@@ -20,6 +23,13 @@ function showForm(formIdToShow) {
 
 function displayError(targetId, message) {
 	document.getElementById(targetId).textContent = message;
+}
+
+function cleanErrorTexts() {
+	const errorTexts = ['login-error', 'signup1-error', 'signup2-error'];
+	errorTexts.forEach(id => {
+		displayError(id, '');
+	});
 }
 
 // ==========================
@@ -64,8 +74,12 @@ function setupLoginForm() {
 				if (xhr.status === 200) {
 					// Forward to HomePageServlet
 					window.location.href = 'home';
+				} else if (xhr.status === 400) {
+					displayError('login-error', xhr.responseText || 'Missing parameters');
 				} else if (xhr.status === 401) {
 					displayError('login-error', xhr.responseText || 'Invalid credentials');
+				} else if (xhr.status === 500) {
+					displayError('login-error', xhr.responseText || 'Internal Server Error');
 				} else {
 					displayError('login-error', 'An unexpected error occurred.');
 				}
