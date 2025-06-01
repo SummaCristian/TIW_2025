@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>Error</title>
+	    <link rel="stylesheet" type="text/css" media="all"
+	        href="../css/mystyle.css" th:href="@{/css/mystyle.css}" />
+	    <link rel="stylesheet"
+	    	href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" />
+	          
+	</head>
+	
+	<body>
+	    <div class="formdiv fade-scale-in">
+	   		<p class="error-message">Error </p>
+	    
+			<h1 class="error-code" th:text="${statusCode}">500</h1>
+			
+	        <p class="error-message" th:text="${message}">An unexpected error occurred. Please try again later.</p>
+	        
+	        <a th:href="@{/home}" class="button-link">
+				<svg class="icon">
+					<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/>
+					<path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+				</svg>
+				
+				<span>Home</span>
+			</a>
+	    </div>
+	</body>
+</html>
