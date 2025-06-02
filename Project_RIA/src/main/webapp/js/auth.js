@@ -27,11 +27,25 @@ function displayError(targetId, message) {
 	document.getElementById(targetId).textContent = message;
 }
 
+// Sets the success text with ID targetID to display the text passed in message
+function displaySuccess(targetId, message) {
+    const element = document.getElementById(targetId);
+    element.textContent = message;
+}
+
 // Resets all the error texts in all the Forms
 function cleanErrorTexts() {
 	const errorTexts = ['login-error', 'signup1-error', 'signup2-error'];
 	errorTexts.forEach(id => {
 		displayError(id, '');
+	});
+}
+
+// Resets all the success texts in all the Forms
+function clearSuccessTexts() {
+	const successTexts = ['login-success', 'signup1-success', 'signup2-success'];
+	successTexts.forEach(id => {
+		displaySuccess(id, '');
 	});
 }
 
@@ -60,6 +74,29 @@ function setupFormToggles() {
 // ==========================
 // Form Validation Functions
 // ==========================
+
+// Setup the "See Password" button in all the textfields that have one
+function setupPasswordToggles() {
+	// Retrieves the button and the input field
+    const toggleLoginPassword = document.getElementById('toggle-login-password');
+    const loginPasswordInput = document.getElementById('login-password');
+
+	// Attaches a callback function to handle click on the button
+    toggleLoginPassword.addEventListener('click', function(e) {
+		// Prevents HTML's default behavior
+        e.preventDefault();
+		// Changes the input type dynamically between password and text
+        if (loginPasswordInput.type === 'password') {
+			// Switch to text, to show the password
+            loginPasswordInput.type = 'text';
+            toggleLoginPassword.textContent = 'Hide';
+        } else {
+			// Switch to password, to hide the password
+            loginPasswordInput.type = 'password';
+            toggleLoginPassword.textContent = 'Show';
+        }
+    });
+}
 
 // Setup the Login Form and the function that handles the Submit/Login process
 function setupLoginForm() {
@@ -200,8 +237,11 @@ function setupFormValidation() {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
-                    // SUCCESS: redirect to login or home
-                    window.location.href = 'login';
+                    // SUCCESS: redirect to login
+                    showForm('login-form');
+					
+					// Show success message
+					displaySuccess('login-success', 'Account created successfully! Please log in.');
                 } else {
 					// ERROR: display error message from Server
 					const errorText = xhr.responseText || 'An error occurred during signup.';
@@ -240,4 +280,5 @@ function setupFormValidation() {
 setupFormToggles();
 setupFormValidation();
 setupLoginForm();
+setupPasswordToggles();
 showForm('login-form'); // Default to login form

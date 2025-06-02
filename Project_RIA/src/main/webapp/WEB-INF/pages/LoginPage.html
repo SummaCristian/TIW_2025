@@ -14,14 +14,20 @@
 	<div id="login-form" class="formcard-mini">
 		<h1 class="section-title">Login</h1>
 		
-		<p id="login-error" class="error"/>
+		<!-- Error message -->
+		<p id="login-error" class="error"></p>
+		<!-- Success message -->
+		<p id="login-success" class="success"></p>
 
 		<form id="loginForm">
 			<label for="login-username">Username:</label>
 			<input id="login-username" type="text" name="username" required />
 			
 			<label for="login-password">Password:</label>
-			<input id="login-password" type="password" name="password" required />
+			<div class="password-wrapper">
+			    <input id="login-password" type="password" name="password" required />
+			    <button type="button" id="toggle-login-password" class="button-secondary">Show</button>
+			</div>
 		
 			<button type="submit" class="button-primary">Login</button>
 		</form>
@@ -36,6 +42,8 @@
 
 		<!-- Error message -->
 		<p id="signup1-error" class="error"></p>
+		<!-- Success message -->
+		<p id="signup1-success" class="success"></p>
 
 		<form id="signup1Form">
 			<label for="signup-username">Username:</label>
@@ -61,6 +69,8 @@
 
 		<!-- Error message -->
 		<p id="signup2-error" class="error"></p>
+		<!-- Success message -->
+		<p id="signup2-success" class="success"></p>
 
 		<form id="signup2Form">
 			<!-- Hidden inputs for data from phase 1 -->
