@@ -40,11 +40,6 @@ public class SignUpServlet extends HttpServlet {
 			throw new ServletException("Database error", e);
 		}
     }
-
-    // Dummy method
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
-		response.getWriter().println("SignUp Servlet");
-	}
 	
 	/*
 	 * Handles the SignUp logic, checking the data inputted by the User and ensuring that everything is ok.
@@ -77,8 +72,8 @@ public class SignUpServlet extends HttpServlet {
 		        break;
 
 		    default:
-		        request.setAttribute("error", "Unknown signup phase.");
-		        request.getRequestDispatcher("/signup").forward(request, response);
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Unknown signup phase.");
 		        break;
 		}
 
@@ -102,42 +97,28 @@ public class SignUpServlet extends HttpServlet {
 			userDAO.validateCredentials(username, password1, password2);
 			
 			// Success → move to phase 2
-			request.setAttribute("username", username);
-			request.setAttribute("password1", password1);
-			request.setAttribute("password2", password2);
-			
-			request.setAttribute("phase", "2");
+			// Send 200 OK
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write("Phase 1 OK");
 
-			request.getRequestDispatcher("/signup").forward(request, response);
 
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new ServletException("Database error", e);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Database error.");
 		} catch (MissingParametersException e) {
 			// Some parameters were either null or empty Strings
-			request.setAttribute("username", username);
-			request.setAttribute("password1", password1);
-			request.setAttribute("password2", password2);
-			
-			request.setAttribute("error", "Missing some parameters");
-			request.getRequestDispatcher("/signup").forward(request, response);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Missing some parameters.");
 		} catch (MismatchingPasswordsException e) {
 			// The 2 passwords were different
-			request.setAttribute("username", username);
-			request.setAttribute("password1", password1);
-			request.setAttribute("password2", password2);
-
-			request.setAttribute("error", "Passwords are not the same");
-			request.getRequestDispatcher("/signup").forward(request, response);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Passwords are not the same.");
 		} catch (DuplicateUsernameException e) {
 			// The Username already exists in the DB
-			request.setAttribute("username", username);
-			request.setAttribute("password1", password1);
-			request.setAttribute("password2", password2);
-
-			request.setAttribute("error", "Username already taken");
-			request.getRequestDispatcher("/signup").forward(request, response);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Username already taken.");
 		}
 	}
 
@@ -163,14 +144,9 @@ public class SignUpServlet extends HttpServlet {
 			address == null || address.isBlank()
 		) {
 			// Missing some data
-			request.setAttribute("username", username);
-			request.setAttribute("password1", password1);
-			request.setAttribute("password2", password2);
-						
-			request.setAttribute("error", "Missing some parameters");
-			request.getRequestDispatcher("/signup").forward(request, response);
-			
-			return;
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Missing some parameters.");
+            return;
 		}
 		
 		// Re-checks the credentials (something might have happened during the back-and-forth
@@ -195,12 +171,14 @@ public class SignUpServlet extends HttpServlet {
 			// Inserts the User in the DB.
 			userDAO.insert(user, password1);
 			
-			// Sends the User back to the Login Page, where they can use their new credentials
-			request.getRequestDispatcher("/login").forward(request, response);
+			// SUCCESS: send response to let frontend know to proceed
+			response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write("Signup successful.");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new ServletException("Database error", e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Database error.");
 		} catch (MissingParametersException | MismatchingPasswordsException | DuplicateUsernameException e) {
 			/*
 			 * Something has happened to the credentials.
@@ -208,9 +186,8 @@ public class SignUpServlet extends HttpServlet {
 			 * some genuine error; either way these credentials can't be used,
 			 * so the User must re-start the whole SignUp process again
 			 */
-			request.setAttribute("phase", "1");
-			request.setAttribute("error", "Something went wrong. Please try again...");
-			request.getRequestDispatcher("/signup").forward(request, response);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Invalid credentials: " + e.getMessage());
 		}
 	}
 
