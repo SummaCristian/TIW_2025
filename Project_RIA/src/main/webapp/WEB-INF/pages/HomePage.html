@@ -9,7 +9,24 @@
 
 <body>
 
+	<!-- Logout button-->
+	<div class="top-buttons">
+		<div></div>
+
+		<a href="/logout", class="button-link button-link-destructive">
+			<svg class="icon" viewbox="0 0 24 24">
+				<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+				<polyline points="16 17 21 12 16 7"/>
+				<line x1="21" x2="9" y1="12" y2="12"/>
+			</svg>
+
+			<span>Logout</span>
+		</a>
+	</div>
+
 	<h1>Welcome!</h1>
+
+	
 
 	<!-- Tab Bar component, used to change which page is currently selected and displayed -->
 	<div class="pill-tabbar">
@@ -24,7 +41,193 @@
 
 	<!-- Sell Page, whose visibility is controlled by the TabBar above -->
 	<div id="sellPage" class="tab-content formdiv fade-scale-in">
-		<p>Sell page</p>
+		<!-- Title -->
+		 <h1>Sell</h1>
+
+		 <!-- Auctions created by the User and not closed yet -->
+		  <div>
+			<div class="title-with-image">
+				<svg class="icon" viewBox="0 0 24 24">
+					<line x1="10" x2="14" y1="2" y2="2"/>
+					<line x1="12" x2="15" y1="14" y2="11"/>
+					<circle cx="12" cy="14" r="8"/>
+				</svg>
+					
+				<div class="text-group">	
+					<h2 class="section-title">Open Auctions</h2>
+					<p class="header-description">See all the Auctions you have created that are still open</p>
+				</div>
+			</div>
+
+			<div class="container">
+				<div id="openAuctionsList"></div>
+
+				<!-- Default text: no auctions -->
+				<p id="noOpenAuctionsText" class="no-element-in-list">No open auctions available</p>
+			</div>
+
+		  </div>
+
+		  <!-- Auctions created by the User and already closed -->
+		  <div>
+			<div class="title-with-image">
+				<svg class="icon" viewBox="0 0 24 24">
+		            <path d="M10 2h4"/>
+		            <path d="M4.6 11a8 8 0 0 0 1.7 8.7 8 8 0 0 0 8.7 1.7"/>
+		            <path d="M7.4 7.4a8 8 0 0 1 10.3 1 8 8 0 0 1 .9 10.2"/>
+		            <path d="m2 2 20 20"/>
+		            <path d="M12 12v-2"/>
+		        </svg>
+		
+		        <div class="text-group">	
+		            <h2 class="section-title">Closed Auctions</h2>
+		            <p class="header-description">See all the Auctions you have created that are already closed</p>
+		        </div>
+			</div>
+
+			<div class="container">
+				<div id="closedAuctionsList"></div>
+
+				<!-- Default text: no auctions -->
+				 <p id="noClosedAuctionsText" class="no-element-in-list">No closed auctions available</p>
+			</div>
+		  </div>
+
+		  <!-- Item creation form -->
+		  <div>
+			<!-- Title -->
+			<div>
+				<div class="title-with-image">
+					<svg class="icon" viewBox="0 0 24 24">
+				    	<path d="M12 8v8"/>
+				    	<path d="M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41L13.7 2.71a2.41 2.41 0 0 0-3.41 0z"/>
+				    	<path d="M8 12h8"/>
+			    	</svg>
+				    
+				    <div class="text-group">	
+				        <h2 class="subsection-title">New Item</h2>
+				        <p class="header-description">Create a new Item to sell</p>
+				    </div>
+				</div>
+
+				<div class="container">
+					<!-- Error message -->
+					 <p id="itemCreationFormErrorMessage" class="error"></p>
+
+					 <form id="itemCreationForm">
+						<div class="form-columns">
+							<!-- LEFT HALF: Text Entries -->
+							 <div class="form-left">
+								<!-- Item Name -->
+								 <label for="itemName">Item Name:</label>
+								 <input type="text" name="itemName" id="itemName" placeholder="Name" required minlength="1" maxlength="255">
+
+								 <!-- Description -->
+								  <label for="itemDescription">Description:</label>
+								  <textarea type="text" name="itemDescription" id="itemDescription" placeholder="Description" rows="4" required maxlength="1023"></textarea>
+
+								  <!-- Price -->
+								   <label for="price">Price:</label>
+								   <input type="number" name="price" id="price" placeholder="___ €" required min="1" step="1">
+							 </div>
+
+							 <!-- RIGHT HALF: Image Upload -->
+							  <div class="form-right">
+								<div class="form-group">
+									<label for="image" class="custom-file-upload">
+										<input type="file" name="image" id="image" accept="image/*" required class="hidden-file-input">
+										<svg class="icon upload-icon" viewBox="0 0 24 24">
+											<path d="M16 5h6"/>
+											<path d="M19 2v6"/>
+											<path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/>
+											<path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+											<circle cx="9" cy="9" r="2"/>
+										</svg>
+										<p>Click to upload image</p>
+									</label>
+								</div>
+							  </div>
+						</div>
+
+						<!-- Submit -->
+						 <button type="submit" class="button-primary">
+					    	<svg class="icon" viewBox="0 0 24 24">
+						    	<path d="M12 8v8"/>
+						    	<path d="M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41L13.7 2.71a2.41 2.41 0 0 0-3.41 0z"/>
+						    	<path d="M8 12h8"/>
+					    	</svg>
+					    	
+					    	<p>Create Item</p>
+					    </button>
+					 </form>
+				</div>
+			</div>
+		  </div>
+
+		  <!-- Auction Creation Form -->
+		  <div>
+			<!-- Title -->
+			 <div>
+				<div class="title-with-image">
+					<svg class="icon" viewBox="0 0 24 24">
+				    	<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/>
+				    	<line x1="12" x2="12" y1="8" y2="16"/>
+				    	<line x1="8" x2="16" y1="12" y2="12"/>
+				    </svg>
+				    
+				    <div class="text-group">	
+				        <h2 class="subsection-title">New Auction</h2>
+				        <p class="header-description">Create a new Auction and sell your Items</p>
+				    </div>
+				</div>
+
+				<div class="container">
+					<!-- Error message -->
+					 <p id="auctionCreationFormErrorMessage" class="error"></p>
+
+					 <form id="auctionCreationForm">
+						<div class="form-columns-packed">
+							<!-- LEFT HALF: Minimum Increment -->
+							 <div class="form-column">
+								<!-- Minimum Increment -->
+								 <label for="minIncrement">Minimum Increment (€):</label>
+								 <input type="number" name="minIncrement" id="minIncrement" placeholder="___ €" required min="1" step="1">
+							 </div>
+
+							 <!-- RIGHT HALF: Closing Date -->
+							 <div class="form-column">
+								<!-- Closing Date -->
+								 <label for="closingDate">Closing Date:</label>
+								 <input type="datetime-local" name="closingDate" id="closingDate" required>
+							 </div>
+						</div>
+
+						<!-- Select Items -->
+						 <label>Select Items for this Auction:</label>
+						 <ul id="auctionCreationItemList" class="item-list">
+							<!-- Available Items go here -->
+						 </ul>
+
+						 <!-- Default text: No items available -->
+						<p id="auctionCreationNoItemsText" class="no-element-in-list">No available items. You need at least one to create an auction.</p>
+
+						<!-- Submit -->
+						<button type="submit" class="button-primary"
+						        th:disabled="${#lists.isEmpty(availableItems)}"
+						        th:classappend="${#lists.isEmpty(availableItems)} ? ' disabled-button' : ''">
+						    
+						    <svg class="icon" viewBox="0 0 24 24">
+						    	<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/>
+						    	<line x1="12" x2="12" y1="8" y2="16"/>
+						    	<line x1="8" x2="16" y1="12" y2="12"/>
+						    </svg>
+						    
+						    <p>Create Auction</p>
+						</button>
+					 </form>
+				</div>
+			 </div>
+		  </div>
 	</div>
 
 	<!-- Buy Page, whose visibility is controlled by the TabBar above -->

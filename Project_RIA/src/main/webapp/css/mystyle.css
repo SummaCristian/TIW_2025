@@ -1,7 +1,7 @@
 /* HIDING LOGIC: Classes in here will be hidden by default */
 
 /* Hide the forms by default */
-#signup1-form, #signup2-form/*, #popup-overlay*/ {
+#signup1-form, #signup2-form, #popup-overlay {
   display: none;
 }
 
@@ -315,6 +315,7 @@ form button.button-primary {
 }
 
 form label {
+  text-align: left;
   font-size: 0.6rem;
   font-weight: 500;
   color: #666666;
@@ -553,7 +554,7 @@ hr {
 .top-buttons {
 	display: flex;
 	justify-content: space-between;
-	width: 100%;
+	width: 95%;
 	min-width: 0%;
 	align-items: center;
 	box-sizing: border-box;

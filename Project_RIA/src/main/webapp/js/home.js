@@ -2,6 +2,29 @@
 // Helper Functions
 // ==========================
 
+// Sets the date of Tomorrow, same time as now, into this Picker in the Auction Creation Form (SellPage)
+function setTomorrowDateInPicker() {
+    const datePicker = document.getElementById("closingDate");
+
+    if (!datePicker) return; // safety check
+
+    const today = new Date();
+
+    // Add 1 day
+    today.setDate(today.getDate() + 1);
+
+    // Format to YYYY-MM-DD
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}`;
+
+    // Set the value
+    datePicker.value = formattedDate;
+}
+
+
 
 // ==========================
 // Setup Event Listeners
@@ -105,3 +128,5 @@ sellerUsername.textContent = "you"
 remainingTime.textContent = "1d, 2h, 35min"
 closingDate.textContent = "01/01/2026"
 offerMinIncrement.textContent = "10"
+
+setTomorrowDateInPicker()
