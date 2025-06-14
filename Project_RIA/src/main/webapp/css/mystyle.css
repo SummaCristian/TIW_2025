@@ -170,6 +170,62 @@ body {
   cursor: pointer;
 }
 
+/* Tab Bar */
+.pill-tabbar {
+  position: relative;
+  display: flex;
+  background-color: #e5e5ea;
+  padding: 6px;
+  border-radius: 999px;
+  max-width: 200px;
+  margin: 20px auto;
+  justify-content: space-around;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Sliding indicator */
+.pill-indicator {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  height: calc(100% - 12px);
+  background-color: white;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, width 0.3s ease;
+  z-index: 0;
+}
+
+
+.pill-tab {
+  position: relative;
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 10px 20px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #333;
+  z-index: 1; /* above indicator */
+  transition: color 0.2s ease;
+}
+
+.pill-tab.active {
+  color: #007aff;
+}
+
+.tab-content {
+  display: none;
+  padding: 20px;
+  text-align: center;
+}
+
+.tab-content.active-tab {
+  display: block;
+}
+
+
 .centered {
   display: flex;
   align-items: center;

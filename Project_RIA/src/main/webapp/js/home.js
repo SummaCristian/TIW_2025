@@ -30,8 +30,43 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Initially hide the popup (in case it's shown by default)
-  //closePopup();
+  closePopup();
+
 });
+
+// TabBar
+// Initializes the tab switching behavior
+export function initPillTabBar(tabSelector = ".pill-tab", contentSelector = ".tab-content", indicatorSelector = ".pill-indicator") {
+  const tabs = document.querySelectorAll(tabSelector);
+  const contents = document.querySelectorAll(contentSelector);
+  const indicator = document.querySelector(indicatorSelector);
+
+  function activateTab(tab) {
+    // Activate selected tab
+    tabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    // Move and resize indicator
+    indicator.style.width = `${tab.offsetWidth}px`;
+    indicator.style.transform = `translateX(${tab.offsetLeft}px)`;
+
+    // Show related content
+    const target = tab.getAttribute("data-tab");
+    contents.forEach(content => {
+      content.classList.toggle("active-tab", content.id === target);
+    });
+  }
+
+  // Setup click listeners
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => activateTab(tab));
+  });
+
+  // Init on first tab
+  if (tabs.length > 0) {
+    activateTab(tabs[0]);
+  }
+}
 
 
 
@@ -44,6 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==========================
 // Init
 // ==========================
+initPillTabBar()
 
 
 // Initializes the dynamic components to some preset values, for debugging purposes (TEMPORARY)
