@@ -63,6 +63,7 @@ export function initPillTabBar(tabSelector = ".pill-tab", contentSelector = ".ta
   });
 
   // Init on first tab
+  // TODO: Remember the last one the User visited
   if (tabs.length > 0) {
     activateTab(tabs[0]);
   }

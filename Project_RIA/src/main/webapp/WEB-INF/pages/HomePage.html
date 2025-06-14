@@ -11,15 +11,25 @@
 
 	<h1>Welcome!</h1>
 
+	<!-- Tab Bar component, used to change which page is currently selected and displayed -->
 	<div class="pill-tabbar">
+		<!-- Visual indication of which page is currently selected -->
   		<div class="pill-indicator"></div>
   	
-		<button class="pill-tab active" data-tab="home">Sell</button>
-  		<button class="pill-tab" data-tab="profile">Buy</button>
+		<!-- Sell Page -->
+		<button class="pill-tab active" data-tab="sellPage">Sell</button>
+		<!-- Buy Page -->
+  		<button class="pill-tab" data-tab="buyPage">Buy</button>
 	</div>
 
-	<div class="formdiv">
-		<p>Home page</p>
+	<!-- Sell Page, whose visibility is controlled by the TabBar above -->
+	<div id="sellPage" class="tab-content formdiv fade-scale-in">
+		<p>Sell page</p>
+	</div>
+
+	<!-- Buy Page, whose visibility is controlled by the TabBar above -->
+	<div id="buyPage" class="tab-content formdiv fade-scale-in">
+		<p>Buy page</p>
 	</div>
 	
 
