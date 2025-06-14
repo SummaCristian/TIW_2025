@@ -7,6 +7,33 @@
 // Setup Event Listeners
 // ==========================
 
+// The Selected Auction popup window
+document.addEventListener("DOMContentLoaded", () => {
+  const popupOverlay = document.getElementById("popup-overlay");
+  const popupClose = document.getElementById("popup-close");
+
+  function openPopup() {
+    popupOverlay.style.display = "flex";
+  }
+
+  function closePopup() {
+    popupOverlay.style.display = "none";
+  }
+
+  popupClose.addEventListener("click", closePopup);
+
+  // Sets an EventListener on the outside layer too, so that clicking outside popup-content closes it
+  popupOverlay.addEventListener("click", (event) => {
+    if (event.target === popupOverlay) {
+      closePopup();
+    }
+  });
+
+  // Initially hide the popup (in case it's shown by default)
+  //closePopup();
+});
+
+
 
 // ==========================
 // Form Validation Functions
