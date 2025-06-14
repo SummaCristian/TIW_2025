@@ -232,7 +232,81 @@
 
 	<!-- Buy Page, whose visibility is controlled by the TabBar above -->
 	<div id="buyPage" class="tab-content formdiv fade-scale-in">
-		<p>Buy page</p>
+		<!-- Title -->
+		 <h1>Buy</h1>
+
+		 <!-- Search Field -->
+		 <div>
+			<form class="search-form-compact">
+				<label for="query">Search</label>
+
+				<div class="search-inline-row">
+					<input id="query" type="text" name="query" placeholder="Search Items by keywords" required/>
+
+					<button type="submit" class="button-primary">
+						<svg class="icon" viewBox="0 0 24 24">
+				    		<path d="m21 21-4.34-4.34"/>
+				    		<circle cx="11" cy="11" r="8"/>
+			    		</svg>
+				    	<p>Search</p>
+					</button>
+				</div>
+			</form>
+		</div>
+
+		<!-- Search Results -->
+		<div id="searchResultsContainer">
+			<div class="title-with-image">
+				<svg class="icon" viewBox="0 0 24 24">
+					<path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/>
+					<path d="M5 21h14"/>
+				</svg>
+					
+				<div class="text-group">	
+					<h2 class="section-title">Search Results</h2>
+					<p class="header-description">See all the Auctions we have found matching your request</p>
+				</div>
+			</div>
+
+			<div class="container">
+				<div>
+					<ul>
+						<!-- Auctions from Search Results go here -->
+					</ul>
+				</div>
+
+				<!-- Default Text: no auctions from Search Results -->
+				<p id="searchResultsNoAuctionText" class="no-element-in-list">No results</p>
+
+			</div>
+		</div>
+
+		<!-- Auctions won by User -->
+		<div>
+			<div class="title-with-image">			
+				<svg class="icon" viewBox="0 0 24 24">
+					<path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/>
+					<path d="M5 21h14"/>
+				</svg>
+					
+				<div class="text-group">	
+					<h2 class="section-title">Won Auctions</h2>
+					<p class="header-description">See all the Auctions you have won</p>
+				</div>
+			</div>
+
+			<div class="container">
+				<div>
+					<ul>
+						<!-- Auctions won by the User go here -->
+					</ul>
+				</div>
+
+				<!-- Default Text: no auctions available -->
+				 <p id="wonAuctionsNoAuctionsText" class="no-element-in-list">No won auctions available</p>
+			</div>
+		</div>
+
 	</div>
 	
 
