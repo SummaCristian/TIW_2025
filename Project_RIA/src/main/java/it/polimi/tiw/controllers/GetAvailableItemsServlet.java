@@ -1,16 +1,22 @@
 package it.polimi.tiw.controllers;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import com.google.gson.*;
-import java.lang.reflect.Type;
-import it.polimi.tiw.DAOs.AuctionDAO;
-import it.polimi.tiw.beans.Auction;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+
+import it.polimi.tiw.DAOs.ItemDAO;
+import it.polimi.tiw.beans.Item;
 import it.polimi.tiw.beans.User;
 import it.polimi.tiw.utils.EnvUtil;
 import jakarta.servlet.ServletException;
@@ -20,12 +26,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /*
- * This Servlet responds to requests for Auctions data, 
- * more specifically Auctions created by the User and already Closed.
+ * This Servlet responds to requests for Items data, 
+ * more specifically Items created by the User and NOT associated to ANY Auction.
  * The results are sent in a JSON format.
  */
-@WebServlet("/api/auctions/closed")
-public class GetClosedAuctionsServlet extends HttpServlet {
+@WebServlet("/api/items/available")
+public class GetAvailableItemsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	// Database connection
@@ -45,7 +51,7 @@ public class GetClosedAuctionsServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Retrieve all the necessary data
-    	AuctionDAO auctionDao = new AuctionDAO(connection);
+    	ItemDAO itemDao = new ItemDAO(connection);
     	User user = (User) request.getSession().getAttribute("user");
     	
     	// Check session validity
@@ -57,18 +63,18 @@ public class GetClosedAuctionsServlet extends HttpServlet {
     	// The User's Login Time
     	long loginTime = (long) request.getSession().getAttribute("loginTime");
     	
-    	// Open Auctions
-    	List<Auction> closedAuctions = null;
+    	// Items available for new Auctions
+    	List<Item> availableItems = null;
     	
     	try {
-			closedAuctions = auctionDao.getAuctionsCreatedBy(user, true, loginTime);
-			
+    		availableItems = itemDao.getAvailableItemsForUserId(user.getId());			
 		} catch (SQLException e) {
 			// Send Error 500 and stop, Client will handle the error on his side
 	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500
 	        return;
 		}
     	
+    	// Convert to JSON
     	// Convert to JSON
     	Gson gson = new GsonBuilder()
     		    .registerTypeAdapter(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {
@@ -79,7 +85,7 @@ public class GetClosedAuctionsServlet extends HttpServlet {
     		    })
     		    .create();
     	
-        String json = gson.toJson(closedAuctions);
+        String json = gson.toJson(availableItems);
     	
     	// Send the JSON as the response to the client
         response.setContentType("application/json");
