@@ -30,8 +30,8 @@ import jakarta.servlet.http.HttpServletResponse;
  * more specifically Auctions created by the User and still Open.
  * The results are sent in a JSON format.
  */
-@WebServlet("/api/auctions/open")
-public class GetOpenAuctionsServlet extends HttpServlet {
+@WebServlet("/api/auctions/won")
+public class GetWonAuctionsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	// Database connection
@@ -64,11 +64,10 @@ public class GetOpenAuctionsServlet extends HttpServlet {
     	long loginTime = (long) request.getSession().getAttribute("loginTime");
     	
     	// Open Auctions
-    	List<Auction> openAuctions = null;
+    	List<Auction> wonAuctions = null;
     	
     	try {
-			openAuctions = auctionDao.getAuctionsCreatedBy(user, false, loginTime);
-			
+			wonAuctions = auctionDao.getAuctionsWonBy(user, loginTime);			
 		} catch (SQLException e) {
 			// Send Error 500 and stop, Client will handle the error on his side
 	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500
@@ -85,7 +84,7 @@ public class GetOpenAuctionsServlet extends HttpServlet {
     		    })
     		    .create();
     	
-        String json = gson.toJson(openAuctions);
+        String json = gson.toJson(wonAuctions);
     	
     	// Send the JSON as the response to the client
         response.setContentType("application/json");
