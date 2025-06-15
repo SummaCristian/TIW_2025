@@ -27,7 +27,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /*
  * This Servlet responds to requests for Auctions data, 
- * more specifically Auctions created by the User and still Open.
+ * more specifically Auctions NOT created by the User, instead Auctions WON by the User.
  * The results are sent in a JSON format.
  */
 @WebServlet("/api/auctions/won")
