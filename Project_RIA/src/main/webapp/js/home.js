@@ -1,5 +1,5 @@
 // Imports the other JS files needed
-import { refreshOpenAuctions, refreshClosedAuctions } from './api.js';
+import { refreshOpenAuctions, refreshClosedAuctions, refreshWonAuctions } from './api.js';
 
 // ==========================
 // Helper Functions
@@ -112,3 +112,4 @@ setTomorrowDateInPicker()
 // Refreshes the content on load
 refreshOpenAuctions();
 refreshClosedAuctions();
+refreshWonAuctions();
