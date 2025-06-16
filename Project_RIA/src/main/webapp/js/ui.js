@@ -92,7 +92,7 @@ function buildAuctionCardHeader(auction) {
 	const containerRight = document.createElement("div");
 
 	// Indicator for the Auction's Open or Closed status
-	containerRight.append(buildOpenClosedPillIndicator(auction?.isSold ?? false));
+	containerRight.append(buildOpenClosedPillIndicator(!auction?.isSold ?? true));
 
 	// Remaining Time
 	containerRight.append(buildRemainingTimeIndicator(auction?.remainingTime ?? "Unknown"));
@@ -296,7 +296,7 @@ function buildOpenClosedPillIndicator(isOpen) {
 		// Open
 		const icon = createSvg();
 		icon.append(createRect(18, 11, 3, 11, 2, 2));
-		icon.append(createPath("M7 11V7a5 5 0 0 1 0.0-1"));
+		icon.append(createPath("M7 11V7a5 5 0 0 1 9.9-1"));
 		innerContainer.append(icon);
 
 		const text = document.createElement("p");

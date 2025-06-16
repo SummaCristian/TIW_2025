@@ -49,6 +49,11 @@ function fetchDataGET(url, callback) {
     xhr.send();
 }
 
+/*
+    Makes a request to the server for the updated Open Auctions data,
+    then proceeds to dynamically build the UI elements to display those Auctions and
+    adds them to the DOM in the appropriate list.
+*/
 export function refreshOpenAuctions() {
     // Defines the API URL
     const url = "/Project_TIW_RIA/api/auctions/open";
@@ -85,6 +90,65 @@ export function refreshOpenAuctions() {
             list.style.display = "none";
             // Shows the default text
             emptyListMessage.textContent = "No open auctions available";
+            emptyListMessage.style.display = "block";
+        } else {
+            // Auctions received
+
+            // Hides the default text
+            emptyListMessage.style.display = "none"
+
+            // Populates the List
+            for (const auction of data) {
+                list.append(buildAuctionCard(auction, noItemsText));
+            }
+        }
+    }
+
+    // Makes the Request
+    fetchDataGET(url, callback);
+}
+
+/*
+    Makes a request to the server for the updated Closed Auctions data,
+    then proceeds to dynamically build the UI elements to display those Auctions and
+    adds them to the DOM in the appropriate list.
+*/
+export function refreshClosedAuctions() {
+    // Defines the API URL
+    const url = "/Project_TIW_RIA/api/auctions/closed";
+    
+    // Defines the callback function to handle the results
+    const callback = function (error, data) {
+        const container = document.getElementById("closedAuctionsContainer");
+        const list = document.getElementById("closedAuctionsList");
+        const emptyListMessage = document.getElementById("noClosedAuctionsText")
+
+        const noItemsText ="No items in this auction";
+
+        // Clear the previous content before repopulating or refreshing
+        list.innerHTML = "";
+
+        // Checks if there is an error before looking at the data
+        if (error) {
+            // Logs
+            console.error("Failed to fetch closed auctions:", error.message);
+            // Hides the List
+            list.style.display = "none";
+            // Shows the default text
+            emptyListMessage.style.display = "block";
+            // Changes the text in the default text to the error message
+            emptyListMessage.textContent = "Could not load auctions.";
+            return;
+        }
+
+
+        if (Array.isArray(data) && data.length === 0) {
+            // No Auctions received
+
+            // Hides the List
+            list.style.display = "none";
+            // Shows the default text
+            emptyListMessage.textContent = "No closed auctions available";
             emptyListMessage.style.display = "block";
         } else {
             // Auctions received
