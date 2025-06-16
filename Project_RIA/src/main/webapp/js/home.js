@@ -63,6 +63,10 @@ document.addEventListener("DOMContentLoaded", () => {
   
   searchForm.addEventListener("submit", (event) => {
     event.preventDefault();
+	
+	// Shows the Search Result section
+	const container = document.getElementById("searchResultsContainer");
+	container.style.display = "block";
 
     const queryInput = searchForm.querySelector("#query");
     const query = queryInput.value.trim();
@@ -72,6 +76,9 @@ document.addEventListener("DOMContentLoaded", () => {
       searchAuctions(query);
     }
   });
+  
+  // Initially hides the search results section
+  document.getElementById("searchResultsContainer").style.display = "none";
 
 });
 
