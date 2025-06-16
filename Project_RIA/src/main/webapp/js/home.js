@@ -1,5 +1,9 @@
 // Imports the other JS files needed
-import { refreshOpenAuctions, refreshClosedAuctions, refreshWonAuctions, searchAuctions } from './api.js';
+import { fetchUser, refreshOpenAuctions, refreshClosedAuctions, refreshWonAuctions, searchAuctions, fetchAuction } from './api.js';
+import { updateAuctionPopup } from './ui.js';
+
+// Constants
+export let user = null;
 
 // ==========================
 // Helper Functions
@@ -25,6 +29,23 @@ function setTomorrowDateInPicker() {
 
     // Set the value
     datePicker.value = formattedDate;
+}
+
+/*
+	Triggers the showing of the Auction Details Popup, that is filled with all the
+	info from the Auction passed as parameter and then shown on top of the current UI.
+*/
+export function showAuctionPopup(auction) {
+	const popupOverlay = document.getElementById("popup-overlay");
+
+  // Fetches the updated Auction data
+  fetchAuction(auction.id, (error, auction) => {
+    // Once the auction data has been fetched, we call the UI function to put the data in the UI
+    updateAuctionPopup(auction, () => {
+        // Once the UI has been updated, show the Popup to the User
+        popupOverlay.style.display = "flex";
+    });
+  });
 }
 
 
@@ -139,6 +160,12 @@ export function initPillTabBar(tabSelector = ".pill-tab", contentSelector = ".ta
 // ==========================
 // Init
 // ==========================
+fetchUser((data) => {
+  user = data;
+  
+  console.log(user);
+});
+
 initPillTabBar()
 setTomorrowDateInPicker()
 

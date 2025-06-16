@@ -50,6 +50,32 @@ function fetchDataGET(url, callback) {
 }
 
 /*
+    Fetches the User data from the Server's session passes it to the
+    callback function passed as argument.
+*/
+export function fetchUser(callback) {
+    var user = null;
+
+    // Defines the API URL
+    const url = "/Project_TIW_RIA/api/users/user";
+
+    const internalCallback = function(error, data) {
+        // Check if there was an error
+        if (error) {
+            console.log("Failed to fetch the User: ", error.message);
+            callback(null);
+            return;
+        }
+        
+        // Run the callback function
+        callback(data);
+    }
+
+    // Call the fetchDataGET with the internal callback
+    fetchDataGET(url, internalCallback);
+}
+
+/*
     Makes a request to the server for the updated Open Auctions data,
     then proceeds to dynamically build the UI elements to display those Auctions and
     adds them to the DOM in the appropriate list.
@@ -287,4 +313,33 @@ export function searchAuctions(query) {
 
     // Makes the Request
     fetchDataGET(url, callback);
+}
+
+// Fetches an Auction's data and calls the callback function to handle it
+export function fetchAuction(auctionId, callback) {
+	// Defines the API URL
+	if (typeof auctionId === "number" && !isNaN(auctionId)) {		
+		const url = `/Project_TIW_RIA/api/auctions/details?id=${auctionId}`;
+		
+		// Defines the callback function to handle the results
+		const internalCallback = function (error, data) {
+			// Checks if there is an error before looking at the data
+	        if (error) {
+	            // Logs
+	            console.error("Failed to fetch search results:", error.message);
+				// Returns the error
+				callback(error, null);
+	            return;
+	        } else {
+				// Handles the data received				
+				callback(null, data);
+			}
+		}
+		
+		// Makes the Request
+		fetchDataGET(url, internalCallback);
+	} else {
+		// Invalid ID
+		console.error("Invalid auction ID:", auctionId);
+	}
 }

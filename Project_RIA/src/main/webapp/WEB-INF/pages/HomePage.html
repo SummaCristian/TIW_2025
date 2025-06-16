@@ -411,7 +411,7 @@
 										<div id="selectedAuctionRemainingTimePill" class="remaining-time-container">
 											<p class="auction-detail auction-detail-secondary">Remaining time:</p>
 
-											<div id="selectedAuctionClosingDate" class="remaining-time-pill">
+											<div id="selectedAuctionRemainingTimePill" class="remaining-time-pill">
 												<svg class="icon" viewBox="0 0 24 24">
 													<path d="M5 22h14"/>
 													<path d="M5 2h14"/>
@@ -457,13 +457,13 @@
 							</div>
 
 							<div class="item-scrollview">
-								<ul class="item-list-large">
+								<ul id="selectedAuctionItemList" class="item-list-large">
 									<!-- The items inside the Auction -->
 								</ul>
 
 								<!-- Default Loading Text -->
 								<div>
-									<p id="selectedAuctionItemsLoadingMessage" class="no-element-in-list">Loading items...</p>
+									<p id="selectedAuctionNoItemsMessage" class="no-element-in-list">No items in this auction...</p>
 								</div>
 							</div>
 						</div>

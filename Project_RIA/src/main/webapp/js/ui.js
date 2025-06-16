@@ -5,6 +5,8 @@
  * handling the requests to fetch the data.
  */
 
+import { showAuctionPopup, user } from "./home.js";
+
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 // ==========================
@@ -158,6 +160,12 @@ function buildItemsSectionHeader(auction, showButton) {
 		const btnIcon = createSvg();
 		btnIcon.append(createPath("m9 19 6-6-6-6"));
 		detailsButton.append(btnIcon);
+		
+		// Adds the callback function to handle the click
+		detailsButton.addEventListener("click", () => {
+			// Shows the popup with the Auction's details
+			showAuctionPopup(auction);
+		});
 
 		container.append(detailsButton);
 	}	
@@ -223,6 +231,54 @@ function buildCompactItemCard(item) {
 	itemName.className = "item-detail";
 	itemName.textContent = item?.itemName ?? "Unknown name";
 	textGroup.append(itemName);
+
+	// Item Price
+	const itemPrice = document.createElement("p");
+	itemPrice.className = "item-detail-secondary";
+	itemPrice.textContent = item?.price ?? "Unknown price";
+	textGroup.append(itemPrice);
+
+	// Item ID
+	const itemId = document.createElement("p");
+	itemId.className = "item-detail-tertiary";
+	itemId.textContent = `Item #${item?.id ?? 0}`;
+	textGroup.append(itemId);
+
+	container.append(textGroup);
+
+	// Return the whole component
+	return container;
+}
+
+
+// Returns a card component dedicated to display an Item's data in Expanded form.
+function buildExpandedItemCard(item) {
+	const container = document.createElement("li");
+	container.className = "item-container-large";
+
+	// Image
+	const textGroup = document.createElement("div");
+	textGroup.className = "text-group";
+
+	const image = document.createElement("img");
+	image.className = "item-image-large";
+	image.src = item?.image?.filePath ?? "/resources/placeholder.svg";
+	image.alt= item?.image?.filePath != null
+		? "Item Image"
+		: "No Image Available";
+	textGroup.append(image);
+
+	// Item Name
+	const itemName = document.createElement("p");
+	itemName.className = "item-detail";
+	itemName.textContent = item?.itemName ?? "Unknown name";
+	textGroup.append(itemName);
+
+	// Item Description
+	const itemDescription = document.createElement("p");
+	itemDescription.className = "item-detail-tertiary";
+	itemDescription.textContent = item?.itemDescription ?? "Unknown description";
+	textGroup.append(itemDescription);
 
 	// Item Price
 	const itemPrice = document.createElement("p");
@@ -355,6 +411,81 @@ function buildRemainingTimeIndicator(value) {
 	return container;
 }
 
+/*
+
+*/
+function buildOfferBubble(offer) {
+	const container = document.createElement("li");
+	container.className = offer.userId === user.id 
+		? "offer-bubble offer-bubble-own"
+		: "offer-bubble";
+
+	const innerContainer = document.createElement("div");
+
+	const detailsContainer = document.createElement("div");
+	detailsContainer.className = offer.userId === user.id
+		? "offer-details-container offer-bubble-own"
+		: "offer-details-container";
+	
+	// User Icon
+	const icon = createSvg();
+	icon.append(createCircle(12, 12, 10));
+	icon.append(createCircle(12, 10, 3));
+	icon.append(createPath("M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"));
+	detailsContainer.append(icon);
+
+	// User data
+	const userDataContainer = document.createElement("div");
+	userDataContainer.className = "offer-details-text-container";
+
+	// Username
+	const username = document.createElement("p");
+	username.className = "offer-username";
+	username.textContent = offer?.username ?? "Unknown User";
+	userDataContainer.append(username);
+
+	// Offer ID + DateTime
+	const offerId = offer?.id ?? -1;
+	const offerDate = formatDateTimeShort(offer?.offerDate ?? "");
+	
+	const offerIdDate = document.createElement("p");
+	offerIdDate.className = "offer-details";
+	offerIdDate.textContent = `#${offerId} • ${offerDate}`;
+	userDataContainer.append(offerIdDate);
+
+	detailsContainer.append(userDataContainer);
+	innerContainer.append(detailsContainer);
+
+	// Offer content
+	const contentContainer = document.createElement("div");
+	contentContainer.className = offer.userId === user.id
+		? "offer-content offer-content-own"
+		: "offer-content";
+
+	const pill = document.createElement("div");
+	pill.className = offer.userId === user.id
+		? "offer-pill offer-pill-own"
+		: "offer-pill";
+	
+	const pillIcon = createSvg();
+	pillIcon.append(createCircle(12, 12, 10));
+	pillIcon.append(createPath("M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"));
+	pillIcon.append(createPath("M12 18V6"));
+	pill.append(pillIcon);
+
+	const pillValue = document.createElement("p");
+	pillValue.textContent = `${offer?.offeredPrice ?? "Unknown"}€`;
+	pill.append(pillValue);
+
+	contentContainer.append(pill);
+
+	innerContainer.append(contentContainer);
+
+	container.append(innerContainer);
+
+	// Return the whole component
+	return container;
+}
 
 
 // =================================================
@@ -400,4 +531,203 @@ function createRect(width, height, x, y, rx, ry) {
 	rect.setAttribute("ry", ry);
 
 	return rect;
+}
+
+// =================
+// Logic functions
+// =================
+
+/*
+	Updates all the data inside the Auction Details Popup with the 
+	data from the Auction passed as parameter.
+	Then it calls the callback function to signal its completion.
+*/
+export function updateAuctionPopup(auction, callback) {
+	// Grab all the fields that need to be updated
+	const title = document.getElementById("selectedAuctionTitle");
+	const finalPriceLabel = document.getElementById("selectedAuctionFinalPrice");
+	const highestBidLabel = document.getElementById("selectedAuctionHighestBid");
+	const pricePill = document.getElementById("selectedAuctionPricePill");
+	const price = document.getElementById("selectedAuctionPrice");
+	const noOffersPill = document.getElementById("selectedAuctionNoOffersPill");
+	const buyerContainer = document.getElementById("selectedAuctionBuyerInfoBox");
+	const buyerUsername = document.getElementById("selectedAuctionBuyerUsername");
+	const buyerAddress = document.getElementById("selectedAuctionBuyerAddress");
+	const basePrice = document.getElementById("selectedAuctionBasePrice");
+	const minIncrement = document.getElementById("selectedAuctionMinIncrement");
+	const sellerUsername = document.getElementById("selectedAuctionSellerUsername");
+	const closedStatus = document.getElementById("selectedAuctionClosedPill");
+	const openStatus = document.getElementById("selectedAuctionOpenPill");
+	const remainingTimePill = document.getElementById("selectedAuctionRemainingTimePill");
+	const remainingTime = document.getElementById("selectedAuctionRemainingTime");
+	const openUntilLabel = document.getElementById("selectedAuctionClosingDateTitle-Open");
+	const closedOnLabel = document.getElementById("selectedAuctionClosingDateTitle-Closed");
+	const closingDate = document.getElementById("selectedAuctionClosingDate");
+	const itemList = document.getElementById("selectedAuctionItemList");
+	const noItemMessage = document.getElementById("selectedAuctionNoItemsMessage");
+	const closeAuctionButton = document.getElementById("selectedAuctionCloseButton");
+	const offersScrollview = document.getElementById("selectedAuctionOfferScrollview");
+	const offerList = document.getElementById("selectedAuctionOfferList");
+	const noOfferMessage = document.getElementById("selectedAuctionOfferEmptyContainer");
+	const offerOverlay = document.getElementById("selectedAuctionOfferOverlay");
+	const offerOverlayMinIncrement = document.getElementById("selectedAuction-OfferMinIncrement");
+	const makeOfferForm = document.getElementById("selectedAuction-MakeOfferForm");
+
+	// Update all the texts
+
+	// Title
+	title.textContent = `Auction #${auction?.id ?? -1}`;
+
+	// Final Price or Highest Bid
+	if (auction?.isSold === true) {
+		// Final Price
+		finalPriceLabel.style.display = "block";
+		highestBidLabel.style.display = "none";
+	} else {
+		// Current Highest Bid
+		finalPriceLabel.style.display = "none";
+		highestBidLabel.style.display = "block";
+	}
+	
+	if (typeof auction?.highestBid?.offeredPrice === "number" && !isNaN(auction?.highestBid?.offeredPrice)) {
+		// Show the offered price
+		pricePill.style.display = "flex";
+		price.textContent = `${auction?.highestBid?.offeredPrice}€`;
+		noOffersPill.style.display = "none";
+	} else {
+		// Show the "No offer" pill
+		pricePill.style.display = "none";
+		noOffersPill.style.display = "flex";
+	}
+
+	// Buyer
+	if (auction?.isSold === true && typeof auction?.buyerUsername === "string") {
+		// Show the Buyer's data
+		buyerContainer.style.display = "block";
+		buyerUsername.textContent = auction?.buyerUsername ?? "Unknown User";
+		buyerAddress.textContent = auction?.buyerAddress ?? "Unknown address";
+	} else {
+		// Hides the Buyer's data
+		buyerContainer.style.display = "none";
+	}
+
+	// Base Price
+	basePrice.textContent = auction?.basePrice ?? "Unknown";
+
+	// Minimum Increment
+	minIncrement.textContent = auction?.minIncrement ?? "Unknown";
+
+	// Seller
+	sellerUsername.textContent = auction?.sellerUsername ?? "Unknown user";
+
+	// Open/Closed status
+	if (auction?.isSold === true) {
+		// Closed
+		openStatus.style.display = "none";
+		closedStatus.style.display = "flex";
+	} else {
+		// Open
+		openStatus.style.display = "flex";
+		closedStatus.style.display = "none";
+	}
+
+	// Remaining Time
+	if (typeof auction?.remainingTime === "string" && auction?.remainingTime != "Closed") {
+		// Not closed yet
+		remainingTimePill.style.display = "flex";
+		remainingTime.textContent = auction?.remainingTime ?? "Unknown";
+		
+	} else {
+		// Closed, don't show it
+		remainingTimePill.style.display = "none";
+	}
+
+	// Closing Date
+	if (auction?.isSold === true) {
+		// Closed -> Closed on X
+		openUntilLabel.style.display = "none";
+		closedOnLabel.style.display = "block";
+	} else {
+		// Open -> Open until X
+		openUntilLabel.style.display = "block";
+		closedOnLabel.style.display = "none";
+	}
+	
+	closingDate.textContent = formatDateTimeLong(auction?.closingDate) ?? "Unknown";
+		
+	// Add the Items in their section
+	const items = auction?.items ?? [];
+	
+	if (items.length > 0) {
+		// Empties the Items that could already be there
+		itemList.innerHTML = "";
+		
+		// There are Items
+		for (const item of items) {
+			// Builds a card component for each Item
+			itemList.append(buildExpandedItemCard(item));
+		}
+		itemList.style.display = "grid";
+
+		// Hides the "No items" text
+		noItemMessage.style.display = "none";
+
+	} else {
+		// No Items
+		itemList.style.display = "none";
+		noItemMessage.style.display = "block";
+	}
+
+	// Add the Offers in their section
+	if (auction?.offers.length > 0) {
+		// There are offers
+		// Shows the Offers scrollview
+		offersScrollview.style.display = "block";
+		// Hides the default message
+		noOfferMessage.style.display = "none";
+		// Empties the Offers that could be there
+		offerList.innerHTML = "";
+		// Adds the new Offers
+		for (const offer of auction.offers) {
+			offerList.append(buildOfferBubble(offer));
+		}
+	} else {
+		// No offers
+		offersScrollview.style.display = "none;"
+		noOfferMessage.style.display = "block";
+	}
+	
+	
+	// Calls the callback function
+	callback();
+}
+
+// Returns the date passed in a String formatted as dd mmm yyyy - HH:mm
+function formatDateTimeLong(isoString) {
+  if (!isoString) return "";
+
+  const date = new Date(isoString);
+
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = date.toLocaleString("en-US", { month: "short" }).toLowerCase(); // e.g. "jan"
+  const year = date.getFullYear();
+
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+
+  return `${day} ${month} ${year} - ${hours}:${minutes}`;
+}
+
+// Returns the date passed in a String formatted as dd MMM HH:mm
+function formatDateTimeShort(isoString) {
+  if (!isoString) return "";
+
+  const date = new Date(isoString);
+
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = date.toLocaleString("en-US", { month: "short" }); // e.g. "Aug"
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+
+  return `${day} ${month} ${hours}:${minutes}`;
 }
