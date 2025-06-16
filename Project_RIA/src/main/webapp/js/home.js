@@ -1,3 +1,6 @@
+// Imports the other JS files needed
+import { refreshOpenAuctions } from './api.js';
+
 // ==========================
 // Helper Functions
 // ==========================
@@ -105,3 +108,6 @@ export function initPillTabBar(tabSelector = ".pill-tab", contentSelector = ".ta
 // ==========================
 initPillTabBar()
 setTomorrowDateInPicker()
+
+// Refreshes the content on load
+refreshOpenAuctions();
