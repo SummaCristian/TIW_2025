@@ -56,7 +56,7 @@ function buildAuctionCardHeader(auction) {
 	// Title
 	const title = document.createElement("p");
 	title.className = "auction-detail";
-	title.textContent = `Auction ${auction.id ?? 0}`;
+	title.textContent = `Auction #${auction.id ?? 0}`;
 	containerLeft.append(title);
 
 	// Base Price

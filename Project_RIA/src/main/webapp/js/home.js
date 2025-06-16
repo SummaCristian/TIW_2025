@@ -81,6 +81,17 @@ export function initPillTabBar(tabSelector = ".pill-tab", contentSelector = ".ta
     contents.forEach(content => {
       content.classList.toggle("active-tab", content.id === target);
     });
+
+    // Refresh data in the selected tab
+    switch (target) {
+      case "sellPage":
+        refreshOpenAuctions();
+        refreshClosedAuctions();
+        break;
+      case "buyPage":
+        refreshWonAuctions();
+		break;
+    }
   }
 
   // Setup click listeners
