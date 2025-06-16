@@ -62,7 +62,7 @@ export function refreshOpenAuctions() {
     const callback = function (error, data) {
         const container = document.getElementById("openAuctionsContainer");
         const list = document.getElementById("openAuctionsList");
-        const emptyListMessage = document.getElementById("noOpenAuctionsText")
+        const emptyListMessage = document.getElementById("noOpenAuctionsText");
 
         const noItemsText ="No items in this auction";
 
@@ -121,7 +121,7 @@ export function refreshClosedAuctions() {
     const callback = function (error, data) {
         const container = document.getElementById("closedAuctionsContainer");
         const list = document.getElementById("closedAuctionsList");
-        const emptyListMessage = document.getElementById("noClosedAuctionsText")
+        const emptyListMessage = document.getElementById("noClosedAuctionsText");
 
         const noItemsText ="No items in this auction";
 
@@ -180,7 +180,7 @@ export function refreshWonAuctions() {
     const callback = function (error, data) {
         const container = document.getElementById("wonAuctionsContainer");
         const list = document.getElementById("wonAuctionsList");
-        const emptyListMessage = document.getElementById("noWonAuctionsText")
+        const emptyListMessage = document.getElementById("noWonAuctionsText");
 
         const noItemsText ="No items in this auction";
 
@@ -214,6 +214,69 @@ export function refreshWonAuctions() {
 
             // Hides the default text
             emptyListMessage.style.display = "none"
+
+            // Populates the List
+            for (const auction of data) {
+                list.append(buildAuctionCard(auction, noItemsText));
+            }
+        }
+    }
+
+    // Makes the Request
+    fetchDataGET(url, callback);
+}
+
+/*
+    Makes a request to the server for results of a Search query
+    then proceeds to dynamically build the UI elements to display those results Auctions and
+    adds them to the DOM in BuyPage's Search Results list
+*/
+export function searchAuctions(query) {
+    // Defines the API URL
+    const encodedQuery = encodeURIComponent(query);
+    const url = `/Project_TIW_RIA/api/auctions/search?query=${encodedQuery}`;
+
+    // Defines the callback function to handle the results
+    const callback = function (error, data) {
+        const container = document.getElementById("searchResultsContainer");
+        const list = document.getElementById("searchResultsList");
+        const emptyListMessage = document.getElementById("searchResultsNoAuctionText");
+
+        const noItemsText ="No items in this auction";
+
+        // Clear the previous content before repopulating or refreshing
+        list.innerHTML = "";
+
+        // Checks if there is an error before looking at the data
+        if (error) {
+            // Logs
+            console.error("Failed to fetch search results:", error.message);
+            // Hides the List
+            list.style.display = "none";
+            // Shows the default text
+            emptyListMessage.style.display = "block";
+            // Changes the text in the default text to the error message
+            emptyListMessage.textContent = "Could not load auctions.";
+            return;
+        }
+
+
+        if (Array.isArray(data) && data.length === 0) {
+            // No Auctions received
+
+            // Hides the List
+            list.style.display = "none";
+            // Shows the default text
+            emptyListMessage.textContent = "No results";
+            emptyListMessage.style.display = "block";
+        } else {
+            // Auctions received
+
+            // Hides the default text
+            emptyListMessage.style.display = "none"
+			
+			// Shows the List
+			list.style.display = "block";
 
             // Populates the List
             for (const auction of data) {

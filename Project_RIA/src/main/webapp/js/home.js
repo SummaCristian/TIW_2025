@@ -1,5 +1,5 @@
 // Imports the other JS files needed
-import { refreshOpenAuctions, refreshClosedAuctions, refreshWonAuctions } from './api.js';
+import { refreshOpenAuctions, refreshClosedAuctions, refreshWonAuctions, searchAuctions } from './api.js';
 
 // ==========================
 // Helper Functions
@@ -57,6 +57,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initially hide the popup (in case it's shown by default)
   closePopup();
+
+  // Search Field in Buy Page
+  const searchForm = document.querySelector(".search-form-compact");
+  
+  searchForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const queryInput = searchForm.querySelector("#query");
+    const query = queryInput.value.trim();
+
+    if (query.length > 0) {
+      // Not empty, performs the Search
+      searchAuctions(query);
+    }
+  });
 
 });
 
