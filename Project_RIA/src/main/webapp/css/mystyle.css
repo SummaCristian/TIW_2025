@@ -218,7 +218,6 @@ body {
 .tab-content {
   display: none;
   padding: 20px;
-  text-align: center;
 }
 
 .tab-content.active-tab {

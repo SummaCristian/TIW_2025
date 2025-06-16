@@ -13,17 +13,24 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 
 // Returns the Card component for an Auction's data, to show in a List
 export function buildAuctionCard(auction, noItemsText) {
-	// The top level container
-	const container = document.createElement("div");
+	// The top level container	
+	const listItem = document.createElement("li");
+
+	const innerContainer = document.createElement("div");
 	
 	// Header
-	container.append(buildAuctionCardHeader(auction));
+	innerContainer.append(buildAuctionCardHeader(auction));
+
+	// Items section header
+	innerContainer.append(buildItemsSectionHeader(auction, true));
 
 	// Items inside the Auction
-	container.append(buildCompactItemsListForAuction(auction, noItemsText));
+	innerContainer.append(buildCompactItemsListForAuction(auction, noItemsText));
+
+	listItem.append(innerContainer);
 	
 	// Return the whole Component
-	return container;
+	return listItem;
 }
 
 // ==========================
@@ -72,7 +79,7 @@ function buildAuctionCardHeader(auction) {
 	// Seller info
 	const seller = document.createElement("p");
 	seller.className = "auction-detail auction-detail-secondary";
-	seller.textContent = `Sold by ${auction?.seller?.username ?? "Unknown"}`;
+	seller.textContent = `Sold by ${auction?.sellerUsername ?? "Unknown"}`;
 	containerLeft.append(seller);
 	
 	
@@ -89,15 +96,16 @@ function buildAuctionCardHeader(auction) {
 
 	// Remaining Time
 	containerRight.append(buildRemainingTimeIndicator(auction?.remainingTime ?? "Unknown"));
+
+	header.append(containerRight);
 	
 	// Return the whole component
 	return header;
 	
 }
 
-// Returns a component dedicated to displaying the list of Items inside an Auction.
-// Items are displayed in their compact card style.
-function buildCompactItemsListForAuction(auction, defaultTextMessage) {
+// Returns an header component to put on top of the List of Items
+function buildItemsSectionHeader(auction, showButton) {
 	// The container
 	const container = document.createElement("div");
 	container.className = "auction-header";
@@ -135,25 +143,37 @@ function buildCompactItemsListForAuction(auction, defaultTextMessage) {
 	textGroup.append(subtitle);
 
 	titleContainer.append(textGroup);
-
-	// Button to open details for the Auctions
-	const detailsButton = document.createElement("button");
-	detailsButton.className = "button-primary";
-
-	const btnText = document.createElement("p");
-	btnText.textContent = "See more";
-	detailsButton.append(btnText);
-
-	const btnIcon = createSvg();
-	btnIcon.append(createPath("m9 19 6-6-6-6"));
-	detailsButton.append(btnIcon);
-
-	titleContainer.append(detailsButton);
-
+	
 	container.append(titleContainer);
 
+	// Button to open details for the Auctions
+	if (showButton === true) {
+		const detailsButton = document.createElement("button");
+		detailsButton.className = "button-primary";
+
+		const btnText = document.createElement("p");
+		btnText.textContent = "See more";
+		detailsButton.append(btnText);
+
+		const btnIcon = createSvg();
+		btnIcon.append(createPath("m9 19 6-6-6-6"));
+		detailsButton.append(btnIcon);
+
+		container.append(detailsButton);
+	}	
+
+	// Return the whole component
+	return container;
+}
+
+// Returns a component dedicated to displaying the list of Items inside an Auction.
+// Items are displayed in their compact card style.
+function buildCompactItemsListForAuction(auction, defaultTextMessage) {
+	// Initialize the container to null, will be filled based on the content
+	var container = null;
+
 	// Items
-	if (auction?.items.size > 0) {
+	if (auction?.items.length > 0) {
 		// At least 1 Item inside the Auction
 
 		const itemList = document.createElement("ul");
@@ -164,14 +184,17 @@ function buildCompactItemsListForAuction(auction, defaultTextMessage) {
 			itemList.append(buildCompactItemCard(item));
 		}
 
-		container.append(itemList);
+		// Assign this component to the container
+		container = itemList;
 
 	} else {
 		// No Items in the Auction -> Default Text
 		const defaultText = document.createElement("p");
 		defaultText.className = "no-element-in-list";
 		defaultText.textContent = defaultTextMessage ?? "No auctions available";
-		container.append(defaultText);
+		
+		// Assign this component to the container
+		container = defaultText;
 	}
 
 	// Return the whole component
@@ -261,8 +284,11 @@ function buildOfferPill(value) {
 // Returns the Open/Closed status component
 function buildOpenClosedPillIndicator(isOpen) {
 	const container = document.createElement("div");
+	container.className = "closed-status-container";
+
+	const innerContainer = document.createElement("div");
 	
-	container.className = isOpen === true
+	innerContainer.className = isOpen === true
 		? "closed-status closed-status-open"
 		: "closed-status closed-status-closed";
 	
@@ -271,22 +297,24 @@ function buildOpenClosedPillIndicator(isOpen) {
 		const icon = createSvg();
 		icon.append(createRect(18, 11, 3, 11, 2, 2));
 		icon.append(createPath("M7 11V7a5 5 0 0 1 0.0-1"));
-		container.append(icon);
+		innerContainer.append(icon);
 
 		const text = document.createElement("p");
 		text.textContent = "Open";
-		container.append(text);
+		innerContainer.append(text);
 	} else {
 		// Closed
 		const icon = createSvg();
 		icon.append(createRect(18, 11, 3, 11, 2, 2));
 		icon.append(createPath("M7 11V7a5 5 0 0 1 9.9-1"));
-		container.append(icon);
+		innerContainer.append(icon);
 
 		const text = document.createElement("p");
 		text.textContent = "Closed";
-		container.append(text);
+		innerContainer.append(text);
 	}
+
+	container.append(innerContainer);
 
 	// Return the whole component
 	return container;
@@ -337,7 +365,7 @@ function buildRemainingTimeIndicator(value) {
 // CSS and ViewBox are already initialized here.
 function createSvg() {
 	const svg = document.createElementNS(SVG_NS, "svg");
-	svg.className = "icon";
+	svg.setAttribute("class", "icon");
 	svg.setAttribute("viewBox", "0 0 24 24");
 
 	return svg;
