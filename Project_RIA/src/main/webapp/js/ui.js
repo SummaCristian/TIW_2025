@@ -298,6 +298,74 @@ function buildExpandedItemCard(item) {
 	return container;
 }
 
+// Returns a card component dedicated to display an Item's data in the Checkbox form
+export function buildCheckBoxItemCard(item) {
+	const container = document.createElement("li");
+
+	// The actual input method to allow selection
+	const input = document.createElement("input");
+	input.type = "checkbox";
+	input.name = "itemIds";
+	input.value = item?.id ?? -1;
+	input.id = `item-${item?.id ?? -1}`;
+	input.className = "item-checkbox";
+	input.hidden = true;
+	container.append(input);
+
+	// The visible portion of the input selector
+	const label = document.createElement("label");
+	label.setAttribute("for", `item-${item?.id ?? -1}`);
+	label.className = "item-container";
+
+	// The checkmark icon to indicate if it's selected or not
+	const innerContainer = document.createElement("div");
+	innerContainer.className = "checkmark-overlay";
+
+	const checkmark = createSvg();
+	checkmark.setAttribute("class", "checkmark-icon");
+	checkmark.append(createPolyline("20 6 9 17 4 12"));
+	innerContainer.append(checkmark);
+
+	label.append(innerContainer);
+
+	// Item card
+	const textGroup = document.createElement("div");
+	textGroup.className = "text-group";
+
+	// Image
+	const image = document.createElement("img");
+	image.className = "item-image";
+	image.src = item?.image?.filePath ?? "/resources/placeholder.svg";
+	image.alt= item?.image?.filePath != null
+		? "Item Image"
+		: "No Image Available";
+	textGroup.append(image);
+
+	// Data
+	const name = document.createElement("p");
+	name.className = "item-detail";
+	name.textContent = item?.itemName ?? "Unknown item";
+	textGroup.append(name);
+
+	const price = document.createElement("p");
+	price.className = "item-detail-secondary";
+	price.textContent = `${item?.price ?? "Unknown"}€`;
+	textGroup.append(price);
+
+	const id = document.createElement("p");
+	id.className = "item-detail-tertiary";
+	id.textContent = `Item #${item?.id ?? -1}`;
+	textGroup.append(id);
+
+	label.append(textGroup);
+
+	container.append(label);
+
+
+	// Return the whole component
+	return container;
+}
+
 // Returns a <div> element displaying an integer price into a pill-shaped component.
 // If the data passed is null or invalid, the pill will be red and say "No offers yet..."
 // Otherwise, it will be green and gold colored, with the value inside.
@@ -531,6 +599,14 @@ function createRect(width, height, x, y, rx, ry) {
 	rect.setAttribute("ry", ry);
 
 	return rect;
+}
+
+// Returns an initialized polyline for SVGs with the data passed as parameter
+function createPolyline(points) {
+	const polyline = document.createElementNS(SVG_NS, "polyline");
+	polyline.setAttribute("points", points);
+
+	return polyline;
 }
 
 // =================

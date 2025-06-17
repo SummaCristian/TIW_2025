@@ -3,7 +3,7 @@
  * and rendering the receiving data into the page.
  */
 
-import { buildAuctionCard } from './ui.js';
+import { buildAuctionCard, buildCheckBoxItemCard } from './ui.js';
 
 // =====================
 // Main Function
@@ -216,7 +216,7 @@ export function refreshWonAuctions() {
         // Checks if there is an error before looking at the data
         if (error) {
             // Logs
-            console.error("Failed to fetch closed auctions:", error.message);
+            console.error("Failed to fetch won auctions:", error.message);
             // Hides the List
             list.style.display = "none";
             // Shows the default text
@@ -342,4 +342,61 @@ export function fetchAuction(auctionId, callback) {
 		// Invalid ID
 		console.error("Invalid auction ID:", auctionId);
 	}
+}
+
+/*
+    Makes a request to the server for the updated Available Items data,
+    then proceeds to dynamically build the UI elements to display those Items and
+    adds them to the DOM in the "Create Auction" Form.
+*/
+export function refreshAvailableItems() {
+    // Defines the API URL
+    const url = "/Project_TIW_RIA/api/items/available";
+    
+    // Defines the callback function to handle the results
+    const callback = function (error, data) {
+        const container = document.getElementById("auctionCreationForm");
+        const list = document.getElementById("auctionCreationItemList");
+        const emptyListMessage = document.getElementById("auctionCreationNoItemsText");
+
+        // Clear the previous content before repopulating or refreshing
+        list.innerHTML = "";
+
+        // Checks if there is an error before looking at the data
+        if (error) {
+            // Logs
+            console.error("Failed to fetch :", error.message);
+            // Hides the List
+            list.style.display = "none";
+            // Shows the default text
+            emptyListMessage.style.display = "block";
+            // Changes the text in the default text to the error message
+            emptyListMessage.textContent = "Could not load items.";
+            return;
+        }
+
+
+        if (Array.isArray(data) && data.length === 0) {
+            // No Auctions received
+
+            // Hides the List
+            list.style.display = "none";
+            // Shows the default text
+            emptyListMessage.textContent = "No available items. You need at least one to create an auction.";
+            emptyListMessage.style.display = "block";
+        } else {
+            // Auctions received
+
+            // Hides the default text
+            emptyListMessage.style.display = "none"
+
+            // Populates the List
+            for (const item of data) {
+                list.append(buildCheckBoxItemCard(item));
+            }
+        }
+    }
+
+    // Makes the Request
+    fetchDataGET(url, callback);
 }

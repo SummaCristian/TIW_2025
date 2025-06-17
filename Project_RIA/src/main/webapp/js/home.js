@@ -1,5 +1,6 @@
 // Imports the other JS files needed
-import { fetchUser, refreshOpenAuctions, refreshClosedAuctions, refreshWonAuctions, searchAuctions, fetchAuction } from './api.js';
+import { fetchUser, refreshOpenAuctions, refreshClosedAuctions, refreshWonAuctions, searchAuctions, fetchAuction, refreshAvailableItems } 
+  from './api.js';
 import { updateAuctionPopup } from './ui.js';
 
 // Constants
@@ -130,6 +131,7 @@ export function initPillTabBar(tabSelector = ".pill-tab", contentSelector = ".ta
       case "sellPage":
         refreshOpenAuctions();
         refreshClosedAuctions();
+		refreshAvailableItems();
         break;
       case "buyPage":
         refreshWonAuctions();
@@ -178,3 +180,4 @@ setTomorrowDateInPicker()
 refreshOpenAuctions();
 refreshClosedAuctions();
 refreshWonAuctions();
+refreshAvailableItems();
