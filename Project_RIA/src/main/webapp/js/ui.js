@@ -677,6 +677,9 @@ export function updateAuctionPopup(auction, callback) {
 		itemList.style.display = "none";
 		noItemMessage.style.display = "block";
 	}
+	
+	// Empties the Offers that could be there
+	offerList.innerHTML = "";
 
 	// Add the Offers in their section
 	if (auction?.offers.length > 0) {
@@ -685,8 +688,6 @@ export function updateAuctionPopup(auction, callback) {
 		offersScrollview.style.display = "block";
 		// Hides the default message
 		noOfferMessage.style.display = "none";
-		// Empties the Offers that could be there
-		offerList.innerHTML = "";
 		// Adds the new Offers
 		for (const offer of auction.offers) {
 			offerList.append(buildOfferBubble(offer));
@@ -696,6 +697,17 @@ export function updateAuctionPopup(auction, callback) {
 		offersScrollview.style.display = "none;"
 		noOfferMessage.style.display = "block";
 	}
+
+	// Checks if it needs to display the "Make Offer" form
+	if (auction?.sellerId === user.id ?? true) {
+		// User is the owner -> Can't make offers to its own Auction
+		offerOverlay.style.display = "none";
+	} else {
+		// Not the owner -> Can make offers
+		offerOverlay.style.display = "block";
+	}
+
+	offerOverlayMinIncrement.textContent = auction?.minIncrement ?? "Unknown";
 	
 	
 	// Calls the callback function

@@ -149,6 +149,11 @@ export function initPillTabBar(tabSelector = ".pill-tab", contentSelector = ".ta
   }
 }
 
+// Welcome Text
+function initWelcomeText() {
+	document.getElementById("welcomeText").textContent = `Welcome, ${user.username}!`;
+}
+
 
 
 // ==========================
@@ -163,7 +168,7 @@ export function initPillTabBar(tabSelector = ".pill-tab", contentSelector = ".ta
 fetchUser((data) => {
   user = data;
   
-  console.log(user);
+  initWelcomeText();
 });
 
 initPillTabBar()
