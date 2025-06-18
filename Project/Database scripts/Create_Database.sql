@@ -93,7 +93,7 @@ CREATE TABLE Items (
     -- The Price of the Item
     Price INT NOT NULL CHECK (Price > 0),
     -- The ID of the Image of the Item, used to retrieve the image FilePath
-    ImageId INT NOT NULL,
+    ImageId INT,
     -- The ID of the User who created the Item
     CreatorId INT NOT NULL,
     /*

@@ -54,13 +54,19 @@ function fetchDataGET(url, callback) {
 // Creates and sends an XMLHttpRequest to the Server at the URL passed as parameter,
 // and attaches the parameter function as the callback to that request.
 // Does so using POST.
+// Handles both normal POST and multipart/form-data.
 function doActionPOST(url, data, callback) {
     const xhr = new XMLHttpRequest();
 
     // Configure the request
     xhr.open('POST', url, true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.setRequestHeader('Accept', '*/*'); // No JSON expected
+
+    // Only set JSON headers if data is a plain object (not FormData)
+    const isFormData = data instanceof FormData;
+    if (!isFormData) {
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('Accept', '*/*'); // No JSON expected
+    }
 
     // Response handler
     xhr.onreadystatechange = function () {
@@ -76,21 +82,26 @@ function doActionPOST(url, data, callback) {
         }
     };
 
-    // Encode the body (support arrays like itemIds[])
-    const body = new URLSearchParams();
-    for (const key in data) {
-        const value = data[key];
-        if (Array.isArray(value)) {
-            for (const v of value) {
-                body.append(key, v);
+    // Send body
+    if (isFormData) {
+        xhr.send(data);
+    } else {
+        // Encode the body (support arrays like itemIds[])
+        const body = new URLSearchParams();
+        for (const key in data) {
+            const value = data[key];
+            if (Array.isArray(value)) {
+                for (const v of value) {
+                    body.append(key, v);
+                }
+            } else {
+                body.append(key, value);
             }
-        } else {
-            body.append(key, value);
         }
-    }
 
-    // Send the request
-    xhr.send(body.toString());
+        // Send the request
+        xhr.send(body.toString());
+    }
 }
 
 
@@ -476,5 +487,28 @@ export function createAuction(form, callback) {
         itemIds: itemIds
     };
     
+    doActionPOST(url, data, callback);
+}
+
+// Makes an API request to create a new Item with the data in the parameteres.
+// Assumes client-side data validation has already been passed.
+export function createItem(form, callback) {
+    const url = "/Project_TIW_RIA/CreateItem";
+
+    // Build the FormData object
+    const data = new FormData();
+
+    // Extract form values
+    data.append("itemName", form.itemName.value.trim());
+    data.append("itemDescription", form.itemDescription.value.trim());
+    data.append("price", form.price.value.trim());
+    data.append("creatorId", user.id);
+
+    // Append image file if provided
+    const imageInput = form.image;
+    if (imageInput.files.length > 0) {
+        data.append("image", imageInput.files[0]);
+    }
+
     doActionPOST(url, data, callback);
 }

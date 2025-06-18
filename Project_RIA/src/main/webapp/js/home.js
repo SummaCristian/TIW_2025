@@ -7,7 +7,8 @@ import {
   searchAuctions,
   fetchAuction,
   refreshAvailableItems,
-  createAuction
+  createAuction,
+  createItem
 } 
   from './api.js';
 import { updateAuctionPopup } from './ui.js';
@@ -186,8 +187,11 @@ function initAuctionCreationForm() {
 
             // Refreshes the Open Auctions List
             refreshOpenAuctions();
-			// Refreshes the Available Items in the Auction Creation Form
-			refreshAvailableItems();
+            // Refreshes the Available Items in the Auction Creation Form
+            refreshAvailableItems();
+			
+			// Resets the Form
+			form.reset();
           }
       });
 
@@ -195,6 +199,43 @@ function initAuctionCreationForm() {
       // Error, display it in the UI
       errorMessage.textContent = error;
     }
+  });
+}
+
+// Item Creation Form
+function initItemCreationForm() {
+  const form = document.getElementById("itemCreationForm");
+  const errorMessage = document.getElementById("itemCreationFormErrorMessage");
+
+  form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      // Checks if the data is valid
+      const error = validateItemCreation(form);
+
+      if (error == null) {
+          // No error, the request can be sent
+          errorMessage.textContent = "";
+
+          createItem(form, (error, statusCode) => {
+              if (error) {
+                displayError(statusCode, error.message);
+              } else {
+                displaySuccess(statusCode, "Item created successfully!");
+
+                // Refreshes the Available Items in the Auction Creation Form
+                refreshAvailableItems();
+				
+				// Resets the Form
+				form.reset();
+              }
+          });
+
+
+      } else {
+          // Error, display it in the UI
+          errorMessage.textContent = error;
+      }
   });
 }
 
@@ -305,7 +346,8 @@ function initWelcomeText() {
 // Form Validation Functions
 // ==========================
 
-// Auction Creation Form
+// Validates the data inserted into the Item Creation Form.
+// Returns `null` if everything is valid, otherwise returns a string error message.
 function validateAuctionCreation(form) {
   const minIncrement = form.minIncrement.value.trim();
   const closingDate = form.closingDate.value.trim();
@@ -359,6 +401,42 @@ function validateAuctionCreation(form) {
   return null;
 }
 
+// Validates the data inserted into the Item Creation Form.
+// Returns `null` if everything is valid, otherwise returns a string error message.
+function validateItemCreation(form) {
+    const name = form.itemName?.value.trim();
+    const description = form.itemDescription?.value.trim();
+    const price = form.price?.value.trim();
+    const image = form.image?.files[0];
+
+    // Check all fields are present
+    if (!name || !description || !price || !image) {		
+        return "All fields are required.";
+    }
+
+    // Price should be a positive integer
+    const priceInt = parseInt(price, 10);
+    if (isNaN(priceInt) || priceInt <= 0) {
+        return "Price must be a positive number.";
+    }
+
+    // Optional: check image extension
+    const allowedExtensions = ["jpg", "jpeg", "png", "gif", "webp"];
+    const extension = image.name.split('.').pop().toLowerCase();
+    if (!allowedExtensions.includes(extension)) {
+        return "Image must be a JPG, PNG, GIF, or WEBP file.";
+    }
+
+    // Optional: check image size (e.g., max 5MB)
+    const maxSize = 5 * 1024 * 1024;
+    if (image.size > maxSize) {
+        return "Image file is too large (max 5MB).";
+    }
+
+    // Passed all checks
+    return null;
+}
+
 
 
 // ==========================
@@ -380,4 +458,6 @@ refreshWonAuctions();
 refreshAvailableItems();
 hideAllPopups();
 
+// Initializes the Forms
 initAuctionCreationForm();
+initItemCreationForm();
