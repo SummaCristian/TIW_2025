@@ -118,7 +118,7 @@
 					<!-- Error message -->
 					 <p id="itemCreationFormErrorMessage" class="error"></p>
 
-					 <form id="itemCreationForm">
+					 <form id="itemCreationForm" method="POST" action="/CreateItem" enctype="multipart/form-data">
 						<div class="form-columns">
 							<!-- LEFT HALF: Text Entries -->
 							 <div class="form-left">
@@ -128,7 +128,7 @@
 
 								 <!-- Description -->
 								  <label for="itemDescription">Description:</label>
-								  <textarea type="text" name="itemDescription" id="itemDescription" placeholder="Description" rows="4" required maxlength="1023"></textarea>
+								  <textarea name="itemDescription" id="itemDescription" placeholder="Description" rows="4" required maxlength="1023"></textarea>
 
 								  <!-- Price -->
 								   <label for="price">Price:</label>
@@ -189,7 +189,7 @@
 					<!-- Error message -->
 					 <p id="auctionCreationFormErrorMessage" class="error"></p>
 
-					 <form id="auctionCreationForm">
+					 <form id="auctionCreationForm" method="POST" action="/CreateAuction">
 						<div class="form-columns-packed">
 							<!-- LEFT HALF: Minimum Increment -->
 							 <div class="form-column">
@@ -522,7 +522,7 @@
 
 								 <p class="auction-detail-secondary">Min Increment: <span id="selectedAuction-OfferMinIncrement"></span>€</p>
 
-								 <form id="selectedAuction-MakeOfferForm" class="offer-form">
+								 <form id="selectedAuction-MakeOfferForm" class="offer-form" method="POST" action="/MakeOffer">
 									<input type="number" name="offer" placeholder="Place your offer..." required/>
 
 									<button type="submit" class="button-primary">

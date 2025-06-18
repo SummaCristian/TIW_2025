@@ -26,6 +26,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/*
+ * This Servlet handles the action of making an Offer to an Auction.
+ * It validates the User's inputs from the request, ensuring hazards such as Users
+ * making Offers to their own Auctions or Auctions not allowed by the rules don't happen.
+ * It checks if the constraints in value are all met before committing any change.
+ * Since it checks if the Offer is correctly allowed before inserting, it safely updates
+ * the Auction's Current Highest Bid too to now point to the new Offer.
+ */
 @WebServlet("/MakeOffer")
 public class MakeOfferServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

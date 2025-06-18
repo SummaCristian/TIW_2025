@@ -22,6 +22,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
+/*
+ * This Servlet handles the action of creating a new Item from the input in the User's request.
+ * It ensures the Item's data are correctly validated to avoid hazards, such as invalid ID, 
+ * missing data or other inconsistencies.
+ * It also saves the Image into the dedicated folder for User's uploads, appropriately renamed,
+ * and adds its reference to the Database, before committing the whole change.
+ */
 @MultipartConfig
 @WebServlet("/CreateItem")
 public class CreateItemServlet extends HttpServlet {

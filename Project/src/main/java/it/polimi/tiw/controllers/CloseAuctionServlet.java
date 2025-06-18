@@ -22,6 +22,17 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/*
+ * This Servlet handles the action of closing an Auction.
+ * It ensures that only the User who actually owns the Auction is allowed
+ * to perform such action, and handles all possible hazards,
+ * such as invalid Auction ID, Auction already closed or other potential problems.
+ * Once the Auctions has been closed, this Servlet also updates it to contain the
+ * User who won it, shown as Buyer User. 
+ * This only happens if there is at least 1 Offer, and in case of multiple, the User is chosen
+ * via the Current Highest Bid, aka the highest Offer made to the Auction.
+ * Buyer remains null if no Offers have been made to the Auction when at closing time.
+ */
 @WebServlet("/CloseAuction")
 public class CloseAuctionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

@@ -25,6 +25,17 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/*
+ * This Servlet handles the action of creating a new Auction and adding it to the Database.
+ * The Auction is created based on the data coming from the User's request, which is 
+ * appropriately validated before committing any change.
+ * The Servlet handles hazards such as invalid IDs, invalid User, ownership mismatching between 
+ * the Items and the User, and the absence of Items (every Auction requires at least 1 Item inside).
+ * Once these checks are passed, it computes the missing data like the Auction's Base Price (sum of all the
+ * Item's prices).
+ * Before committing the new Auction creation, it also updates all the Item's references to now point to
+ * the Auction: if this fails, it rolls back the change and throws an error.
+ */
 @WebServlet("/CreateAuction")
 public class CreateAuctionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
