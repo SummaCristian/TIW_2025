@@ -394,7 +394,7 @@ public class AuctionDAO {
     				List<Offer> offersInAuction = offerDao.getOffersForAuction(results.getInt("Id"));
     				
     				// Calculates the Remaining Time
-    				long closingTime = results.getDate("ClosingDate").getTime();
+    				long closingTime = results.getTimestamp("ClosingDate").getTime();
 
     				long diffMillis = closingTime - loginTime;
 
