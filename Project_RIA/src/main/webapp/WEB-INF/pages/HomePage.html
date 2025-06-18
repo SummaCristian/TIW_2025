@@ -544,5 +544,39 @@
 		</div>
 	</div>
 
+
+
+	<div class="popup-overlay-small">
+		<div class="popup-vertical-container">
+			<!-- The success message popup -->
+			<div id="successMessagePopup" class=" popup-message-container popup-success popup-message">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-large icon-large-success">
+					<circle cx="12" cy="12" r="10"/>
+					<path d="m9 12 2 2 4-4"/>
+				</svg>
+				
+				<div class="text-group-popup">
+					<p id="successStatusCode" class="success-type-popup">Success</p>
+					<p id="successMessage" class="success-popup">Task executed successfully</p>
+				</div>
+			</div>
+			
+			<!-- The error message popup -->
+			<div id="errorMessagePopup" class="popup-message-container popup-error popup-message">
+				<svg viewBox="0 0 24 24" class="icon-large icon-large-error">
+					<circle cx="12" cy="12" r="10"/>
+					<path d="m15 9-6 6"/>
+					<path d="m9 9 6 6"/>
+				</svg>
+				
+				<div class="text-group-popup">
+					<p id="errorStatusCode" class="error-type-popup">Error</p>
+					<p id="errorMessage" class="error-popup">Something went wrong</p>
+				</div>
+			</div>
+	
+		</div>
+	</div>
+
 </body>
 </html>

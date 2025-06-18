@@ -6,9 +6,107 @@ import { updateAuctionPopup } from './ui.js';
 // Constants
 export let user = null;
 
+let successTimeout;
+let errorTimeout;
+
 // ==========================
 // Helper Functions
 // ==========================
+
+// Displays a success message in the appropriate popup
+function displaySuccess(statusCode, message) {
+  // Clears the previpus timeout (if any), in case this success is overwriting another popup message
+  clearTimeout(successTimeout);
+
+  const popup = document.getElementById("successMessagePopup");
+  const codeTxt = document.getElementById("successStatusCode");
+  const messageTxt = document.getElementById("successMessage");
+
+  // Reset any previous animation classes
+  popup.classList.remove("fade-out-up");
+  void popup.offsetWidth;
+  popup.classList.add("fade-in-down");
+
+
+  // Sets the Status Code
+  codeTxt.textContent = getStatusText(statusCode);
+  // Sets the Message
+  messageTxt.textContent = message;
+
+  // Shows the popup
+  popup.style.display = "flex";
+
+  // Sets a timer so that the popup is hidden after 3 seconds
+  // After 3s, fade out
+  setTimeout(() => {
+    popup.classList.remove("fade-in-down");
+    popup.classList.add("fade-out-up");
+
+    // Optional: hide after animation completes (0.4s)
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 400);
+  }, 3000);
+}
+
+// Displays an error message in the appropriate popup
+// Displays a success message in the appropriate popup
+function displayError(statusCode, message) {
+  // Clears the previpus timeout (if any), in case this success is overwriting another popup message
+  clearTimeout(errorTimeout);
+
+  const popup = document.getElementById("errorMessagePopup");
+  const codeTxt = document.getElementById("errorStatusCode");
+  const messageTxt = document.getElementById("errorMessage");
+
+  // Reset any previous animation classes
+  popup.classList.remove("fade-out-up");
+  void popup.offsetWidth;
+  popup.classList.add("fade-in-down");
+
+
+  // Sets the Status Code
+  codeTxt.textContent = getStatusText(statusCode);
+  // Sets the Message
+  messageTxt.textContent = message;
+
+  // Shows the popup
+  popup.style.display = "flex";
+
+  // Sets a timer so that the popup is hidden after 3 seconds
+  // After 3s, fade out
+  setTimeout(() => {
+    popup.classList.remove("fade-in-down");
+    popup.classList.add("fade-out-up");
+
+    // Optional: hide after animation completes (0.4s)
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 400);
+  }, 3000);
+}
+
+// Hides all popups
+function hideAllPopups() {
+	document.getElementById("successMessagePopup").style.display = "none";
+	document.getElementById("errorMessagePopup").style.display = "none";
+}
+
+// Converts a Status Code into a legible String representation
+function getStatusText(code) {
+  switch (code) {
+    case 200: return "Success";
+    case 201: return "Created";
+    case 400: return "Bad Request";
+    case 401: return "Unauthorized";
+    case 403: return "Forbidden";
+    case 404: return "Not Found";
+    case 409: return "Conflict";
+    case 500: return "Internal Server Error";
+    default: return "Unknown Error";
+  }
+}
+
 
 // Sets the date of Tomorrow, same time as now, into this Picker in the Auction Creation Form (SellPage)
 function setTomorrowDateInPicker() {
@@ -181,3 +279,4 @@ refreshOpenAuctions();
 refreshClosedAuctions();
 refreshWonAuctions();
 refreshAvailableItems();
+hideAllPopups();
