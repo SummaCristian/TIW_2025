@@ -52,23 +52,6 @@ public class MakeOfferServlet extends HttpServlet {
 			e.printStackTrace();
 		}
     }
-    
-    // Forwards back without doing anything
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String auctionIdParam = request.getParameter("auctionId");
-    	
-    	try {
-    		int auctionId = Integer.parseInt(auctionIdParam);
-    		
-    		// Returns to the AuctionDetailsPage for that Auction
-        	response.sendRedirect(request.getContextPath() + "/auction-details?id=" + auctionId);
-    	} catch (NumberFormatException e) {
-    		// Malformed ID -> Redirect to SellPage
-    		response.sendRedirect(request.getContextPath() + "/sell");
-    	}
-    	
-    }
 
 
 	/*
