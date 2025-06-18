@@ -118,7 +118,7 @@
 					<!-- Error message -->
 					 <p id="itemCreationFormErrorMessage" class="error"></p>
 
-					 <form id="itemCreationForm" method="POST" action="/CreateItem" enctype="multipart/form-data">
+					 <form id="itemCreationForm" method="POST" action="/Project_TIW_RIA/CreateItem" enctype="multipart/form-data">
 						<div class="form-columns">
 							<!-- LEFT HALF: Text Entries -->
 							 <div class="form-left">
@@ -189,7 +189,7 @@
 					<!-- Error message -->
 					 <p id="auctionCreationFormErrorMessage" class="error"></p>
 
-					 <form id="auctionCreationForm" method="POST" action="/CreateAuction">
+					 <form id="auctionCreationForm" method="POST" action="/Project_TIW_RIA/CreateAuction">
 						<div class="form-columns-packed">
 							<!-- LEFT HALF: Minimum Increment -->
 							 <div class="form-column">
@@ -522,7 +522,7 @@
 
 								 <p class="auction-detail-secondary">Min Increment: <span id="selectedAuction-OfferMinIncrement"></span>€</p>
 
-								 <form id="selectedAuction-MakeOfferForm" class="offer-form" method="POST" action="/MakeOffer">
+								 <form id="selectedAuction-MakeOfferForm" class="offer-form" method="POST" action="/Project_TIW_RIA/MakeOffer">
 									<input type="number" name="offer" placeholder="Place your offer..." required/>
 
 									<button type="submit" class="button-primary">

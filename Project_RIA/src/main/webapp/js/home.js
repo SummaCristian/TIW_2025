@@ -1,5 +1,14 @@
 // Imports the other JS files needed
-import { fetchUser, refreshOpenAuctions, refreshClosedAuctions, refreshWonAuctions, searchAuctions, fetchAuction, refreshAvailableItems } 
+import {
+  fetchUser,
+  refreshOpenAuctions,
+  refreshClosedAuctions,
+  refreshWonAuctions,
+  searchAuctions,
+  fetchAuction,
+  refreshAvailableItems,
+  createAuction
+} 
   from './api.js';
 import { updateAuctionPopup } from './ui.js';
 
@@ -153,6 +162,42 @@ export function showAuctionPopup(auction) {
 // Setup Event Listeners
 // ==========================
 
+// Auction Creation Form
+function initAuctionCreationForm() {
+  const form = document.getElementById("auctionCreationForm");
+  const errorMessage = document.getElementById("auctionCreationFormErrorMessage");
+
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    // Checks if the data is valid
+    const error = validateAuctionCreation(form);
+    
+    if (error == null) {
+      // No error, the request can be sent
+      errorMessage.textContent = "";
+      
+      createAuction(form, (error, statusCode) => {
+          if (error) {
+            displayError(statusCode, error.message);
+          } else {
+            displaySuccess(statusCode, "Auction created successfully!");
+
+            // Refreshes the Open Auctions List
+            refreshOpenAuctions();
+			// Refreshes the Available Items in the Auction Creation Form
+			refreshAvailableItems();
+          }
+      });
+
+    } else {
+      // Error, display it in the UI
+      errorMessage.textContent = error;
+    }
+  });
+}
+
 // The Selected Auction popup window
 document.addEventListener("DOMContentLoaded", () => {
   const popupOverlay = document.getElementById("popup-overlay");
@@ -260,6 +305,60 @@ function initWelcomeText() {
 // Form Validation Functions
 // ==========================
 
+// Auction Creation Form
+function validateAuctionCreation(form) {
+  const minIncrement = form.minIncrement.value.trim();
+  const closingDate = form.closingDate.value.trim();
+  const itemCheckboxes = form.querySelectorAll('input[name="itemIds"]:checked');
+
+  const sellerId = user.id;
+
+  // Missing parameters
+  if (!minIncrement || !closingDate || !sellerId) {
+    return "Missing required data. Please fill all fields.";
+  }
+
+  if (itemCheckboxes.length === 0) {
+    return "You must select at least one item for the auction.";
+  }
+
+  // Number parsing
+  const incrementValue = parseInt(minIncrement, 10);
+  if (isNaN(incrementValue)) {
+    return "Minimum increment must be a valid number.";
+  }
+
+  if (incrementValue <= 0) {
+    return "Minimum increment must be greater than 0.";
+  }
+
+  // Date parsing
+  const dateValue = new Date(closingDate);
+  const now = new Date();
+
+  if (isNaN(dateValue.getTime())) {
+    return "Invalid date format.";
+  }
+
+  if (dateValue <= now) {
+    return "Closing date must be in the future.";
+  }
+
+  // Item checkbox validation
+  for (const checkbox of itemCheckboxes) {
+    if (!checkbox.value || checkbox.value.trim() === "") {
+      return "One or more selected items are invalid.";
+    }
+  }
+
+  if (itemCheckboxes.length == 0) {
+    return "No items selected. You need at least 1 to create an Auction!"; 
+  }
+
+  // Everything is valid -> Return null as error
+  return null;
+}
+
 
 
 // ==========================
@@ -280,3 +379,5 @@ refreshClosedAuctions();
 refreshWonAuctions();
 refreshAvailableItems();
 hideAllPopups();
+
+initAuctionCreationForm();

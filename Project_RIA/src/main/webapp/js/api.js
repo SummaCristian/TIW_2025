@@ -4,6 +4,7 @@
  */
 
 import { buildAuctionCard, buildCheckBoxItemCard } from './ui.js';
+import { user } from './home.js';
 
 // =====================
 // Main Function
@@ -11,6 +12,7 @@ import { buildAuctionCard, buildCheckBoxItemCard } from './ui.js';
 
 // Creates and sends an XMLHttpRequest to the Server at the URL passed as parameter,
 // and attaches the parameter function as the callback to that request.
+// DOes so using GET.
 function fetchDataGET(url, callback) {
     // Creates the request
     const xhr = new XMLHttpRequest();
@@ -48,6 +50,53 @@ function fetchDataGET(url, callback) {
     // Sends the request
     xhr.send();
 }
+
+// Creates and sends an XMLHttpRequest to the Server at the URL passed as parameter,
+// and attaches the parameter function as the callback to that request.
+// Does so using POST.
+function doActionPOST(url, data, callback) {
+    const xhr = new XMLHttpRequest();
+
+    // Configure the request
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.setRequestHeader('Accept', '*/*'); // No JSON expected
+
+    // Response handler
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            // Successful response
+            if (xhr.status >= 200 && xhr.status < 300) {
+                callback(null, xhr.status);
+            } else {
+                // Return error with message from body if any
+                const errorMessage = xhr.responseText || `Request failed with status ${xhr.status}`;
+                callback(new Error(errorMessage), xhr.status);
+            }
+        }
+    };
+
+    // Encode the body (support arrays like itemIds[])
+    const body = new URLSearchParams();
+    for (const key in data) {
+        const value = data[key];
+        if (Array.isArray(value)) {
+            for (const v of value) {
+                body.append(key, v);
+            }
+        } else {
+            body.append(key, value);
+        }
+    }
+
+    // Send the request
+    xhr.send(body.toString());
+}
+
+
+// =================
+// FETCH FUNCTIONS
+// =================
 
 /*
     Fetches the User data from the Server's session passes it to the
@@ -399,4 +448,33 @@ export function refreshAvailableItems() {
 
     // Makes the Request
     fetchDataGET(url, callback);
+}
+
+// ===================
+// ACTION FUNCTIONS
+// ===================
+
+// Makes an API request to create a new Auction with the data in the parameteres.
+// NOTE: Assumes client-side data validation has already been passed.
+export function createAuction(form, callback) {
+    const url = "/Project_TIW_RIA/CreateAuction";
+
+     // Extract data from the form inputs
+    const minIncrement = form.minIncrement.value.trim();
+    const closingDate = form.closingDate.value.trim();
+    const sellerId = user.id;
+
+    // Get all selected item checkboxes
+    const itemCheckboxes = form.querySelectorAll('input[name="itemIds"]:checked');
+    const itemIds = Array.from(itemCheckboxes).map(cb => cb.value);
+
+    // Build the payload
+    const data = {
+        minIncrement: minIncrement,
+        closingDate: closingDate,
+        sellerId: sellerId,
+        itemIds: itemIds
+    };
+    
+    doActionPOST(url, data, callback);
 }
