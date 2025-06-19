@@ -1,0 +1,66 @@
+title Sequence Diagram Sign Up [RIA]
+
+actor User
+participant FrontServlet
+
+participantgroup #lightgreen **Login**
+participant LoginPage.html #aqua
+participant auth.js #yellow
+participant LoginServlet
+participant LoginPageServlet
+end
+
+participant UserDAO #orange
+
+participant Home
+
+User-->FrontServlet: localhost:8080/PRoject_TIW_RIA
+
+alt case 1
+# Already logged in
+FrontServlet->Home: forward() [session != null]
+else case 2
+# Not logged in
+FrontServlet->LoginPageServlet: forward() [session == null]
+LoginPageServlet->LoginPage.html: [reads the file]
+LoginPage.html->LoginPageServlet:
+LoginPageServlet->User: [sends the file]
+
+LoginPage.html->auth.js: <script async>
+auth.js-->User:
+end
+
+loop #0727fe #white until completes without Exceptions
+User-->LoginPage.html: [form submit]
+LoginPage.html->auth.js:
+
+# JS does client-side validation
+note over auth.js #yellow: validation
+alt case fail
+auth.js->LoginPage.html: displayError()
+LoginPage.html-->User:
+
+else case ok
+
+
+auth.js->LoginServlet: /LoginServlet (POST)
+
+LoginServlet->UserDAO: checkCredentials()
+
+alt case MissingParametersException, UserNotFoundException, IncorrectPasswordException
+UserDAO-->LoginServlet: throws Exception
+LoginServlet ->auth.js: error
+auth.js->LoginPage.html: [updates the UI with the error]
+LoginPage.html-->User:
+
+else case ok
+# Success
+UserDAO-->LoginServlet: return user
+LoginServlet->auth.js :success (200)
+
+end
+end
+end
+
+# Redirect the User to Home
+auth.js->Home: forward() (/Home)
