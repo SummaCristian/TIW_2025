@@ -3,6 +3,15 @@
  * setting them with an expiration date and retrieving their data when needed.
  */
 
+import { user } from "./home.js";
+
+/*
+	Appends the User's ID to the Cookie Key, so that Cookies are not shared between Users
+*/
+function getScopedCookieKey(name) {
+    return `${name}-${user?.id ?? "anonymous"}`;
+}
+
 
 /*
     Creates a new cookie using the name as key, and initializes it to the value
@@ -11,12 +20,14 @@
     otherwise it's not.
 */
 export function setCookie(name, value, daysToExpire) {
+	const scopedName = getScopedCookieKey(name);
+	
     if (daysToExpire) {
         const expires = new Date(Date.now() + daysToExpire * 864e5).toUTCString();
         
-        document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+        document.cookie = `${scopedName}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
     } else {
-        document.cookie = `${name}=${encodeURIComponent(value)}; path=/`;
+        document.cookie = `${scopedName}=${encodeURIComponent(value)}; path=/`;
     }
 
 }
@@ -26,12 +37,14 @@ export function setCookie(name, value, daysToExpire) {
     Returns 'null' if the Cookie doesn't exist.
 */
 export function getCookie(name) {
+	const scopedName = getScopedCookieKey(name);
+	
     const cookies = document.cookie.split("; ");
 
     for (const c of cookies) {
         const [key, ...rest] = c.split("=");
         const value = rest.join("=");
-        if (key === name) return decodeURIComponent(value).toLowerCase();
+        if (key === scopedName) return decodeURIComponent(value).toLowerCase();
     }
 
     return null;
@@ -42,6 +55,8 @@ export function getCookie(name) {
     Deletes a cookie whose key is passed as argument.
 */
 export function deleteCookie(name) {
+	const scopedName = getScopedCookieKey(name);
+	
     // To delete it, sets the expiration date to Epoch time
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+    document.cookie = `${scopedName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
 }

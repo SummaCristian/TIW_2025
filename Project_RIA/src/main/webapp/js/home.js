@@ -461,7 +461,7 @@ export function initPillTabBar(tabSelector = ".pill-tab", contentSelector = ".ta
       case "sellPage":
         refreshOpenAuctions();
         refreshClosedAuctions();
-		    refreshAvailableItems();
+		refreshAvailableItems();
         break;
       case "buyPage":
         refreshWonAuctions();
@@ -679,9 +679,11 @@ fetchUser((data) => {
   user = data;
   
   initWelcomeText();
+  initPillTabBar()
+
+  
 });
 
-initPillTabBar()
 setTomorrowDateInPicker()
 
 // Refreshes the content on load
