@@ -528,3 +528,17 @@ export function makeOffer(auctionId, offer, callback) {
 
     doActionPOST(url, data, callback);
 }
+
+// Makes an API request to close an Auction, signaled by the AuctionId argument.
+// Assumes client-side data validation has already been passed.
+export function closeAuction(auctionId, callback) {
+    const url = "/Project_TIW_RIA/CloseAuction";
+
+    // Builds the data
+    const data = {
+        userId: user.id,
+        auctionId: auctionId
+    }
+
+    doActionPOST(url, data, callback);
+}

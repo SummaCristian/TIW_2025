@@ -9,7 +9,8 @@ import {
   refreshAvailableItems,
   createAuction,
   createItem,
-  makeOffer
+  makeOffer,
+  closeAuction
 } 
   from './api.js';
 import { updateAuctionPopup } from './ui.js';
@@ -18,6 +19,7 @@ import { updateAuctionPopup } from './ui.js';
 export let user = null;
 
 let makeOfferEventListener = null;
+let closeAuctionEventListener = null;
 
 let successTimeout;
 let errorTimeout;
@@ -246,6 +248,46 @@ function initItemCreationForm() {
   });
 }
 
+// Close Auction Button
+function initCloseAuctionButton(auction) {
+  const button = document.getElementById("selectedAuctionCloseButton");
+
+  if (closeAuctionEventListener != null) {
+    button.removeEventListener("submit", closeAuctionEventListener);
+  }
+
+  closeAuctionEventListener = function(event) {
+    event.preventDefault();
+
+    // Validate the data
+    const error = validateCloseAuction(auction);
+
+    if (error === null) {
+      // No error, the request can be sent
+      closeAuction(auction.id, (error, statusCode) => {
+          if (error) {
+            displayError(statusCode, error.message);
+          } else {
+            displaySuccess(statusCode, "Auction closed successfully!");
+          }
+
+          fetchAuction(auction.id, (error, updatedAuction) => {
+            if (error) {
+              displayError(500, "Failed to refresh auction.");
+              return;
+            }
+
+            updateAuctionPopup(updatedAuction, () => {
+              initCloseAuctionButton(updatedAuction);
+            });
+          });
+      });
+    } else {
+      displayError(403, error);
+    }
+  }
+}
+
 // Make Offer Form
 function initMakeOfferForm(auction) {
   const form = document.getElementById("selectedAuction-MakeOfferForm");
@@ -272,9 +314,8 @@ function initMakeOfferForm(auction) {
         } else {
           displaySuccess(statusCode, "Offer sent successfully!");
 		  
-		  setTimeout(() => {
-			// Refresh the auction data
-			fetchAuction(auction.id, (error, updatedAuction) => {
+        // Refresh the auction data
+        fetchAuction(auction.id, (error, updatedAuction) => {
 						
             if (error) {
               displayError(500, "Failed to refresh auction.");
@@ -286,9 +327,8 @@ function initMakeOfferForm(auction) {
               errorMessage.textContent = ""; // Clear any previous errors
             });
 			
-			initMakeOfferForm(updatedAuction);
+			      initMakeOfferForm(updatedAuction);
           });
-		  }, 200);
         }
       });
     } else {
@@ -532,6 +572,29 @@ function validateOffer(form, auction) {
     offer < auction.highestBid.offeredPrice + auction.minIncrement
   ) {
     return "The Offer is too low for this Auction. Please try again...";
+  }
+
+  // All validations passed
+  return null;
+}
+
+// Validates the possibility of closing an Auction.
+// Returns 'null' if everything is valid, otherwise returns a string error message.
+function validateCloseAuction(auction) {
+  const userId = user.id;
+
+  // Ownership
+  if (auction?.sellerId != userId) {
+    return "You can't close other people's Auctions!";
+  }
+
+  // Closing Date already passed
+  if (new Date(auction.closingDate) > new Date()) {
+    return "This Auction can't be closed before its Closing Date.";
+  }
+
+  if (auction?.isSold) {
+    return "This Auction is already closed.";
   }
 
   // All validations passed
