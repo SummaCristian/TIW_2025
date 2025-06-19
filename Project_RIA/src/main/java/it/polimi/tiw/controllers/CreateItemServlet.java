@@ -82,7 +82,7 @@ public class CreateItemServlet extends HttpServlet {
 			// Missing some data
 			
 			// Return the User to the same page, with an error message
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing parameters. Please try again..."); // 400			
+			sendError(response, HttpServletResponse.SC_BAD_REQUEST, "Missing parameters. Please try again..."); // 400			
 			return;
 		}
 		
@@ -160,7 +160,7 @@ public class CreateItemServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			// Return error
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Something went wrong, please try again..."); // 500
+			sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Something went wrong, please try again..."); // 500
 		}
 
 	}
@@ -186,6 +186,15 @@ public class CreateItemServlet extends HttpServlet {
 			throw new MissingParametersException();
 		}
 	}
+	
+	/*
+	 * Sends a basic error with the specified statusCode and String message
+	 */
+	private void sendError(HttpServletResponse response, int statusCode, String message) throws IOException {
+        response.setStatus(statusCode);
+        response.setContentType("text/plain;charset=UTF-8");
+        response.getWriter().write(message);
+    }
 	
 	/*
 	 * Destroys the Servlet object, closing the Connection while doing so.

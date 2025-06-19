@@ -130,14 +130,14 @@ public class MakeOfferServlet extends HttpServlet {
 			// Missing some data
 			
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing parameters. Please try again..."); // 400
+			sendError(response, HttpServletResponse.SC_BAD_REQUEST, "Missing parameters. Please try again..."); // 400
 			
 			return;
 		} catch (NumberFormatException e) {
 			// One or more Integers were not numbers
 			
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Something went wrong. Please try again..."); // 400 
+			sendError(response, HttpServletResponse.SC_BAD_REQUEST, "Something went wrong. Please try again..."); // 400 
 			
 			return;
 			
@@ -145,7 +145,7 @@ public class MakeOfferServlet extends HttpServlet {
 			// No User exists with the ID passed in the request
 			
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Something is wrong with your User ID. Please try again..."); // 404 
+			sendError(response, HttpServletResponse.SC_NOT_FOUND, "Something is wrong with your User ID. Please try again..."); // 404 
 			
 			return;
 			
@@ -154,7 +154,7 @@ public class MakeOfferServlet extends HttpServlet {
 			// A User can't raise Offers to Auctions he created.
 
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_FORBIDDEN, "You can't raise Offers to your own Auctions."); // 403
+			sendError(response, HttpServletResponse.SC_FORBIDDEN, "You can't raise Offers to your own Auctions."); // 403
 			
 			return;
 			
@@ -162,7 +162,7 @@ public class MakeOfferServlet extends HttpServlet {
 			// The User is trying to raise an Offer to an Auction that is already CLOSED.
 
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_CONFLICT, "This Auction is closed and can't accept any more Offers."); // 409 
+			sendError(response, HttpServletResponse.SC_CONFLICT, "This Auction is closed and can't accept any more Offers."); // 409 
 
 			return;
 			
@@ -170,7 +170,7 @@ public class MakeOfferServlet extends HttpServlet {
 			// The User tried offering less than Current Highest Offer + Minimum Increment
 
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "The Offer is too low for this Auction. Please try again..."); // 400 
+			sendError(response, HttpServletResponse.SC_BAD_REQUEST, "The Offer is too low for this Auction. Please try again..."); // 400 
 
 			return;
 			
@@ -178,7 +178,7 @@ public class MakeOfferServlet extends HttpServlet {
 			// The Offered price in this request was negative or 0, which is not allowed
 			
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "You can't offer 0€ or less. Please try again..."); // 400 
+			sendError(response, HttpServletResponse.SC_BAD_REQUEST, "You can't offer 0€ or less. Please try again..."); // 400 
 			
 			return;
 			
@@ -186,7 +186,7 @@ public class MakeOfferServlet extends HttpServlet {
 			// The Offered price is less than the Auction's Base Price
 			
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "You can't offer less than this Auction's base price. Please try again..."); // 400
+			sendError(response, HttpServletResponse.SC_BAD_REQUEST, "You can't offer less than this Auction's base price. Please try again..."); // 400
 			
 			return;
 			
@@ -194,11 +194,11 @@ public class MakeOfferServlet extends HttpServlet {
 			// The ID passed in this request does not correspond to any existing Auction inside the DB.
 			
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Something went wrong. Please try again..."); // 404 
+			sendError(response, HttpServletResponse.SC_NOT_FOUND, "Something went wrong. Please try again..."); // 404 
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "A database error occurred. Please try again later."); // 500
+		    sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "A database error occurred. Please try again later."); // 500
 		}
 		
 		// Everything is ok, continue
@@ -224,7 +224,7 @@ public class MakeOfferServlet extends HttpServlet {
         	
 		} catch (SQLException e) {
 			e.printStackTrace();
-		    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "A database error occurred. Please try again later.");
+		    sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "A database error occurred. Please try again later.");
 		}
 
 	}
@@ -246,6 +246,15 @@ public class MakeOfferServlet extends HttpServlet {
 			throw new MissingParametersException();
 		}
 	}
+	
+	/*
+	 * Sends a basic error with the specified statusCode and String message
+	 */
+	private void sendError(HttpServletResponse response, int statusCode, String message) throws IOException {
+        response.setStatus(statusCode);
+        response.setContentType("text/plain;charset=UTF-8");
+        response.getWriter().write(message);
+    }
 	
 	
 	/*

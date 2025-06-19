@@ -135,14 +135,14 @@ public class CreateAuctionServlet extends HttpServlet {
 			// Missing some data
 			
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing parameters. Please try again..."); // 400 
+			sendError(response, HttpServletResponse.SC_BAD_REQUEST, "Missing parameters. Please try again..."); // 400 
 			
 			return;
 		} catch (NumberFormatException e) {
 			// One or more Integers were not numbers
 			
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Something went wrong. Please try again..."); // 400
+			sendError(response, HttpServletResponse.SC_BAD_REQUEST, "Something went wrong. Please try again..."); // 400
 			
 			return;
 			
@@ -150,7 +150,7 @@ public class CreateAuctionServlet extends HttpServlet {
 			// The inputted Date was in the past
 			
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Closing Date must be in the future. Please try again..."); // 400
+			sendError(response, HttpServletResponse.SC_BAD_REQUEST, "Closing Date must be in the future. Please try again..."); // 400
 			
 			return;
 			
@@ -158,7 +158,7 @@ public class CreateAuctionServlet extends HttpServlet {
 			// No Items were selected to be put into this Auction
 
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Auctions must contain at least 1 Item. Please try again..."); // 400
+			sendError(response, HttpServletResponse.SC_BAD_REQUEST, "Auctions must contain at least 1 Item. Please try again..."); // 400
 			
 			return;
 			
@@ -166,7 +166,7 @@ public class CreateAuctionServlet extends HttpServlet {
 			// One or more of the selected Item(s) is already part of another Auction
 
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_CONFLICT, "An Item cannot be assigned to more than 1 Auction. Please try again..."); // 409
+			sendError(response, HttpServletResponse.SC_CONFLICT, "An Item cannot be assigned to more than 1 Auction. Please try again..."); // 409
 
 			return;
 			
@@ -174,7 +174,7 @@ public class CreateAuctionServlet extends HttpServlet {
 			// One or more of the selected Item(s) does NOT belong to the User
 
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_FORBIDDEN, "Stealing is not allowed. Please try again..."); // 403
+			sendError(response, HttpServletResponse.SC_FORBIDDEN, "Stealing is not allowed. Please try again..."); // 403
 
 			return;
 			
@@ -182,13 +182,13 @@ public class CreateAuctionServlet extends HttpServlet {
 			// The Minimum Increment passed was <= 0
 			
 			// Return an error message
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "An Auction's minimum increment can't be 0 or negative. Please try again..."); // 400
+			sendError(response, HttpServletResponse.SC_BAD_REQUEST, "An Auction's minimum increment can't be 0 or negative. Please try again..."); // 400
 			
 			return;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "A database error occurred. Please try again later.");
+		    sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "A database error occurred. Please try again later.");
 		}
 		
 		// Everything is ok, continue
@@ -220,7 +220,7 @@ public class CreateAuctionServlet extends HttpServlet {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "A database error occurred. Please try again later.");
+		    sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "A database error occurred. Please try again later.");
 		}
 
 	}
@@ -270,6 +270,16 @@ public class CreateAuctionServlet extends HttpServlet {
 		
 		return closingDate;
 	}
+	
+	
+	/*
+	 * Sends a basic error with the specified statusCode and String message
+	 */
+	private void sendError(HttpServletResponse response, int statusCode, String message) throws IOException {
+        response.setStatus(statusCode);
+        response.setContentType("text/plain;charset=UTF-8");
+        response.getWriter().write(message);
+    }
 
 	
 	/*

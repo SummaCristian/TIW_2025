@@ -130,40 +130,49 @@ public class CloseAuctionServlet extends HttpServlet {
 			
 		} catch (MissingParametersException e) {
 			// Either UserId, AuctionId or both are missing
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing parameters. Please try again..."); // 400
+			sendError(response, HttpServletResponse.SC_BAD_REQUEST, "Missing parameters. Please try again..."); // 400
 			
 		} catch (NumberFormatException e) {
 			// Either UserId, AuctionId or both are not numbers
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Something is wrong with the parameters. Please try again..."); // 400
+			sendError(response, HttpServletResponse.SC_BAD_REQUEST, "Something is wrong with the parameters. Please try again..."); // 400
 			
 		} catch (UserNotFoundException e) {
 			// The UserID passed in the request does not exist inside the DB
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "The UserID passed in the request does not exist. Please try again..."); // 404
+			sendError(response, HttpServletResponse.SC_NOT_FOUND, "The UserID passed in the request does not exist. Please try again..."); // 404
 			
 		} catch (NoSuchAuctionException e) {
 			// The AuctionID passed in the request does not exist inside the DB
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "The AuctionID passed in the request does not exist. Please try again..."); // 404 
+			sendError(response, HttpServletResponse.SC_NOT_FOUND, "The AuctionID passed in the request does not exist. Please try again..."); // 404 
 			
 		} catch (NotOwningAuctionException e) {
 			// The UserID passed in the request does not match the Auction's SellerID
-			response.sendError(HttpServletResponse.SC_FORBIDDEN, "You can't close other people's Auctions!"); // 403
+			sendError(response, HttpServletResponse.SC_FORBIDDEN, "You can't close other people's Auctions!"); // 403
 			
 		} catch (ClosedAuctionException e) {
 			// The Auction is already Sold, can't be closed again
-			response.sendError(HttpServletResponse.SC_CONFLICT, "This Auction is already closed."); // 409 
+			sendError(response, HttpServletResponse.SC_CONFLICT, "This Auction is already closed."); // 409 
 			
 		} catch (AuctionNotExpiredYetException e) {
 			// The Auction is not expired yet, it can't be closed before its Closing Date
-			response.sendError(HttpServletResponse.SC_CONFLICT, "This Auction can't be closed before its Closing Date."); // 409 
+			sendError(response, HttpServletResponse.SC_CONFLICT, "This Auction can't be closed before its Closing Date."); // 409 
 			
 		} catch (SQLException e) {
 			// Database Error
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Something went wrong. Please try again..."); // 500
+			sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Something went wrong. Please try again..."); // 500
 			
 		}
 		
 		
 	}
+	
+	/*
+	 * Sends a basic error with the specified statusCode and String message
+	 */
+	private void sendError(HttpServletResponse response, int statusCode, String message) throws IOException {
+        response.setStatus(statusCode);
+        response.setContentType("text/plain;charset=UTF-8");
+        response.getWriter().write(message);
+    }
 	
 	
 	/*
