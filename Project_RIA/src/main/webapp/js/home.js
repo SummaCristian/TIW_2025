@@ -188,8 +188,10 @@ export function showAuctionPopup(auction) {
 
   // Fetches the updated Auction data
   fetchAuction(auction.id, (error, newAuction) => {
-	// Saves the Auction's ID into the Cookie
-	addAuctionToVisited(auction.id);
+	if (!auction?.isSold) {
+		// Saves the Auction's ID into the Cookie (only if it's still Open)
+		addAuctionToVisited(auction.id);
+	}
 	
 		
     // Once the auction data has been fetched, we call the UI function to put the data in the UI

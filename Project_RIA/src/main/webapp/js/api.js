@@ -5,7 +5,7 @@
 
 import { buildAuctionCard, buildCheckBoxItemCard } from './ui.js';
 import { user, VISITED_AUCTIONS_KEY } from './home.js';
-import { getCookie } from './cookies.js';
+import { getCookie, setCookie } from './cookies.js';
 
 // =====================
 // Main Function
@@ -249,11 +249,30 @@ export function refreshVisitedAuctions() {
 
                 // Hides the default text
                 emptyListMessage.style.display = "none"
+				
+				let wasListChanged = false;
 
                 // Populates the List
                 for (const auction of data) {
-                    list.append(buildAuctionCard(auction, noItemsText));
+					// Checks if the Auction is still open or not
+					if (auction.isSold) {
+					    // Remove closed auction from cookie
+					    const index = auctionIds.indexOf(auction.id);
+					    if (index !== -1) {
+					        auctionIds.splice(index, 1);
+					    }
+						
+						wasListChanged = true;
+						
+					} else {
+						// Still open, renders the UI
+                    	list.append(buildAuctionCard(auction, noItemsText));
+					}
                 }
+				
+				if (wasListChanged) {
+					setCookie(VISITED_AUCTIONS_KEY, auctionIds.join(","), 30);
+				}
             }
             
         };
