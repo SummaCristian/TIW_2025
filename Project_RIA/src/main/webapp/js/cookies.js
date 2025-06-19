@@ -31,7 +31,7 @@ export function getCookie(name) {
     for (const c of cookies) {
         const [key, ...rest] = c.split("=");
         const value = rest.join("=");
-        if (key === name) return decodeURIComponent(value);
+        if (key === name) return decodeURIComponent(value).toLowerCase();
     }
 
     return null;

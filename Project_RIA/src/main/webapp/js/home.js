@@ -1,4 +1,6 @@
 // Imports the other JS files needed
+import { setCookie, getCookie, deleteCookie } from './cookies.js';
+
 import {
   fetchUser,
   refreshOpenAuctions,
@@ -13,6 +15,7 @@ import {
   closeAuction
 } 
   from './api.js';
+  
 import { updateAuctionPopup } from './ui.js';
 
 // Constants
@@ -23,6 +26,10 @@ let closeAuctionEventListener = null;
 
 let successTimeout;
 let errorTimeout;
+
+let FIRST_TIME_ACCESS_KEY = "isFirstTimeAccess";
+let WAS_LAST_ACTION_AUCTION_CREATION_KEY = "wasLastAuctionAuctionCreation";
+let VISITED_AUCTIONS_KEY = "visitedAuctions";
 
 // ==========================
 // Helper Functions
@@ -201,6 +208,9 @@ function initAuctionCreationForm() {
 			
 			// Resets the Form
 			form.reset();
+			
+			// Updates the Cookie
+			setCookie(WAS_LAST_ACTION_AUCTION_CREATION_KEY, "true", 30); // Resets the expiry too
           }
       });
 
@@ -408,7 +418,7 @@ export function initPillTabBar(tabSelector = ".pill-tab", contentSelector = ".ta
     // Show related content
     const target = tab.getAttribute("data-tab");
     contents.forEach(content => {
-      content.classList.toggle("active-tab", content.id === target);
+    	content.classList.toggle("active-tab", content.id === target);
     });
 
     // Refresh data in the selected tab
@@ -416,7 +426,7 @@ export function initPillTabBar(tabSelector = ".pill-tab", contentSelector = ".ta
       case "sellPage":
         refreshOpenAuctions();
         refreshClosedAuctions();
-		    refreshAvailableItems();
+		refreshAvailableItems();
         break;
       case "buyPage":
         refreshWonAuctions();
@@ -430,9 +440,32 @@ export function initPillTabBar(tabSelector = ".pill-tab", contentSelector = ".ta
   });
 
   // Init on first tab
-  // TODO: Remember the last one the User visited
-  if (tabs.length > 0) {
-    activateTab(tabs[0]);
+  
+  // Checks if it's the first time the User accesses the website
+  const isFirstAccess = getCookie(FIRST_TIME_ACCESS_KEY) === null;
+
+  // Write the cookie
+  setCookie(FIRST_TIME_ACCESS_KEY, "false", 30);
+  
+  if (isFirstAccess) {
+    // First time
+    // Show Sell Page
+	activateTab(tabs[0]);
+  } else {
+    // Not first time
+    
+	const didCreateAnAuction = getCookie(WAS_LAST_ACTION_AUCTION_CREATION_KEY) === "true";
+	
+	if (didCreateAnAuction) {
+		// Show Sell Page
+		activateTab(tabs[0]);
+		
+		// Reset the value, this one gets consumed
+		deleteCookie(WAS_LAST_ACTION_AUCTION_CREATION_KEY);
+	} else {
+		// Show Buy Page
+		activateTab(tabs[1]);
+	}
   }
 }
 
