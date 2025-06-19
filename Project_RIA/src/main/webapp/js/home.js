@@ -8,13 +8,16 @@ import {
   fetchAuction,
   refreshAvailableItems,
   createAuction,
-  createItem
+  createItem,
+  makeOffer
 } 
   from './api.js';
 import { updateAuctionPopup } from './ui.js';
 
 // Constants
 export let user = null;
+
+let makeOfferEventListener = null;
 
 let successTimeout;
 let errorTimeout;
@@ -44,7 +47,7 @@ function displaySuccess(statusCode, message) {
   messageTxt.textContent = message;
 
   // Shows the popup
-  popup.style.display = "flex";
+  popup.classList.remove("popup-message");
 
   // Sets a timer so that the popup is hidden after 3 seconds
   // After 3s, fade out
@@ -54,7 +57,7 @@ function displaySuccess(statusCode, message) {
 
     // Optional: hide after animation completes (0.4s)
     setTimeout(() => {
-      popup.style.display = "none";
+      popup.classList.add("popup-message");
     }, 400);
   }, 3000);
 }
@@ -81,7 +84,7 @@ function displayError(statusCode, message) {
   messageTxt.textContent = message;
 
   // Shows the popup
-  popup.style.display = "flex";
+  popup.classList.remove("popup-message");
 
   // Sets a timer so that the popup is hidden after 3 seconds
   // After 3s, fade out
@@ -91,7 +94,7 @@ function displayError(statusCode, message) {
 
     // Optional: hide after animation completes (0.4s)
     setTimeout(() => {
-      popup.style.display = "none";
+      popup.classList.add("popup-message");
     }, 400);
   }, 3000);
 }
@@ -148,9 +151,13 @@ export function showAuctionPopup(auction) {
 	const popupOverlay = document.getElementById("popup-overlay");
 
   // Fetches the updated Auction data
-  fetchAuction(auction.id, (error, auction) => {
+  fetchAuction(auction.id, (error, newAuction) => {
+		
     // Once the auction data has been fetched, we call the UI function to put the data in the UI
-    updateAuctionPopup(auction, () => {
+    updateAuctionPopup(newAuction, () => {
+		// Sets the Form inside the Popup to the correct Auction
+		initMakeOfferForm(newAuction);
+		
         // Once the UI has been updated, show the Popup to the User
         popupOverlay.style.display = "flex";
     });
@@ -226,8 +233,8 @@ function initItemCreationForm() {
                 // Refreshes the Available Items in the Auction Creation Form
                 refreshAvailableItems();
 				
-				// Resets the Form
-				form.reset();
+                // Resets the Form
+                form.reset();
               }
           });
 
@@ -237,6 +244,60 @@ function initItemCreationForm() {
           errorMessage.textContent = error;
       }
   });
+}
+
+// Make Offer Form
+function initMakeOfferForm(auction) {
+  const form = document.getElementById("selectedAuction-MakeOfferForm");
+  const errorMessage = document.getElementById("selectedAuction-OfferError");
+
+  if (makeOfferEventListener != null) {
+  	form.removeEventListener("submit", makeOfferEventListener);
+  }
+  
+  makeOfferEventListener = function(event)   {
+    event.preventDefault();
+
+    // Validate the data
+    const error = validateOffer(form, auction);
+	
+    if (error == null) {
+      // No error, extract the offer value
+      const offer = parseInt(form.offer.value.trim(), 10);
+
+      // Send the request to make the offer
+      makeOffer(auction.id, offer, (error, statusCode) => {
+        if (error) {
+          displayError(statusCode, error.message);
+        } else {
+          displaySuccess(statusCode, "Offer sent successfully!");
+		  
+		  setTimeout(() => {
+			// Refresh the auction data
+			fetchAuction(auction.id, (error, updatedAuction) => {
+						
+            if (error) {
+              displayError(500, "Failed to refresh auction.");
+              return;
+            }
+
+            updateAuctionPopup(updatedAuction, () => {
+              form.reset(); // Reset the form only after successful update
+              errorMessage.textContent = ""; // Clear any previous errors
+            });
+			
+			initMakeOfferForm(updatedAuction);
+          });
+		  }, 200);
+        }
+      });
+    } else {
+      // Validation failed
+      errorMessage.textContent = error;
+    }
+  }
+  
+  form.addEventListener("submit", makeOfferEventListener);
 }
 
 // The Selected Auction popup window
@@ -315,7 +376,7 @@ export function initPillTabBar(tabSelector = ".pill-tab", contentSelector = ".ta
       case "sellPage":
         refreshOpenAuctions();
         refreshClosedAuctions();
-		refreshAvailableItems();
+		    refreshAvailableItems();
         break;
       case "buyPage":
         refreshWonAuctions();
@@ -437,6 +498,46 @@ function validateItemCreation(form) {
     return null;
 }
 
+// Validates the data inserted into the Make Offer Form.
+// Returns 'null' if everything is valid, otherwise returns a string error message.
+function validateOffer(form, auction) {
+  const offerInput = form.offer;
+  const offerValue = offerInput.value.trim();
+
+  // Missing offer
+  if (!offerValue) {
+    return "Missing offer amount. Please enter a value.";
+  }
+
+  // Parse the number
+  const offer = parseInt(offerValue, 10);
+  if (isNaN(offer)) {
+    return "Offer must be a valid number.";
+  }
+
+  if (offer <= 0) {
+    return "You can't offer 0€ or less.";
+  }
+
+  if (auction.isSold || new Date(auction.closingDate) <= new Date()) {
+    return "This Auction is closed and can't accept any more Offers.";
+  }
+
+  if (offer < auction.basePrice) {
+    return "You can't offer less than this Auction's base price.";
+  }
+
+  if (
+    auction.highestBid &&
+    offer < auction.highestBid.offeredPrice + auction.minIncrement
+  ) {
+    return "The Offer is too low for this Auction. Please try again...";
+  }
+
+  // All validations passed
+  return null;
+}
+
 
 
 // ==========================
@@ -456,7 +557,6 @@ refreshOpenAuctions();
 refreshClosedAuctions();
 refreshWonAuctions();
 refreshAvailableItems();
-hideAllPopups();
 
 // Initializes the Forms
 initAuctionCreationForm();

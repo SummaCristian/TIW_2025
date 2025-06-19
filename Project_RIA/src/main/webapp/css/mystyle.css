@@ -171,7 +171,7 @@ body {
 }
 
 .popup-message {
-	display: none; /* Hidden by default */
+	display: none !important; /* Hidden by default */
 }
 
 .popup-message-container {

@@ -466,7 +466,7 @@ export function refreshAvailableItems() {
 // ===================
 
 // Makes an API request to create a new Auction with the data in the parameteres.
-// NOTE: Assumes client-side data validation has already been passed.
+// Assumes client-side data validation has already been passed.
 export function createAuction(form, callback) {
     const url = "/Project_TIW_RIA/CreateAuction";
 
@@ -509,6 +509,22 @@ export function createItem(form, callback) {
     if (imageInput.files.length > 0) {
         data.append("image", imageInput.files[0]);
     }
+
+    doActionPOST(url, data, callback);
+}
+
+// Makes an API request to create a new Offer to a certain Auction, signaled 
+// by the AuctionId argument.
+// Assumes client-side data validation has already been passed.
+export function makeOffer(auctionId, offer, callback) {
+    const url = "/Project_TIW_RIA/MakeOffer";
+
+    // Builds the data
+    const data = {
+        userId: user.id,
+        auctionId: auctionId,
+        offer: offer
+    };
 
     doActionPOST(url, data, callback);
 }
