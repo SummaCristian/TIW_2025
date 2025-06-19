@@ -6,6 +6,7 @@ import {
   refreshOpenAuctions,
   refreshClosedAuctions,
   refreshWonAuctions,
+  refreshVisitedAuctions,
   searchAuctions,
   fetchAuction,
   refreshAvailableItems,
@@ -27,13 +28,39 @@ let closeAuctionEventListener = null;
 let successTimeout;
 let errorTimeout;
 
-let FIRST_TIME_ACCESS_KEY = "isFirstTimeAccess";
-let WAS_LAST_ACTION_AUCTION_CREATION_KEY = "wasLastAuctionAuctionCreation";
-let VISITED_AUCTIONS_KEY = "visitedAuctions";
+export let FIRST_TIME_ACCESS_KEY = "isFirstTimeAccess";
+export let WAS_LAST_ACTION_AUCTION_CREATION_KEY = "wasLastAuctionAuctionCreation";
+export let VISITED_AUCTIONS_KEY = "visitedAuctions";
 
 // ==========================
 // Helper Functions
 // ==========================
+
+/*
+	Adds an Auction's ID to the Cookie saving the recently visited ones.
+*/
+function addAuctionToVisited(id) {
+    const list = getCookie(VISITED_AUCTIONS_KEY);
+    let ids = [];
+
+    if (list) {
+        // Copies the existing values into an array
+        ids = list.split(",").map(n => parseInt(n)).filter(n => !isNaN(n));
+    }
+
+    // Remove the ID if already in the list
+    ids = ids.filter(n => n !== id);
+
+    // Add the ID to the start (most recent)
+    ids.unshift(id);
+
+    // Keeps the length to 15 Auctions max.
+    if (ids.length > 15) ids = ids.slice(0, 15);
+
+    // Save back into the cookie
+    setCookie(VISITED_AUCTIONS_KEY, ids.join(","), 30);
+}
+
 
 // Displays a success message in the appropriate popup
 function displaySuccess(statusCode, message) {
@@ -161,6 +188,9 @@ export function showAuctionPopup(auction) {
 
   // Fetches the updated Auction data
   fetchAuction(auction.id, (error, newAuction) => {
+	// Saves the Auction's ID into the Cookie
+	addAuctionToVisited(auction.id);
+	
 		
     // Once the auction data has been fetched, we call the UI function to put the data in the UI
     updateAuctionPopup(newAuction, () => {
@@ -361,6 +391,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function closePopup() {
     popupOverlay.style.display = "none";
+	
+	// Update the Visited Auctions list
+	refreshVisitedAuctions();
   }
 
   popupClose.addEventListener("click", closePopup);
@@ -426,10 +459,11 @@ export function initPillTabBar(tabSelector = ".pill-tab", contentSelector = ".ta
       case "sellPage":
         refreshOpenAuctions();
         refreshClosedAuctions();
-		refreshAvailableItems();
+		    refreshAvailableItems();
         break;
       case "buyPage":
         refreshWonAuctions();
+        refreshVisitedAuctions();
 		break;
     }
   }
@@ -653,6 +687,7 @@ refreshOpenAuctions();
 refreshClosedAuctions();
 refreshWonAuctions();
 refreshAvailableItems();
+refreshVisitedAuctions();
 
 // Initializes the Forms
 initAuctionCreationForm();

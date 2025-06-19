@@ -4,7 +4,8 @@
  */
 
 import { buildAuctionCard, buildCheckBoxItemCard } from './ui.js';
-import { user } from './home.js';
+import { user, VISITED_AUCTIONS_KEY } from './home.js';
+import { getCookie } from './cookies.js';
 
 // =====================
 // Main Function
@@ -12,7 +13,7 @@ import { user } from './home.js';
 
 // Creates and sends an XMLHttpRequest to the Server at the URL passed as parameter,
 // and attaches the parameter function as the callback to that request.
-// DOes so using GET.
+// Does so using GET.
 function fetchDataGET(url, callback) {
     // Creates the request
     const xhr = new XMLHttpRequest();
@@ -50,6 +51,61 @@ function fetchDataGET(url, callback) {
     // Sends the request
     xhr.send();
 }
+
+// Creates and sends an XMLHttpRequest to the Server at the URL passed as parameter,
+// and attaches the parameter function as the callback to that request.
+// Does so using POST.function fetchDataPOST(url, data, callback) 
+function fetchDataPOST(url, data, callback) {
+    const xhr = new XMLHttpRequest();
+
+    // Open the request
+    xhr.open('POST', url, true);
+
+    // Check if data is FormData
+    const isFormData = data instanceof FormData;
+
+    // Set headers
+    if (!isFormData) {
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    }
+    xhr.setRequestHeader('Accept', 'application/json');
+
+    // Set up response handler
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    callback(null, response);
+                } catch (err) {
+                    callback(new Error("Failed to parse JSON response"));
+                }
+            } else {
+                const errorMsg = xhr.responseText || `Request failed with status ${xhr.status}`;
+                callback(new Error(errorMsg), null);
+            }
+        }
+    };
+
+    // Send the request
+    if (isFormData) {
+        xhr.send(data);
+    } else {
+        const body = new URLSearchParams();
+        for (const key in data) {
+            const value = data[key];
+            if (Array.isArray(value)) {
+                for (const v of value) {
+                    body.append(key, v);
+                }
+            } else {
+                body.append(key, value);
+            }
+        }
+        xhr.send(body.toString());
+    }
+}
+
 
 // Creates and sends an XMLHttpRequest to the Server at the URL passed as parameter,
 // and attaches the parameter function as the callback to that request.
@@ -133,6 +189,82 @@ export function fetchUser(callback) {
 
     // Call the fetchDataGET with the internal callback
     fetchDataGET(url, internalCallback);
+}
+
+/*
+    Makes a request to the server for the Auctions whose ID is inside the cookie,
+    then proceeds to dynamically build the UI elements to display those Auctions and
+    add them to the DOM in the appropriate list.
+*/
+export function refreshVisitedAuctions() {
+    const auctionsList = getCookie(VISITED_AUCTIONS_KEY);
+
+    if (auctionsList) {
+        // Found the list
+
+        // Convert string "12,34,56" → [12, 34, 56]
+        const auctionIds = auctionsList
+            .split(",")
+            .map(id => parseInt(id))
+            .filter(id => !isNaN(id));
+
+         // Created the data payload
+        const data = { auctionIds: auctionIds };
+        
+        // Defines the URL
+        const url = "/Project_TIW_RIA/api/auctions/visited";
+
+        const callback = function(error, data) {
+            const list = document.getElementById("visitedAuctionsList");
+            const emptyListMessage = document.getElementById("noVisitedAuctionsText");
+
+            const noItemsText ="No items in this auction";
+
+            // Clear the previous content before repopulating or refreshing
+            list.innerHTML = "";
+
+            // Checks if there was a error
+            if (error) {
+               // Logs
+                console.error("Failed to fetch visited auctions:", error.message);
+                // Hides the List
+                list.style.display = "none";
+                // Shows the default text
+                emptyListMessage.style.display = "block";
+                // Changes the text in the default text to the error message
+                emptyListMessage.textContent = "Could not load visited auctions.";
+            return;
+            }
+
+            if (Array.isArray(data) && data.length === 0) {
+                // No Auctions received
+
+                // Hides the List
+                list.style.display = "none";
+                // Shows the default text
+                emptyListMessage.textContent = "You haven't seen any Auction yet...";
+                emptyListMessage.style.display = "block";
+            } else {
+                // Auctions received
+
+                // Hides the default text
+                emptyListMessage.style.display = "none"
+
+                // Populates the List
+                for (const auction of data) {
+                    list.append(buildAuctionCard(auction, noItemsText));
+                }
+            }
+            
+        };
+
+        // Call the fetchDataPost function
+        fetchDataPOST(url, data, callback);
+
+    } else {
+        // No visited Auctions
+        document.getElementById("noVisitedAuctionsText").textContent = "You haven't seen any Auction yet...";
+    }
 }
 
 /*
