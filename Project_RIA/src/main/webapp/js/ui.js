@@ -642,6 +642,7 @@ export function updateAuctionPopup(auction, callback) {
 	const itemList = document.getElementById("selectedAuctionItemList");
 	const noItemMessage = document.getElementById("selectedAuctionNoItemsMessage");
 	const closeAuctionButton = document.getElementById("selectedAuctionCloseButton");
+	const offersColumn = document.getElementById("offersColumn");
 	const offersScrollview = document.getElementById("selectedAuctionOfferScrollview");
 	const offerList = document.getElementById("selectedAuctionOfferList");
 	const noOfferMessage = document.getElementById("selectedAuctionOfferEmptyContainer");
@@ -772,6 +773,13 @@ export function updateAuctionPopup(auction, callback) {
 		// No offers
 		offersScrollview.style.display = "none;"
 		noOfferMessage.style.display = "block";
+	}
+	
+	// Only displays the offers column if the Auction is not sold
+	if (auction?.isSold) {
+		offersColumn.style.display = "none";
+	} else {
+		offersColumn.style.display = "block";
 	}
 
 	// Checks if it needs to display the "Make Offer" form

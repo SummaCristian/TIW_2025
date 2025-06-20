@@ -232,7 +232,7 @@
 				
 				</div>
 				
-				<div class="centered" th:if="${session.user.id == auction.sellerId}">
+				<div class="centered" th:if="${session.user.id == auction.sellerId && !auction.isSold}">
 				    <form th:action="@{/CloseAuction}" method="POST">
 				        <!-- Hidden parameters -->
 				        <input type="hidden" name="auctionId" th:value="${auction.id}" />
@@ -258,7 +258,7 @@
 					
 			</div>
 			
-			<div class="formcard-narrow slide-in-right">
+			<div th:unless="${auction.isSold}" class="formcard-narrow slide-in-right">
 				<div class="auction-header">
 					<!-- Offers for the Auction -->
 					<div class="title-with-image">			

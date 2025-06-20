@@ -56,6 +56,7 @@ CREATE TABLE Auctions (
         ON UPDATE CASCADE
 	-- FOREIGN KEY (HighestBidId) REFERENCES Offers(Id)
 		-- In case the Offer is deleted, the Auction's reference is set to NULL
+        -- Added later via ALTER TABLE
 		-- ON DELETE SET NULL
 		-- ON UPDATE CASCADE
 );
