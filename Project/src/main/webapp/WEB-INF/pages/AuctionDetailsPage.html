@@ -60,8 +60,8 @@
 					<div class="auction-header">
 			             <div>	
 			                
-			                <p th:if="${auction.isSold}" class="auction-detail auction-detail-secondary">Final Price:</p>
-	                        <p th:unless="${auction.isSold}" class="auction-detail auction-detail-secondary">Current Highest Bid:</p>	                        			
+			                <p th:if="${auction.isSold}" class="auction-detail-secondary">Final Price:</p>
+	                        <p th:unless="${auction.isSold}" class="auction-detail-secondary">Current Highest Bid:</p>	                        			
 
 			
 			                <div th:if="${auction.highestBid != null}" class="offer-pill">
@@ -86,7 +86,7 @@
 			                 <!-- Buyer User's data -->
 			                 <div class="auction-header" th:if="${auction.isSold}">
 				                 <div class="text-group">
-				                 	<p class="auction-detail auction-detail-secondary">Bought by</p>
+				                 	<p class="auction-detail-secondary">Bought by</p>
 			                 	
 				                 	<div class="title-with-image">
 				                 		<svg class="icon" viewBox="0 0 24 24">
@@ -104,11 +104,11 @@
 				             <!-- Other Auction data -->
 				             <div class="auction-header">
 				             	<div>
-					             	<p class="auction-detail auction-detail-secondary">Base price: <span th:text="${auction.basePrice}"></span>€</p>
+					             	<p class="auction-detail-secondary">Base price: <span th:text="${auction.basePrice}"></span>€</p>
 	                                
-	                                <p class="auction-detail auction-detail-secondary">Minimum increment: <span th:text="${auction.minIncrement}"></span>€</p>
+	                                <p class="auction-detail-secondary">Minimum increment: <span th:text="${auction.minIncrement}"></span>€</p>
 	                                
-	                                <p class="auction-detail auction-detail-secondary">
+	                                <p class="auction-detail-secondary">
 	                                	Sold by
 	                                	<span th:if="${auction.sellerId != session.user.id}" th:text="': ' + ${auction.sellerUsername}">: Seller Username</span>
 	                                	<span th:unless="${auction.sellerId != session.user.id}"> you</span>
@@ -139,7 +139,7 @@
 			
 			                 <div>
 			                 	<div th:if="${!auction.isSold}" class="remaining-time-container">
-				                     <p class="auction-detail auction-detail-secondary">Remaining time:</p>
+				                     <p class="auction-detail-secondary">Remaining time:</p>
 				                     
 				                     <div class="remaining-time-pill">
 				                         <svg class="icon" viewBox="0 0 24 24">
@@ -151,24 +151,24 @@
 				                         <p th:text="${auction.remainingTime}">1d, 2h, 35min</p>
 				                     </div>
 				                     
-				                    <p class="auction-detail auction-detail-secondary"
+				                    <p class="auction-detail-secondary"
 									   th:if="${!auction.isSold and auction.remainingTime != 'Closed'}">
 									    Open until:
 									</p>
 									
-									<p class="auction-detail auction-detail-secondary"
+									<p class="auction-detail-secondary"
 									   th:if="${!auction.isSold and auction.remainingTime != 'Closed'}"
 									   th:text="${#temporals.format(auction.closingDate, 'dd MMM yyyy - HH:mm')}">
 									</p>
 								</div>
 
 								<div th:if="${auction.isSold}" class="remaining-time-container">
-				                     <p class="auction-detail auction-detail-secondary"
+				                     <p class="auction-detail-secondary"
 									   th:if="${auction.isSold and auction.remainingTime == 'Closed'}">
 									    Closed on:
 									</p>
 									
-									<p class="auction-detail auction-detail-secondary"
+									<p class="auction-detail-secondary"
 									   th:if="${auction.isSold and auction.remainingTime == 'Closed'}"
 									   th:text="${#temporals.format(auction.closingDate, 'dd MMM yyyy - HH:mm')}">
 									</p>

@@ -63,13 +63,13 @@ function buildAuctionCardHeader(auction) {
 
 	// Base Price
 	const basePrice = document.createElement("p");
-	basePrice.className = "item-detail-secondary";
+	basePrice.className = "auction-detail-secondary";
 	basePrice.textContent = `Base price: ${auction.basePrice ?? 0}€`;
 	containerLeft.append(basePrice);
 	
 	// Final Price OR Current Highest Bid
 	const finalPrice = document.createElement("p");
-	finalPrice.className = "auction-detail auction-detail-secondary";
+	finalPrice.className = "auction-detail-secondary";
 	finalPrice.textContent = auction.isSold === true 
 		? "Final Price:" 
 		: "Current Highest Bid:";
