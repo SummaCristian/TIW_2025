@@ -229,7 +229,7 @@ function buildCompactItemCard(item) {
 	// Item Name
 	const itemName = document.createElement("p");
 	itemName.className = "item-detail";
-	itemName.textContent = item?.itemName ?? "Unknown name";
+	itemName.textContent = `${item?.itemName ?? "Unknown name"}€`;
 	textGroup.append(itemName);
 
 	// Item Price
