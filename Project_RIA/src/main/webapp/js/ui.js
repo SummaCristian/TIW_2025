@@ -141,7 +141,7 @@ function buildItemsSectionHeader(auction, showButton) {
 
 	const subtitle = document.createElement("p");
 	subtitle.className = "header-description";
-	subtitle.textContent = "Products included in this closed auction";
+	subtitle.textContent = "Products included in this auction";
 	textGroup.append(subtitle);
 
 	titleContainer.append(textGroup);
