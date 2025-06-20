@@ -1,0 +1,147 @@
+title Sequence Diagram Sign Up [RIA]
+
+actor User
+
+participant FrontServlet
+
+participantgroup #lightgreen **Login**
+participant LoginPageServlet
+participant LoginPage.html #aqua
+participant auth.js #yellow
+
+participantgroup #forestgreen **Sign Up**
+participant SignUpServlet
+end
+
+end
+
+participant UserDAO #orange
+database DB #green
+
+participant Home
+
+User-->FrontServlet: localhost:8080/Project_TIW_RIA/
+
+FrontServlet->LoginPageServlet: forward()
+FrontServlet->LoginPageServlet: forward() [session == null]
+LoginPageServlet->LoginPage.html: [reads the file]
+LoginPage.html->LoginPageServlet:
+LoginPageServlet->User: [sends the file]
+
+LoginPage.html->auth.js: <script async>
+auth.js-->User:
+
+User-->LoginPage.html: [click on "Sign Up" button]
+LoginPage.html->auth.js:
+
+auth.js->auth.js: showForm('singup1-form')
+auth.js->LoginPage.html: [updates the UI]
+LoginPage.html-->User:
+
+loop #2f2e7b #white until ok
+
+== Phase 1 ==
+
+# Phase 1
+User-->LoginPage.html: [singup form 1 submit]
+LoginPage.html->auth.js:
+note over auth.js: Validates inputs
+
+alt case error
+auth.js->auth.js: displayError()
+auth.js->LoginPage.html: [updates the UI]
+LoginPage.html-->User:
+
+else case ok
+auth.js->SignUpServlet: POST
+note over SignUpServlet: Validates inputs
+
+SignUpServlet->UserDAO: validateCredentials()
+UserDAO->>DB: QUERY
+DB-->>UserDAO:
+UserDAO-->SignUpServlet:
+
+SignUpServlet-->auth.js: RESPONSE
+
+alt case error on server
+auth.js->auth.js: displayError()
+auth.js->LoginPage.html: [updates the UI]
+LoginPage.html-->User:
+
+
+else case ok
+
+
+auth.js->auth.js: showForm('signup2-form')
+auth.js->LoginPage.html: [updates the UI]
+LoginPage.html-->User:
+
+== Phase 2 ==
+
+# Phase 2
+User-->LoginPage.html: [signup form 2 submit]
+LoginPage.html->auth.js:
+note over auth.js: Validates inputs
+
+alt case error
+
+auth.js->auth.js: displayError()
+auth.js->LoginPage.html: [updates the UI]
+LoginPage.html-->User:
+
+else case ok
+
+auth.js->SignUpServlet: POST
+note over SignUpServlet: Validates inputs
+
+SignUpServlet->UserDAO: validateCredentials()
+UserDAO->>DB: QUERY
+DB-->>UserDAO:
+UserDAO-->SignUpServlet:
+
+opt ok
+# Server inserts the User into the DB
+SignUpServlet->UserDAO: insert(user)
+UserDAO->>DB: INSERT
+DB-->>UserDAO:
+UserDAO-->SignUpServlet:
+
+end
+
+SignUpServlet-->auth.js: RESPONSE
+
+alt case error on server
+
+opt error in Form 1 data
+auth.js->auth.js: showForm('signup1-form')
+auth.js->LoginPage.html: [updates the UI]
+LoginPage.html-->User:
+end
+
+auth.js->auth.js: displayError()
+auth.js->LoginPage.html: [updates the UI]
+LoginPage.html-->User:
+
+else case ok
+
+== Success ==
+
+# User has been created on the Server, now User can login
+auth.js->auth.js: showForm('login-form')
+auth.js->LoginPage.html: [updates the UI]
+LoginPage.html-->User:
+
+auth.js->auth.js: displaySuccess()
+auth.js->LoginPage.html: [updates the UI]
+LoginPage.html-->User:
+
+note over User: User can now login
+
+end
+
+end
+
+end
+end
+
+end
