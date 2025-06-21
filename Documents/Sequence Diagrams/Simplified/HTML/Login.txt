@@ -1,0 +1,39 @@
+title Login (HTML)
+
+participant LoginServlet
+participant LoginPageServlet
+
+participant UserDAO #orange
+
+database DB #green
+
+participant HomePageServlet
+
+note over [:/LoginServlet/
+
+[->LoginServlet: doPost()
+activate LoginServlet
+
+LoginServlet->UserDAO: checkCredentials()
+activate UserDAO
+UserDAO->>DB: QUERY
+DB-->>UserDAO:
+UserDAO-->LoginServlet: return
+deactivate UserDAO
+
+alt case error:
+LoginServlet->LoginPageServlet: forward()
+deactivate LoginServlet
+activate LoginPageServlet
+LoginPageServlet-->[: send LoginPage (with error message)
+deactivate LoginPageServlet
+
+else case ok:
+activate LoginServlet
+LoginServlet->HomePageServlet: redirect()
+deactivate LoginServlet
+activate HomePageServlet
+HomePageServlet-->[: send HomePage
+deactivate HomePageServlet
+
+end

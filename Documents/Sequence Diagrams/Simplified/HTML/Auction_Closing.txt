@@ -1,0 +1,47 @@
+title Closing an Auction
+
+participant CloseAuctionServlet
+
+participant AuctionDetailsPageServlet
+
+participant AuctionDAO #orange
+
+database DB #green
+
+note over [: /CloseAuction
+activate DB
+
+[->CloseAuctionServlet: doPost()
+activate CloseAuctionServlet
+
+note over CloseAuctionServlet: Checks data
+
+alt error
+
+CloseAuctionServlet->AuctionDetailsPageServlet: forward()
+deactivate CloseAuctionServlet
+activate AuctionDetailsPageServlet
+
+AuctionDetailsPageServlet-->[: send AuctionDetailsPage (with error message)
+deactivate AuctionDetailsPageServlet
+
+else ok
+activate CloseAuctionServlet
+
+CloseAuctionServlet->AuctionDAO: markAuctionAsClosed()
+activate AuctionDAO
+
+AuctionDAO->>DB: UPDATE
+DB-->>AuctionDAO:
+
+AuctionDAO-->CloseAuctionServlet: return
+deactivate AuctionDAO
+
+CloseAuctionServlet->AuctionDetailsPageServlet: redirect()
+deactivate CloseAuctionServlet
+activate AuctionDetailsPageServlet
+
+AuctionDetailsPageServlet-->[: send AuctionDetailsPage
+deactivate AuctionDetailsPageServlet
+
+end

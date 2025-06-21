@@ -1,0 +1,56 @@
+title Making an Offer
+
+participant MakeOfferServlet
+
+participant AuctionDetailsPageServlet
+
+participant OfferDAO #orange
+participant AuctionDAO #orange
+
+database DB #green
+
+note over [: /MakeOffer
+
+activate DB
+
+[->MakeOfferServlet: doPost()
+activate MakeOfferServlet
+
+note over MakeOfferServlet: Checks data
+
+alt error
+
+MakeOfferServlet->AuctionDetailsPageServlet: forward()
+deactivate MakeOfferServlet
+activate AuctionDetailsPageServlet
+AuctionDetailsPageServlet-->[: send AuctionDetailsPage (with error message) 
+deactivate AuctionDetailsPageServlet
+
+else ok
+
+activate MakeOfferServlet
+
+MakeOfferServlet->OfferDAO: insert()
+activate OfferDAO
+
+OfferDAO->>DB: INSERT
+DB-->>OfferDAO:
+
+OfferDAO->AuctionDAO: updateAuctionsHighestBid
+activate AuctionDAO
+
+AuctionDAO->>DB: UPDATE
+DB-->>AuctionDAO:
+AuctionDAO-->OfferDAO: return
+deactivate AuctionDAO
+
+OfferDAO-->MakeOfferServlet: return
+deactivate OfferDAO
+
+MakeOfferServlet->AuctionDetailsPageServlet: redirect()
+deactivate MakeOfferServlet
+activate AuctionDetailsPageServlet
+
+AuctionDetailsPageServlet-->[: send AuctionDetailsPage
+
+end

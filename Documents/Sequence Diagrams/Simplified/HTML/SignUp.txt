@@ -1,0 +1,97 @@
+title SignUp
+
+participant SignUpServlet
+participant SignUpPageServlet
+
+participant UserDAO #orange
+database DB #green
+
+participant LoginPageServlet
+
+note over [: /SignUp/
+
+activate DB
+
+== Phase 1 ==
+
+[->SignUpServlet: doPost()
+activate SignUpServlet
+
+SignUpServlet->UserDAO: validateCredentials()
+activate UserDAO
+UserDAO->>DB: QUERY
+DB-->>UserDAO:
+UserDAO-->SignUpServlet: return
+deactivate UserDAO
+
+alt error:
+SignUpServlet->SignUpPageServlet: forward()
+activate SignUpPageServlet
+deactivate SignUpServlet
+SignUpPageServlet-->[: send SignUpPage (with error message)
+deactivate SignUpPageServlet
+
+else case ok:
+
+== Phase 2 ==
+
+activate SignUpServlet
+SignUpServlet->SignUpPageServlet: forward()
+deactivate SignUpServlet
+activate SignUpPageServlet
+SignUpPageServlet-->[: send SignUpPage2
+deactivate SignUpPageServlet
+
+note over [: /SignUp]
+
+[->SignUpServlet: doPost()
+activate SignUpServlet
+SignUpServlet->UserDAO: validateCredentials()
+activate UserDAO
+UserDAO->>DB: QUERY
+DB-->>UserDAO:
+UserDAO-->SignUpServlet: return
+deactivate UserDAO
+
+alt error in phase 1 data
+SignUpServlet->SignUpPageServlet: forward()
+activate SignUpPageServlet
+deactivate SignUpServlet
+SignUpPageServlet-->[: send SignUpPage (with error message)
+deactivate SignUpPageServlet
+note over SignUpServlet: repeat from Phase 1
+
+
+else ok
+
+activate SignUpServlet
+note over SignUpServlet: Checks the other data
+
+alt error in phase 2 data
+SignUpServlet->SignUpPageServlet: forward()
+activate SignUpPageServlet
+deactivate SignUpServlet
+SignUpPageServlet-->[: send SignUpPage2 (wuth error message)
+deactivate SignUpPageServlet
+
+note over SignUpServlet: Repeat from Phase 2
+
+else ok
+
+activate SignUpServlet
+SignUpServlet->UserDAO: insert()
+activate UserDAO
+UserDAO->>DB: INSERT
+DB-->UserDAO:
+UserDAO-->SignUpServlet:
+deactivate UserDAO
+
+SignUpServlet->LoginPageServlet: redirect()
+deactivate SignUpServlet
+activate LoginPageServlet
+
+end
+
+end
+
+end

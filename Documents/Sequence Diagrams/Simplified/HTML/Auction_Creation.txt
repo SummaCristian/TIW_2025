@@ -1,0 +1,58 @@
+title Creating an Auction
+
+participant CreateAuctionServlet
+
+participant SellPageServlet
+participant AuctionDetailsPageServlet
+
+participant AuctionDAO #orange
+participant ItemDAO #orange
+
+database DB #green
+
+note over [: /CreateAuction/
+
+activate DB
+
+[->CreateAuctionServlet: doPost()
+activate CreateAuctionServlet
+
+note over CreateAuctionServlet: Checks data
+
+alt error
+
+CreateAuctionServlet->SellPageServlet: forward()
+deactivate CreateAuctionServlet
+activate SellPageServlet
+SellPageServlet-->[: send SellPage (with error message)
+deactivate SellPageServlet
+
+else ok
+
+activate CreateAuctionServlet
+
+CreateAuctionServlet->AuctionDAO: insert()
+activate AuctionDAO
+AuctionDAO->>DB: INSERT
+DB-->>AuctionDAO:
+
+AuctionDAO -> ItemDAO: updateItemsAuctionId()
+activate ItemDAO
+
+ItemDAO->>DB: UPDATE
+DB-->>ItemDAO:
+ItemDAO-->AuctionDAO: return
+deactivate ItemDAO
+
+AuctionDAO-->CreateAuctionServlet: return
+deactivate AuctionDAO
+
+CreateAuctionServlet->AuctionDetailsPageServlet: redirect()
+activate AuctionDetailsPageServlet
+deactivate CreateAuctionServlet
+
+AuctionDetailsPageServlet-->[: send AuctionDetailsPage
+deactivate AuctionDetailsPageServlet
+
+
+end

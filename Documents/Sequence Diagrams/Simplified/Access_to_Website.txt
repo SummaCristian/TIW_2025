@@ -1,0 +1,26 @@
+title Access to website
+
+
+participant GeneralFilter
+
+participant FrontServlet
+
+participant LoginPageServlet
+participant HomePageServlet
+
+note over [: /Project_TIW/
+
+[->GeneralFilter: doFilter()
+activate GeneralFilter
+GeneralFilter->FrontServlet: doGet()
+activate FrontServlet
+
+alt case session == null
+# User not logged in
+FrontServlet->LoginPageServlet: forward()
+
+else case sessionm != null
+# User already logged in
+FrontServlet->HomePageServlet: forward()
+
+end

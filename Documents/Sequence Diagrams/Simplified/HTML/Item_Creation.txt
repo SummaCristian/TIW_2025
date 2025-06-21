@@ -1,0 +1,63 @@
+title Creating an Item
+
+participant CreateItemServlet
+
+participant SellPageServlet
+
+participant ItemDAO #orange
+participant ImageDAO #orange
+
+database DB #green
+
+note over [: /CreateItem/
+
+activate DB
+
+[->CreateItemServlet: doPost()
+activate CreateItemServlet
+
+note over CreateItemServlet: Checks data
+
+alt error
+CreateItemServlet->SellPageServlet: forward()
+activate SellPageServlet
+deactivate CreateItemServlet
+
+note over SellPageServlet: Retrieves data from DB
+
+SellPageServlet-->[: send SellPage (with error message)
+deactivate SellPageServlet
+
+else ok
+
+activate CreateItemServlet
+
+CreateItemServlet->ItemDAO: insert()
+activate ItemDAO
+ItemDAO->>DB: INSERT
+DB-->>ItemDAO:
+ItemDAO-->CreateItemServlet: return
+deactivate ItemDAO
+
+note over CreateItemServlet: Saves the image in \nthe dedicated folder
+
+CreateItemServlet->ImageDAO: insert()
+activate ImageDAO
+ImageDAO->>DB: INSERT
+DB-->>ImageDAO:
+ImageDAO-->CreateItemServlet: return
+deactivate ImageDAO
+
+CreateItemServlet->ItemDAO: addImageToItem()
+activate ItemDAO
+ItemDAO->>DB: UPDATE
+DB-->>ItemDAO:
+ItemDAO-->CreateItemServlet: return
+deactivate ItemDAO
+
+CreateItemServlet->SellPageServlet: redirect()
+deactivate CreateItemServlet
+activate SellPageServlet
+
+
+end
