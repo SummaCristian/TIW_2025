@@ -1,0 +1,115 @@
+title Sign Up
+
+participant auth.js #gold
+
+participant SignUpServlet
+
+participant UserDAO #orange
+database DB #green
+
+note over [: click on "Sign Up" button
+activate DB
+
+[->auth.js: 
+activate auth.js
+auth.js->auth.js: showForm('signup1-form')
+deactivate auth.js
+
+== Phase 1 ==
+
+note over [: form submit
+[->auth.js:
+
+note over auth.js: Check data
+
+auth.js->SignUpServlet: doPost()
+deactivate auth.js
+activate SignUpServlet
+
+SignUpServlet->UserDAO: validateCredentials()
+activate UserDAO
+
+UserDAO->>DB: QUERY
+DB-->>UserDAO:
+UserDAO-->SignUpServlet: return
+deactivate UserDAO
+
+alt error
+SignUpServlet-->auth.js: send ERROR
+deactivate SignUpServlet
+activate auth.js
+auth.js->auth.js: displayError()
+deactivate auth.js
+
+
+else ok
+activate SignUpServlet
+
+SignUpServlet->auth.js: send OK
+deactivate SignUpServlet
+activate auth.js
+
+auth.js->auth.js: showForm('signup2-form')
+deactivate auth.js
+
+== Phase 2 ==
+
+note over [: form submit
+[->auth.js:
+activate auth.js
+
+note over auth.js: Check data
+
+auth.js->SignUpServlet: doPost()
+activate SignUpServlet
+deactivate auth.js
+
+SignUpServlet->UserDAO: validateCredentials()
+activate UserDAO
+UserDAO->>DB: QUERY
+DB-->>UserDAO:
+UserDAO-->SignUpServlet: return
+deactivate UserDAO
+
+alt error in phase 1 data
+SignUpServlet->auth.js: send ERROR
+deactivate SignUpServlet
+activate auth.js
+
+auth.js->auth.js: showForm('signup1-form')
+auth.js->auth.js: displayError()
+deactivate auth.js
+
+else error in phase 2 data
+activate SignUpServlet
+
+SignUpServlet->auth.js: send ERROR
+deactivate SignUpServlet
+activate auth.js
+
+auth.js->auth.js: displayError
+deactivate auth.js
+
+else ok
+activate SignUpServlet
+
+SignUpServlet->UserDAO: insert()
+activate UserDAO
+
+UserDAO->>DB: INSERT
+DB-->>UserDAO:
+UserDAO-->SignUpServlet: return
+deactivate UserDAO
+
+SignUpServlet->auth.js: send OK
+deactivate SignUpServlet
+activate auth.js
+
+auth.js->auth.js: showForm('login-form')
+deactivate auth.js
+
+
+end
+
+
+end

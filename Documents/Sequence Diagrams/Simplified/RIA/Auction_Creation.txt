@@ -1,0 +1,114 @@
+title Creating an Auction
+
+participant home.js #gold
+participant api.js #gold
+participant ui.js #gold
+
+participant CreateAuctionServlet
+participant GetAuctionDetailsServlet
+
+participant AuctionDAO #orange
+participant ItemDAO #orange
+
+database DB #green
+
+note over [: form submit
+activate DB
+
+[->home.js:
+activate home.js
+
+home.js->home.js: validateAuctionCreation()
+
+alt error
+home.js->home.js: displayError()
+home.js->[:
+deactivate home.js
+
+else ok
+activate home.js
+
+home.js->api.js: createAuction()
+deactivate home.js
+activate api.js
+
+api.js->api.js: doActionPOST()
+
+api.js->CreateAuctionServlet: doPost()
+deactivate api.js
+activate CreateAuctionServlet
+
+note over CreateAuctionServlet: Checks data
+
+alt error
+CreateAuctionServlet-->api.js: send ERROR
+deactivate CreateAuctionServlet
+activate api.js
+api.js->home.js: displayError()
+deactivate api.js
+activate home.js
+home.js->[:
+deactivate home.js
+
+else ok
+activate CreateAuctionServlet
+
+CreateAuctionServlet->AuctionDAO: insert()
+activate AuctionDAO
+
+AuctionDAO->>DB: INSERT
+DB-->>AuctionDAO:
+
+AuctionDAO->ItemDAO: updateItemsAuctionId()
+activate ItemDAO
+
+ItemDAO->>DB: UPDATE
+DB-->>ItemDAO:
+ItemDAO-->AuctionDAO: return
+deactivate ItemDAO
+
+AuctionDAO-->CreateAuctionServlet: return
+deactivate AuctionDAO
+
+CreateAuctionServlet-->api.js: send OK
+deactivate CreateAuctionServlet
+activate api.js
+
+api.js->home.js: displaySuccess()
+activate home.js
+deactivate api.js
+home.js->[:
+
+home.js->api.js: fetchAuction()
+deactivate home.js
+activate api.js
+
+api.js->api.js: fetchDataGET()
+api.js->GetAuctionDetailsServlet: doGet()
+deactivate api.js
+activate GetAuctionDetailsServlet
+
+note over GetAuctionDetailsServlet: Retrieves data
+
+GetAuctionDetailsServlet-->api.js: send DATA
+deactivate GetAuctionDetailsServlet
+activate api.js
+
+api.js->home.js: showAuctionPopup()
+deactivate api.js
+activate home.js
+
+home.js->ui.js: updateAuctionPopup()
+deactivate home.js
+activate ui.js
+
+note over ui.js: Updates the UI
+ui.js-->home.js: return
+deactivate ui.js
+activate home.js
+home.js->[:
+deactivate home.js
+
+end
+
+end

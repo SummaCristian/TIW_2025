@@ -1,0 +1,112 @@
+title Creating an Item
+
+participant home.js #gold
+participant api.js #gold
+participant ui.js #gold
+
+participant CreateItemServlet
+participant GetAvailableItemsServlet
+
+participant ItemDAO #orange
+participant ImageDAO #orange
+
+database DB #green
+
+note over [: form submit
+activate home.js
+activate DB
+
+home.js->home.js: validateItemCreation()
+
+alt error
+home.js->home.js: displayError()
+
+else ok
+home.js->api.js: createItem()
+deactivate home.js
+activate api.js
+
+api.js->api.js:doActionPOST()
+api.js->CreateItemServlet: doPost()
+activate CreateItemServlet
+
+note over CreateItemServlet: Checks data
+
+alt error
+CreateItemServlet->api.js: send ERROR
+deactivate CreateItemServlet
+api.js->home.js: displayError()
+activate home.js
+deactivate api.js
+home.js->[:
+deactivate home.js
+
+else ok
+activate api.js
+activate CreateItemServlet
+
+CreateItemServlet->ItemDAO: insert()
+activate ItemDAO
+
+ItemDAO->>DB: INSERT
+DB-->>ItemDAO:
+ItemDAO-->CreateItemServlet: return
+deactivate ItemDAO
+
+note over CreateItemServlet: Saves the image in \nthe dedicated folder
+
+CreateItemServlet->ImageDAO: insert()
+activate ImageDAO
+
+ImageDAO->>DB: INSERT
+DB-->>ImageDAO:
+ImageDAO-->CreateItemServlet: return
+deactivate ImageDAO
+
+CreateItemServlet->api.js: send OK
+deactivate CreateItemServlet
+
+api.js->home.js: displaySuccess()
+activate home.js
+home.js->[:
+deactivate home.js
+api.js->api.js: refreshAvailableItems()
+
+api.js->api.js: fetchDataGET()
+
+api.js->GetAvailableItemsServlet: doGet()
+activate GetAvailableItemsServlet
+
+GetAvailableItemsServlet->ItemDAO: getAvailableItemsForUserId()
+activate ItemDAO
+ItemDAO->>DB: QUERY
+DB-->>ItemDAO:
+ItemDAO-->GetAvailableItemsServlet: return
+deactivate ItemDAO
+
+GetAvailableItemsServlet-->api.js: send DATA
+deactivate GetAvailableItemsServlet
+
+alt results.length > 0
+
+loop for each Item
+api.js->ui.js: buildCheckBoxItemCard()
+activate ui.js
+
+ui.js-->api.js: return
+deactivate ui.js
+api.js->[: list.append()
+end
+
+else results.isEmpty
+api.js->[: [shows emptyListMessage]
+
+end
+
+api.js->[: form.reset()
+deactivate api.js
+
+
+end
+
+end

@@ -1,0 +1,115 @@
+title Making an Offer
+
+participant home.js #gold
+participant api.js #gold
+participant ui.js #gold
+
+participant MakeOfferServlet
+participant GetAuctionDetailsServlet
+
+participant OfferDAO #orange
+participant AuctionDAO #orange
+
+database DB #green
+
+note over [: form submit
+activate DB
+
+[->home.js:
+activate home.js
+
+home.js->home.js: validateOffer()
+
+alt error
+home.js->home.js: displayError()
+deactivate home.js
+
+
+else ok
+activate home.js
+
+home.js->api.js: makeOffer()
+deactivate home.js
+activate api.js
+
+api.js->api.js: doActionPOST()
+
+api.js->MakeOfferServlet: doPost()
+deactivate api.js
+activate MakeOfferServlet
+
+note over MakeOfferServlet: Checks data
+
+alt error
+MakeOfferServlet->api.js: send ERROR
+deactivate MakeOfferServlet
+activate api.js
+
+api.js->home.js: displayError()
+deactivate api.js
+activate home.js
+home.js->[:
+deactivate home.js
+
+
+else ok
+activate MakeOfferServlet
+
+MakeOfferServlet->OfferDAO: insert()
+activate OfferDAO
+
+OfferDAO->>DB: INSERT
+DB-->>OfferDAO:
+
+OfferDAO->AuctionDAO: updateAuctionsHighestBid()
+activate AuctionDAO
+
+AuctionDAO->>DB: UPDATE
+DB-->>AuctionDAO:
+AuctionDAO-->OfferDAO: return
+deactivate AuctionDAO
+
+OfferDAO-->MakeOfferServlet: return
+deactivate OfferDAO
+
+MakeOfferServlet-->api.js: send OK
+deactivate MakeOfferServlet
+activate api.js
+
+api.js->home.js: displaySuccess()
+activate home.js
+home.js->[:
+deactivate home.js
+
+api.js->api.js: fetchAuction()
+api.js->api.js: fetchDataGET()
+
+api.js->GetAuctionDetailsServlet: doGet()
+deactivate api.js
+activate GetAuctionDetailsServlet
+
+note over GetAuctionDetailsServlet: Retrieves data
+
+GetAuctionDetailsServlet-->api.js: send DATA
+deactivate GetAuctionDetailsServlet
+activate api.js
+
+api.js->home.js: displayAuctionPopup()
+deactivate api.js
+activate home.js
+
+home.js->ui.js: updateAuctionPopup()
+deactivate api.js
+activate ui.js
+
+note over ui.js: Updates the UI
+ui.js-->home.js:
+deactivate ui.js
+deactivate home.js
+
+
+
+end
+
+
+end

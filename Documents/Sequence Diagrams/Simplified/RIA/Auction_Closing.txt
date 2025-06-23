@@ -1,0 +1,109 @@
+title Closing an Auction
+
+participant home.js #gold
+participant api.js #gold
+participant ui.js #gold
+
+participant CloseAuctionServlet
+participant GetAuctionDetailsServlet
+
+participant AuctionDAO #orange
+database DB #green
+
+note over [:Click on the button
+activate DB
+
+[->home.js:
+activate home.js
+
+home.js->home.js: validateCloseAuction()
+
+
+alt error
+home.js->home.js: displayError()
+deactivate home.js
+
+
+else ok
+activate home.js
+
+home.js->api.js: closeAuction()
+deactivate home.js
+activate api.js
+
+api.js->api.js: doActionPOST()
+
+api.js->CloseAuctionServlet: doPost()
+deactivate api.js
+activate CloseAuctionServlet
+
+note over CloseAuctionServlet: Checks data
+
+alt error
+CloseAuctionServlet-->api.js: send ERROR
+deactivate CloseAuctionServlet
+activate api.js
+
+api.js->home.js: displayError()
+deactivate api.js
+activate home.js
+home.js->[:
+deactivate home.js
+
+
+else ok
+activate CloseAuctionServlet
+
+CloseAuctionServlet->AuctionDAO: markAuctionAsClosed()
+activate AuctionDAO
+
+AuctionDAO->>DB: UPDATE
+DB-->>AuctionDAO:
+AuctionDAO-->CloseAuctionServlet: return
+deactivate AuctionDAO
+
+CloseAuctionServlet-->api.js: send OK
+deactivate CloseAuctionServlet
+
+activate api.js
+api.js->home.js: displaySuccess()
+deactivate api.js
+activate home.js
+home.js->[:
+
+home.js->api.js: fetchAuction()
+deactivate home.js
+activate api.js
+
+api.js->api.js: fetchDataGET()
+api.js->GetAuctionDetailsServlet: doGet()
+deactivate api.js
+activate GetAuctionDetailsServlet
+note over GetAuctionDetailsServlet: Retrieves data
+GetAuctionDetailsServlet->api.js: send DATA
+deactivate GetAuctionDetailsServlet
+
+activate api.js
+api.js->home.js: showAuctionPopup()
+deactivate api.js
+activate home.js
+
+home.js->ui.js: updateAuctionPopup()
+deactivate home.js
+activate ui.js
+
+note over ui.js: Updates the UI
+ui.js-->home.js: return
+deactivate ui.js
+activate home.js
+home.js->[:
+deactivate home.js
+
+
+
+
+
+
+end
+
+end

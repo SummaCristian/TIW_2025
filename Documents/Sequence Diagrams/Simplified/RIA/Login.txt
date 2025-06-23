@@ -1,0 +1,57 @@
+title Login
+
+participant auth.js #gold
+
+participant LoginServlet
+
+participant UserDAO #orange
+database DB #green
+
+participant HomePageServlet
+
+note over [: form submit
+
+activate DB
+activate auth.js
+[->auth.js: 
+
+note over auth.js: Check data
+
+alt case error
+auth.js->auth.js: displayError()
+
+else case ok
+auth.js->LoginServlet: doPost()
+deactivate auth.js
+activate LoginServlet
+
+LoginServlet->UserDAO: checkCredentials()
+activate UserDAO
+UserDAO->>DB: QUERY
+DB-->>UserDAO:
+UserDAO-->LoginServlet: return
+deactivate UserDAO
+
+alt case error
+LoginServlet->auth.js: send ERROR
+activate auth.js
+deactivate LoginServlet
+auth.js->auth.js: displayError()
+deactivate auth.js
+
+else case ok
+activate LoginServlet
+
+LoginServlet->auth.js: send OK
+activate auth.js
+deactivate LoginServlet
+
+auth.js->HomePageServlet: redirect()
+activate HomePageServlet
+deactivate auth.js
+
+HomePageServlet-->[: send HomePage
+
+end
+
+end

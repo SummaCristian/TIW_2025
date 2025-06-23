@@ -19,7 +19,7 @@ alt case session == null
 # User not logged in
 FrontServlet->LoginPageServlet: forward()
 
-else case sessionm != null
+else case session != null
 # User already logged in
 FrontServlet->HomePageServlet: forward()
 
