@@ -1,4 +1,4 @@
-title Login (HTML)
+title Login
 
 participant LoginServlet
 participant LoginPageServlet
