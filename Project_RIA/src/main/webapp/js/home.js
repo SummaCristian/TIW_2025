@@ -201,6 +201,8 @@ export function showAuctionPopup(auction) {
 		
         // Once the UI has been updated, show the Popup to the User
         popupOverlay.style.display = "flex";
+		
+		document.body.style.overflow = "hidden";    // Disable scroll
     });
   });
 }
@@ -393,6 +395,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function closePopup() {
     popupOverlay.style.display = "none";
+	
+	document.body.style.overflow = "";          // Restore scroll
 	
 	// Update the Visited Auctions list
 	refreshVisitedAuctions();
