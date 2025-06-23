@@ -41,7 +41,10 @@ function fetchDataGET(url, callback) {
 					
                     callback(new Error('Failed to parse response as JSON'));
                 }
-            } else {
+            } else if (xhr.status == 401) {
+				// Unauthorized, redirect to LoginPage
+				window.location.href = 'login';
+			} else {
                 // The Request has failed
                 callback(new Error(`Request failed with status ${xhr.status}`));
             }
@@ -80,7 +83,10 @@ function fetchDataPOST(url, data, callback) {
                 } catch (err) {
                     callback(new Error("Failed to parse JSON response"));
                 }
-            } else {
+            } else if (xhr.status == 401) {
+				// Unauthorized, redirect to LoginPage
+				window.location.href = 'login';
+			} else {
                 const errorMsg = xhr.responseText || `Request failed with status ${xhr.status}`;
                 callback(new Error(errorMsg), null);
             }
@@ -130,7 +136,10 @@ function doActionPOST(url, data, callback) {
             // Successful response
             if (xhr.status >= 200 && xhr.status < 300) {
                 callback(null, xhr.status);
-            } else {
+            } else if (xhr.status == 401) {
+				// Unauthorized, redirect to LoginPage
+				window.location.href = 'login';
+			} else {
                 // Return error with message from body if any
                 const errorMessage = xhr.responseText || `Request failed with status ${xhr.status}`;
                 callback(new Error(errorMessage), xhr.status);
