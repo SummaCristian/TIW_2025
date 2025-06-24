@@ -518,8 +518,8 @@ export function initPillTabBar(tabSelector = ".pill-tab", contentSelector = ".ta
   
   if (isFirstAccess) {
     // First time
-    // Show Sell Page
-	activateTab(tabs[0]);
+    // Show Buy Page
+	activateTab(tabs[1]);
   } else {
     // Not first time
     
