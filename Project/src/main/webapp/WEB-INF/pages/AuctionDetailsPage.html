@@ -138,7 +138,7 @@
 			                 </div>
 			
 			                 <div>
-			                 	<div th:if="${!auction.isSold}" class="remaining-time-container">
+			                 	<div class="remaining-time-container">
 				                     <p class="auction-detail-secondary">Remaining time:</p>
 				                     
 				                     <div class="remaining-time-pill">
@@ -152,24 +152,29 @@
 				                     </div>
 				                     
 				                    <p class="auction-detail-secondary"
-									   th:if="${!auction.isSold and auction.remainingTime != 'Closed'}">
+									   th:if="${!auction.isSold and auction.remainingTime != 'Expired'}">
 									    Open until:
 									</p>
 									
 									<p class="auction-detail-secondary"
-									   th:if="${!auction.isSold and auction.remainingTime != 'Closed'}"
+									   th:if="${!auction.isSold and auction.remainingTime == 'Expired'}">
+									    Expired on:
+									</p>
+									
+									<p class="auction-detail-secondary"
+									   th:if="${!auction.isSold}"
 									   th:text="${#temporals.format(auction.closingDate, 'dd MMM yyyy - HH:mm')}">
 									</p>
 								</div>
 
 								<div th:if="${auction.isSold}" class="remaining-time-container">
 				                     <p class="auction-detail-secondary"
-									   th:if="${auction.isSold and auction.remainingTime == 'Closed'}">
+									   th:if="${auction.isSold and auction.remainingTime == 'Expired'}">
 									    Closed on:
 									</p>
 									
 									<p class="auction-detail-secondary"
-									   th:if="${auction.isSold and auction.remainingTime == 'Closed'}"
+									   th:if="${auction.isSold and auction.remainingTime == 'Expired'}"
 									   th:text="${#temporals.format(auction.closingDate, 'dd MMM yyyy - HH:mm')}">
 									</p>
 								</div>

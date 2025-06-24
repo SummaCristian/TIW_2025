@@ -126,7 +126,7 @@ public class CloseAuctionServlet extends HttpServlet {
 			auctionDao.markAuctionAsClosed(auction);
 			
 			// Redirects the User back to the AuctionDetailsPage, where he will see the effects of this action
-			response.sendRedirect("/auction-details?id=" + auction.getId());
+			response.sendRedirect(request.getContextPath() + "/auction-details?id=" + auction.getId());
 			
 		} catch (MissingParametersException e) {
 			// Either UserId, AuctionId or both are missing
