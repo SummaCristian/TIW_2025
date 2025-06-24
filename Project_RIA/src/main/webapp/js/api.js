@@ -624,7 +624,7 @@ export function refreshAvailableItems() {
                 list.append(buildCheckBoxItemCard(item));
             }
 			
-			list.style.display = "block";
+			list.style.display = "flex";
         }
     }
 
