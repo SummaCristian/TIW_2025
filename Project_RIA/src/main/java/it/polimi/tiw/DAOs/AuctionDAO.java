@@ -96,7 +96,7 @@ public class AuctionDAO {
      */
     private String formatRemainingTime(long millis) {
         if (millis <= 0) {
-            return "Closed";
+            return "Expired";
         }
 
         long totalMinutes = millis / (60 * 1000);

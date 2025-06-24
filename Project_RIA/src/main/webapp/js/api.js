@@ -277,6 +277,9 @@ export function refreshVisitedAuctions() {
 						// Still open, renders the UI
                     	list.append(buildAuctionCard(auction, noItemsText));
 					}
+					
+					list.style.display = "block";
+
                 }
 				
 				if (wasListChanged) {
@@ -347,6 +350,8 @@ export function refreshOpenAuctions() {
             for (const auction of data) {
                 list.append(buildAuctionCard(auction, noItemsText));
             }
+			
+			list.style.display = "block";
         }
     }
 
@@ -406,6 +411,8 @@ export function refreshClosedAuctions() {
             for (const auction of data) {
                 list.append(buildAuctionCard(auction, noItemsText));
             }
+			
+			list.style.display = "block";
         }
     }
 
@@ -465,6 +472,8 @@ export function refreshWonAuctions() {
             for (const auction of data) {
                 list.append(buildAuctionCard(auction, noItemsText));
             }
+			
+			list.style.display = "block";
         }
     }
 
@@ -614,6 +623,8 @@ export function refreshAvailableItems() {
             for (const item of data) {
                 list.append(buildCheckBoxItemCard(item));
             }
+			
+			list.style.display = "block";
         }
     }
 

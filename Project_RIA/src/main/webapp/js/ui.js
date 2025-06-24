@@ -638,6 +638,7 @@ export function updateAuctionPopup(auction, callback) {
 	const remainingTime = document.getElementById("selectedAuctionRemainingTime");
 	const openUntilLabel = document.getElementById("selectedAuctionClosingDateTitle-Open");
 	const closedOnLabel = document.getElementById("selectedAuctionClosingDateTitle-Closed");
+	const expiredOnLabel = document.getElementById("selectedAuctionClosingDateTitle-Expired");
 	const closingDate = document.getElementById("selectedAuctionClosingDate");
 	const itemList = document.getElementById("selectedAuctionItemList");
 	const noItemMessage = document.getElementById("selectedAuctionNoItemsMessage");
@@ -709,25 +710,24 @@ export function updateAuctionPopup(auction, callback) {
 	}
 
 	// Remaining Time
-	if (typeof auction?.remainingTime === "string" && auction?.remainingTime != "Closed") {
-		// Not closed yet
-		remainingTimePill.style.display = "flex";
-		remainingTime.textContent = auction?.remainingTime ?? "Unknown";
-		
-	} else {
-		// Closed, don't show it
-		remainingTimePill.style.display = "none";
-	}
+	remainingTime.textContent = auction?.remainingTime ?? "Unknown";
 
 	// Closing Date
-	if (auction?.isSold === true) {
+	if (auction?.isSold === true) {		
 		// Closed -> Closed on X
 		openUntilLabel.style.display = "none";
 		closedOnLabel.style.display = "block";
+		expiredOnLabel.style.display = "none";
+	} else if (auction?.remainingTime == "Expired") {
+		// Expired -> Expired on
+		expiredOnLabel.style.display = "block";
+		openUntilLabel.style.display = "none";
+		closedOnLabel.style.display = "none";
 	} else {
 		// Open -> Open until X
 		openUntilLabel.style.display = "block";
 		closedOnLabel.style.display = "none";
+		expiredOnLabel.style.display = "none";
 	}
 	
 	closingDate.textContent = formatDateTimeLong(auction?.closingDate) ?? "Unknown";

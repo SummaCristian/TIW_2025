@@ -203,6 +203,9 @@ export function showAuctionPopup(auction) {
 			// Sets the Form inside the Popup to the correct Auction
 			initMakeOfferForm(newAuction);
 			
+			// Sets the Close Auction Button's EventListener
+			initCloseAuctionButton(newAuction);
+			
 	        // Once the UI has been updated, show the Popup to the User
 	        popupOverlay.style.display = "flex";
 			
@@ -302,7 +305,24 @@ function initCloseAuctionButton(auction) {
   const button = document.getElementById("selectedAuctionCloseButton");
 
   if (closeAuctionEventListener != null) {
-    button.removeEventListener("submit", closeAuctionEventListener);
+    button.removeEventListener("click", closeAuctionEventListener);
+  }
+  
+  // Checks if the button can be enabled
+  if (auction?.sellerId == user.id && !auction?.isSold) {	
+	// Showing the button
+	button.style.display = "flex";
+	
+	if (auction?.remainingTime == "Expired") {
+		// Enables the button
+		button.disabled = false;
+		button.classList.remove("disabled-button");
+	}
+  } else {	
+	button.disabled = true;
+	button.classList.add("disabled-button");
+	
+	button.style.display = "none";
   }
 
   closeAuctionEventListener = function(event) {
@@ -326,15 +346,19 @@ function initCloseAuctionButton(auction) {
               return;
             }
 
-            updateAuctionPopup(updatedAuction, () => {
-              initCloseAuctionButton(updatedAuction);
-            });
+            showAuctionPopup(updatedAuction);
+			
+			// Update open and closed Auctions
+			refreshOpenAuctions();
+			refreshClosedAuctions();
           });
       });
     } else {
       displayError(403, error);
     }
   }
+  
+  button.addEventListener("click", closeAuctionEventListener);
 }
 
 // Make Offer Form

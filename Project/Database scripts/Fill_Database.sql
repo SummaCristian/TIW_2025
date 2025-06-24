@@ -69,7 +69,7 @@ INSERT INTO Users (Username, Psw, FirstName, LastName, Address)
     
 -- Auction 1 - User 1
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
-	VALUES (330, 10, NULL, '2025-08-01 08:00:00', 1, FALSE, NULL, NULL);
+	VALUES (330, 10, NULL, '2025-06-20 08:00:00', 1, FALSE, NULL, NULL);
 
 INSERT INTO Images (FileName, FilePath) VALUES ('item_1.jpg', 'images/uploaded_images/item_1.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
@@ -101,7 +101,7 @@ UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 2;
 
 -- Auction 3 - User 2
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
-	VALUES (60, 10, NULL, '2025-01-01 08:00:00', 2, TRUE, 1, 100);
+	VALUES (60, 10, NULL, '2025-06-01 08:00:00', 2, TRUE, 1, 100);
     
 INSERT INTO Images (FileName, FilePath) VALUES ('item_4.jpg', 'images/uploaded_images/item_4.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
