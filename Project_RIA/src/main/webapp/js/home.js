@@ -188,22 +188,27 @@ export function showAuctionPopup(auction) {
 
   // Fetches the updated Auction data
   fetchAuction(auction.id, (error, newAuction) => {
-	if (!auction?.isSold) {
-		// Saves the Auction's ID into the Cookie (only if it's still Open)
-		addAuctionToVisited(auction.id);
+	if (error) {
+		// Server sent an error, instead of showing the popup it displays the error message		
+		displayError(500, "Server is not responding");
+	} else {
+		if (!auction?.isSold) {
+			// Saves the Auction's ID into the Cookie (only if it's still Open)
+			addAuctionToVisited(auction.id);
+		}
+		
+			
+	    // Once the auction data has been fetched, we call the UI function to put the data in the UI
+	    updateAuctionPopup(newAuction, () => {
+			// Sets the Form inside the Popup to the correct Auction
+			initMakeOfferForm(newAuction);
+			
+	        // Once the UI has been updated, show the Popup to the User
+	        popupOverlay.style.display = "flex";
+			
+			document.body.style.overflow = "hidden";    // Disable scroll
+	    });
 	}
-	
-		
-    // Once the auction data has been fetched, we call the UI function to put the data in the UI
-    updateAuctionPopup(newAuction, () => {
-		// Sets the Form inside the Popup to the correct Auction
-		initMakeOfferForm(newAuction);
-		
-        // Once the UI has been updated, show the Popup to the User
-        popupOverlay.style.display = "flex";
-		
-		document.body.style.overflow = "hidden";    // Disable scroll
-    });
   });
 }
 
