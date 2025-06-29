@@ -106,15 +106,19 @@ The project has been tested on the following browsers
 ## 🖼️ Screenshots
 
 ### Pure HTML
-<img alt="Login page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/Pure%20HTML/LoginPage.png" width="400" />
-<img alt="Sell page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/Pure%20HTML/SellPage.png" width="400" />
-<img alt="Sell page 2" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/Pure%20HTML/SellPage2.png" width="400" />
-<img alt="Buy page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/Pure%20HTML/BuyPage.png" width="400" />
-<img alt="Auction Details page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/Pure%20HTML/AuctionDetailsPage.png" width="400" />
+<div align="center">
+  <img alt="Login page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/Pure%20HTML/LoginPage.png" width="400" />
+  <img alt="Sell page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/Pure%20HTML/SellPage.png" width="400" />
+  <img alt="Sell page 2" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/Pure%20HTML/SellPage2.png" width="400" />
+  <img alt="Buy page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/Pure%20HTML/BuyPage.png" width="400" />
+  <img alt="Auction Details page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/Pure%20HTML/AuctionDetailsPage.png" width="400" />
+</div>
 
 ### RIA
-<img alt="Login page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/RIA/LoginPage.png" width="400" />
-<img alt="Sell page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/RIA/SellPage.png" width="400" />
-<img alt="Sell page 2" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/RIA/SellPage2.png" width="400" />
-<img alt="Buy page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/RIA/BuyPage.png" width="400" />
-<img alt="Auction Details page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/RIA/AuctionDetailsPage.png" width="400" />
+<div align="center">
+  <img alt="Login page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/RIA/LoginPage.png" width="400" />
+  <img alt="Sell page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/RIA/SellPage.png" width="400" />
+  <img alt="Sell page 2" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/RIA/SellPage2.png" width="400" />
+  <img alt="Buy page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/RIA/BuyPage.png" width="400" />
+  <img alt="Auction Details page" src="https://github.com/SummaCristian/TIW_2025/blob/main/Screenshots/RIA/AuctionDetailsPage.png" width="400" />
+</div>
