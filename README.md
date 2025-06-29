@@ -23,7 +23,7 @@ Per la versione RIA è richiesto che tutto, escluso il login, avvenga all'intern
 La prima versione del sito è implementata unicamente tramite HTML, CSS e Java per le Servlet. Tutte le richiesti di aggiornamento producono il rendering di una nuova pagina a lato Server e l'invio al client mediante redirect o forward.
 Per il rendering delle pagine si fa uso di Thymeleaf.
 
-Per la secondda versione si è fatto uso di HTML, CSS, Java per le Servlet e JavaScript per il controllo a lato client.
+Per la seconda versione si è fatto uso di HTML, CSS, Java per le Servlet e JavaScript per il controllo a lato client.
 JavaScript viene utilizzato per:
 - Navigazione tra le varie sezioni dell'interfaccia
 - Controllo e validazione a lato client dei dati prima di inviare le richieste, con eventual gestione locale degli errori
