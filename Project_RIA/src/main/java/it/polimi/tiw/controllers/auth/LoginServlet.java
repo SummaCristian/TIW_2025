@@ -40,14 +40,6 @@ public class LoginServlet extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().println("Login Servlet");
-	}
-
-	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	@Override
@@ -69,20 +61,25 @@ public class LoginServlet extends HttpServlet {
 
 	        // Respond with success (HTTP 200)
 	        response.setStatus(HttpServletResponse.SC_OK);
+	        response.setContentType("text/plain");
 	        response.getWriter().write("Login successful");
 
 	    } catch (MissingParametersException e) {
 	        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	        response.setContentType("text/plain");
 	        response.getWriter().write("Missing parameters");
 	    } catch (UserNotFoundException e) {
 	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	        response.setContentType("text/plain");
 	        response.getWriter().write("User not found");
 	    } catch (IncorrectPasswordException e) {
 	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	        response.setContentType("text/plain");
 	        response.getWriter().write("Incorrect password");
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	        response.setContentType("text/plain");
 	        response.getWriter().write("Database error");
 	    }
 	}

@@ -73,6 +73,7 @@ public class SignUpServlet extends HttpServlet {
 
 		    default:
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.setContentType("text/plain");
                 response.getWriter().write("Unknown signup phase.");
 		        break;
 		}
@@ -99,6 +100,7 @@ public class SignUpServlet extends HttpServlet {
 			// Success → move to phase 2
 			// Send 200 OK
             response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("text/plain");
             response.getWriter().write("Phase 1 OK");
 
 
@@ -106,18 +108,22 @@ public class SignUpServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.setContentType("text/plain");
             response.getWriter().write("Database error.");
 		} catch (MissingParametersException e) {
 			// Some parameters were either null or empty Strings
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setContentType("text/plain");
             response.getWriter().write("Missing some parameters.");
 		} catch (MismatchingPasswordsException e) {
 			// The 2 passwords were different
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setContentType("text/plain");
             response.getWriter().write("Passwords are not the same.");
 		} catch (DuplicateUsernameException e) {
 			// The Username already exists in the DB
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setContentType("text/plain");
             response.getWriter().write("Username already taken.");
 		}
 	}
@@ -145,6 +151,7 @@ public class SignUpServlet extends HttpServlet {
 		) {
 			// Missing some data
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setContentType("text/plain");
             response.getWriter().write("Missing some parameters.");
             return;
 		}
@@ -173,11 +180,13 @@ public class SignUpServlet extends HttpServlet {
 			
 			// SUCCESS: send response to let frontend know to proceed
 			response.setStatus(HttpServletResponse.SC_OK);
+			response.setContentType("text/plain");
             response.getWriter().write("Signup successful.");
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setContentType("text/plain");
             response.getWriter().write("Database error.");
 		} catch (MissingParametersException | MismatchingPasswordsException | DuplicateUsernameException e) {
 			/*
@@ -187,6 +196,7 @@ public class SignUpServlet extends HttpServlet {
 			 * so the User must re-start the whole SignUp process again
 			 */
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setContentType("text/plain");
             response.getWriter().write("Invalid credentials: " + e.getMessage());
 		}
 	}
