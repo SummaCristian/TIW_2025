@@ -192,8 +192,8 @@ export function showAuctionPopup(auction) {
 		// Server sent an error, instead of showing the popup it displays the error message		
 		displayError(500, "Server is not responding");
 	} else {
-		if (!auction?.isSold) {
-			// Saves the Auction's ID into the Cookie (only if it's still Open)
+		if (!auction?.isSold && auction?.sellerId != user.id) {
+			// Saves the Auction's ID into the Cookie (only if it's still Open and not created by the user)
 			addAuctionToVisited(auction.id);
 		}
 		
