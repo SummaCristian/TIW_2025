@@ -5,67 +5,67 @@ USE Progetto_Tiw;
 
 -- 1
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address) 
-	VALUES ('Doctor1', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'William', 'Hartnell', 'Test');
+	VALUES ('Doctor1', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'William', 'Hartnell', '76 Totter\'s Lane, Shoreditch, London');
 
 -- 2
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address)
-	VALUES ('Doctor2', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Patrick', 'Troughton', 'Test');
+	VALUES ('Doctor2', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Patrick', 'Troughton', '10 Coal Hill Road, Shoreditch, London');
 
 -- 3
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address)
-	VALUES ('Doctor3', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Jon', 'Pertwee', 'Test');
+	VALUES ('Doctor3', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Jon', 'Pertwee', 'UNIT HQ, Scientific Research Complex, London');
 
 -- 4
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address) 
-	VALUES ('Doctor4', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Tom', 'Baker', 'Test');
+	VALUES ('Doctor4', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Tom', 'Baker', 'Gallifrey Falls, Arcadia District, Gallifre');
 
 -- 5
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address) 
-	VALUES ('Doctor5', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Peter', 'Davison', 'Test');
+	VALUES ('Doctor5', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Peter', 'Davison', '5 Shadow Proclamation Way, Zeta Minor');
 
 -- 6
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address) 
-	VALUES ('Doctor6', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Colin', 'Baker', 'Test');
+	VALUES ('Doctor6', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Colin', 'Baker', '23 Iceworld Street, Svartos Colony');
     
 -- 7
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address) 
-	VALUES ('Doctor7', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Sylvester', 'McCoy', 'Test');
+	VALUES ('Doctor7', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Sylvester', 'McCoy', '7 Paradise Towers, Blue Kang Level, Earth Colony');
     
 -- 8
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address) 
-	VALUES ('Doctor8', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Paul', 'McGann', 'Test');
+	VALUES ('Doctor8', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Paul', 'McGann', '13 Shada Crescent, Cambridge, Earth');
     
 -- 9
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address) 
-	VALUES ('Doctor9', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Christopher', 'Eccleston', 'Test');
+	VALUES ('Doctor9', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Christopher', 'Eccleston', 'Type 40 Drive, Barnard\'s Star, Space Lane 52');
     
 -- 10
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address) 
-	VALUES ('Doctor10', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'David', 'Tennant', 'Test');
+	VALUES ('Doctor10', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'David', 'Tennant', '50 Bad Wolf Bay, Darlig Ulv Stranden, Norway');
 
 -- 11
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address) 
-	VALUES ('Doctor11', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Matt', 'Smith', 'Test');
+	VALUES ('Doctor11', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Matt', 'Smith', '221B Powell Estate, London');
     
 -- 12
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address) 
-	VALUES ('Doctor12', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Peter', 'Capaldi', 'Test');
+	VALUES ('Doctor12', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Peter', 'Capaldi', '11 Lake Silencio Road, Utah Desert, USA');
 
 -- 13
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address) 
-	VALUES ('Doctor13', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Jodie', 'Whittaker', 'Test');
+	VALUES ('Doctor13', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Jodie', 'Whittaker', 'Trenzalore Square, Christmas Town, Trenzalore');
 
 -- 14
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address) 
-	VALUES ('Doctor14', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'David', 'Tennant', 'Test');
+	VALUES ('Doctor14', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'David', 'Tennant', '9 Jodie Street, Sheffield, South Yorkshire');
 
 -- 15
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address) 
-	VALUES ('Doctor15', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Ncuti', 'Gatwa', 'Test');
+	VALUES ('Doctor15', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Ncuti', 'Gatwa', '14 Wild Blue Yonder Way, Edge of the Universe');
 
 -- 16 (Test)
 INSERT INTO Users (Username, Psw, FirstName, LastName, Address) 
-	VALUES ('Test', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Test', 'Test', 'Test');
+	VALUES ('Test', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 'Test', 'Test', 'Test n. Test street, Test City, Test Country');
     
 -- Auction 1 - User 1
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
@@ -409,7 +409,7 @@ UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 19;
 
 -- Auciton 20 - User 16 (Test)
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
-	VALUES (350, 10, NULL, '2025-08-01 08:00:00', 16, FALSE, NULL, NULL);
+	VALUES (350, 10, NULL, '2025-06-01 08:00:00', 16, FALSE, NULL, NULL);
 
 INSERT INTO Images (FileName, FilePath) VALUES ('item_45.jpg', 'images/uploaded_images/item_45.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
@@ -418,14 +418,28 @@ INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, Auction
 INSERT INTO Images (FileName, FilePath) VALUES ('item_46.jpg', 'images/uploaded_images/item_46.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Polaroid SX-70', 'Classic folding instant camera with original leather case, 1972 model.', 200, 46, 16, 20);
+
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (15, 20, 350, '2025-05-18 09:02:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (12, 20, 360, '2025-05-18 09:05:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (11, 20, 370, '2025-05-18 09:14:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (13, 20, 380, '2025-05-18 09:16:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (8, 20, 390, '2025-05-18 09:22:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 20;
     
 -- Auction 21 - User 16 (Test)
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
-	VALUES (300, 10, NULL, '2025-08-01 08:00:00', 16, FALSE, NULL, NULL);
+	VALUES (300, 10, NULL, '2025-07-01 06:00:00', 16, FALSE, NULL, NULL);
 
 INSERT INTO Images (FileName, FilePath) VALUES ('item_47.jpg', 'images/uploaded_images/item_47.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Nikon F3', 'Professional 35mm SLR with Nikkor 50mm f/1.4 lens, excellent condition.', 300, 47, 16, 21);
+    
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (15, 21, 340, '2025-05-18 09:02:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (12, 21, 350, '2025-05-18 09:05:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (11, 21, 360, '2025-05-18 09:14:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (13, 21, 370, '2025-05-18 09:16:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (8, 21, 380, '2025-05-18 09:22:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 21;
     
 -- Auction 22 - User 16 (Test)
 INSERT INTO Auctions (BasePrice, MinIncrement, HighestBidId, ClosingDate, SellerId, IsSold, BuyerId, FinalPrice)
@@ -442,6 +456,13 @@ INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, Auction
 INSERT INTO Images (FileName, FilePath) VALUES ('item_50.jpg', 'images/uploaded_images/item_50.jpg');
 INSERT INTO Items (ItemName, ItemDescription, Price, ImageId, CreatorId, AuctionId)
 	VALUES ('Apple iPod Classic (5th Gen, 80GB)', 'Working iPod Classic with original charger and cable, minor scratches.', 120, 50, 16, 22);
+    
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (15, 22, 280, '2025-05-18 09:02:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (12, 22, 300, '2025-05-18 09:05:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (11, 22, 320, '2025-05-18 09:14:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (13, 22, 330, '2025-05-18 09:16:00');
+INSERT INTO Offers (UserId, AuctionId, OfferedPrice, OfferDate) VALUES (8, 22, 350, '2025-05-18 09:22:00');
+UPDATE Auctions SET HighestBidId = LAST_INSERT_ID() WHERE Id = 22;
     
 -- ITEMS NOT IN AUCTIONS
 
