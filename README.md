@@ -51,6 +51,9 @@ Il progetto è stato testato sui seguenti browser
 [![Safari](https://img.shields.io/badge/Safari-006CFF?logo=safari&logoColor=fff)](#)
 [![Zen Browser](https://img.shields.io/badge/Zen%20Browser-F76F53?logo=zenbrowser&logoColor=fff)](#)
 
+### ✅ Valutazione
+Il progetto ha ricevuto una valutazione di **30/30**
+
 ## 🇬🇧 English
 
 ### 📃 Specifications
@@ -102,6 +105,9 @@ The project has been tested on the following browsers
 [![Arc](https://img.shields.io/badge/Arc-FCBFBD?logo=arc&logoColor=000)](#)
 [![Safari](https://img.shields.io/badge/Safari-006CFF?logo=safari&logoColor=fff)](#)
 [![Zen Browser](https://img.shields.io/badge/Zen%20Browser-F76F53?logo=zenbrowser&logoColor=fff)](#)
+
+### ✅ Evaluation
+The project received a grade of **30/30**
 
 ## 🖼️ Screenshots
 
