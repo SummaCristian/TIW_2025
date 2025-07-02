@@ -20,7 +20,7 @@ Per la versione RIA è richiesto che tutto, escluso il login, avvenga all'intern
 [![Java](https://img.shields.io/badge/Java-%23ED8B00.svg?logo=openjdk&logoColor=white)](#)
 ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-3.0-005F0F?logo=thymeleaf&logoColor=white)
 
-La prima versione del sito è implementata unicamente tramite HTML, CSS e Java per le Servlet. Tutte le richiesti di aggiornamento producono il rendering di una nuova pagina a lato Server e l'invio al client mediante redirect o forward.
+La prima versione del sito è implementata unicamente tramite HTML, CSS e Java per le Servlet. Tutte le richieste di aggiornamento producono il rendering di una nuova pagina a lato Server e l'invio al client mediante redirect o forward.
 Per il rendering delle pagine si fa uso di Thymeleaf.
 
 Per la seconda versione si è fatto uso di HTML, CSS, Java per le Servlet e JavaScript per il controllo a lato client.
